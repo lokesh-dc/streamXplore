@@ -8,7 +8,11 @@
     color: grey !important;
 }
 
+:root {
+    --bebas_nueve: 'Bebas Neue', sans-serif;
+    --red_color: red
+}
 
 .bebas_nueve {
-    font-family: 'Bebas Neue', sans-serif !important;
+    font-family: var(--bebas_nueve) !important;
 }

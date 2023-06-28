@@ -28,6 +28,7 @@ const HomePage = ({ page, results, total_pages, total_results }: props) => {
 	return (
 		<>
 			<HeroSection data={results} />
+			
 		</>
 	);
 };
