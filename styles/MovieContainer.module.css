@@ -1,0 +1,29 @@
+.container {
+    width: 100%;
+    overflow-x: scroll !important;
+}
+
+.card {
+    width: 300px !important;
+    padding: 10px;
+    display: inline-flex;
+    flex: none;
+    width: fit-content;
+    border: 1px solid rgba(0, 0, 0, 0.338);
+    border-radius: 15px;
+}
+
+
+.card .cardImage {
+    height: 200px;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.card .cardImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card .cardContent {}

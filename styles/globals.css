@@ -9,10 +9,11 @@
 }
 
 :root {
-    --bebas_nueve: 'Bebas Neue', sans-serif;
-    --red_color: red
+    --bebas-nueve: 'Bebas Neue', sans-serif;
+    --red-color: red;
 }
 
 .bebas_nueve {
-    font-family: var(--bebas_nueve) !important;
+    font-family: var(--bebas-nueve) !important;
+    letter-spacing: 1px;
 }

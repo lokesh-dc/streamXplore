@@ -1,5 +1,7 @@
 import HeroSection from "@/components/HeroSection";
+import MovieContainer from "@/components/containers/MovieContainer";
 import { api_baseLink } from "@/constants";
+import { movieDetails } from "@/constants/typescript";
 
 interface props {
 	page: number | null;
@@ -8,27 +10,11 @@ interface props {
 	total_results: number | null;
 }
 
-interface movieDetails {
-	adult: boolean | null;
-	backdrop_path: string | null;
-	genre_id: Array<number> | null;
-	id: number | null;
-	original_language: string | null;
-	original_title: string | null;
-	overview: string | null;
-	popularity: number | null;
-	poster_path: string | null;
-	release_date: string | null;
-	title: string | null;
-	video: boolean | string | null;
-	vote_average: number | null;
-	vote_count: number | null;
-}
 const HomePage = ({ page, results, total_pages, total_results }: props) => {
 	return (
 		<>
 			<HeroSection data={results} />
-			
+			<MovieContainer data={results} title="Popular Movies" />
 		</>
 	);
 };
@@ -46,7 +32,6 @@ export async function getServerSideProps() {
 		};
 
 		const randomPage = Math.floor(Math.random() * 10 + 1);
-		console.log(randomPage);
 		const response = await fetch(
 			`${api_baseLink}/movie/popular?language=en-US&page=${randomPage}`,
 			options
