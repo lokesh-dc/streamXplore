@@ -1,8 +1,29 @@
 .NavigationBar {
-    height: 60px;
     z-index: 10 !important;
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100%;
-    background-color: rgba(230, 228, 228, 0.129);
+    background-color: rgba(230, 228, 228, 0.429);
+}
+
+.menu {
+    font-size: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .NavigationBar {
+        position: static;
+        padding: 10px 5px !important;
+    }
+}
+
+
+@media screen and (min-width: 601px) and (max-width: 1000px) {
+    .slideContainer {
+        height: 40vh;
+    }
+
+    .contentContainer>h3 {
+        font-size: 20px;
+    }
 }

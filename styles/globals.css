@@ -10,10 +10,19 @@
 
 :root {
     --bebas-nueve: 'Bebas Neue', sans-serif;
+    --oswald: 'Oswald', sans-serif;
     --red-color: red;
 }
 
 .bebas_nueve {
     font-family: var(--bebas-nueve) !important;
     letter-spacing: 1px;
+}
+
+.oswald {
+    font-family: var(--oswald) !important;
+}
+
+body {
+    font-family: var(--oswald);
 }

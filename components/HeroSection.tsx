@@ -46,12 +46,12 @@ const HeroSection = ({ data }: props) => {
 								/>
 							</div>
 
-							<div className={`${styles.contentContainer}`}>
+							<div className={`${styles.contentContainer} `}>
 								<p
 									className={`${styles.rating} flex items-baseline  justify-center`}
 								>
 									<AiTwotoneStar />
-									<span>{item.vote_average}</span> / 10
+									<span className="ml-1">{item.vote_average}</span> / 10
 								</p>
 								<h3>{item.title}</h3>
 							</div>
