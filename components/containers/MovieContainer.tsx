@@ -17,7 +17,7 @@ const MovieContainer: React.FC<props> = ({ data, title }): ReactElement => {
 				{data?.map((item, index) => (
 					<MovieCard
 						key={index}
-						imgSrc={`${item.backdrop_path}`}
+						imgSrc={`${item.poster_path}`}
 						title={`${item.title}`}
 					/>
 				))}

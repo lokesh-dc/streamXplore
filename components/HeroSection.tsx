@@ -4,7 +4,7 @@ import { Autoplay, Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { image_baseLink } from "@/constants";
+import { getImageBaseLink, image_baseLink } from "@/constants";
 import NavigationBar from "./layout/navigation";
 import Image from "next/image";
 
@@ -18,6 +18,14 @@ interface props {
 }
 
 const HeroSection = ({ data }: props) => {
+	console.log(
+		getImageBaseLink({
+			type: "poster",
+			quality: "sm",
+			path: "/e2Jd0sYMCe6qvMbswGQbM0Mzxt0.jpg",
+		})
+	);
+
 	return (
 		<div>
 			<NavigationBar />
@@ -38,7 +46,11 @@ const HeroSection = ({ data }: props) => {
 						<div className={styles.slideContainer}>
 							<div className={styles.imageContainer}>
 								<Image
-									src={`${image_baseLink}${item.backdrop_path}`}
+									src={getImageBaseLink({
+										type: "backdrop",
+										quality: "xl",
+										path: item.backdrop_path,
+									})}
 									alt={`${item.title}`}
 									width={2000}
 									height={500}

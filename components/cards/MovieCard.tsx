@@ -1,4 +1,4 @@
-import { image_baseLink } from "@/constants";
+import { getImageBaseLink, image_baseLink } from "@/constants";
 import Image from "next/image";
 import React, { ReactElement } from "react";
 
@@ -16,7 +16,11 @@ const MovieCard: React.FC<props> = ({ imgSrc, title }): ReactElement => {
 				<Image
 					width={500}
 					height={200}
-					src={`${image_baseLink}${imgSrc}`}
+					src={getImageBaseLink({
+						type: "poster",
+						quality: "lg",
+						path: imgSrc,
+					})}
 					alt={`${title}`}
 				/>
 			</div>
