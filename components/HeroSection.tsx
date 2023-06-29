@@ -11,6 +11,7 @@ import Image from "next/image";
 import styles from "../styles/HeroSection.module.css";
 
 import { AiTwotoneStar } from "react-icons/ai";
+import { IoIosPeople } from "react-icons/io";
 import { movieDetails } from "@/constants/typescript";
 
 interface props {
@@ -18,14 +19,6 @@ interface props {
 }
 
 const HeroSection = ({ data }: props) => {
-	console.log(
-		getImageBaseLink({
-			type: "poster",
-			quality: "sm",
-			path: "/e2Jd0sYMCe6qvMbswGQbM0Mzxt0.jpg",
-		})
-	);
-
 	return (
 		<div>
 			<NavigationBar />
@@ -34,7 +27,7 @@ const HeroSection = ({ data }: props) => {
 					dynamicBullets: true,
 				}}
 				autoplay={{
-					delay: 3000,
+					delay: 7000,
 					disableOnInteraction: false,
 				}}
 				navigation={true}
@@ -57,15 +50,37 @@ const HeroSection = ({ data }: props) => {
 									priority
 								/>
 							</div>
-
-							<div className={`${styles.contentContainer} `}>
-								<p
-									className={`${styles.rating} flex items-baseline  justify-center`}
-								>
-									<AiTwotoneStar />
-									<span className="ml-1">{item.vote_average}</span> / 10
-								</p>
+							<div className={`${styles.contentContainer}`}>
+								<div className="flex gap-3 justify-center">
+									<p
+										className={`${styles.rating} flex items-baseline  justify-center`}
+									>
+										<AiTwotoneStar />
+										<span className="ml-1 text-sm">{item.vote_average}</span> /
+										10
+									</p>
+									<p
+										className={`${styles.rating} flex items-baseline justify-center`}
+									>
+										<IoIosPeople />
+										<span className="ml-1 text-sm">{item.vote_count}</span>
+									</p>
+								</div>
 								<h3>{item.title}</h3>
+							</div>
+							<div className={`${styles.movieCard} hidden md:flex`}>
+								<div>
+									<Image
+										width={300}
+										height={200}
+										src={getImageBaseLink({
+											type: "poster",
+											quality: "lg",
+											path: item.poster_path,
+										})}
+										alt={`${item.title}`}
+									/>
+								</div>
 							</div>
 						</div>
 					</SwiperSlide>

@@ -12,7 +12,9 @@ interface props {
 const MovieContainer: React.FC<props> = ({ data, title }): ReactElement => {
 	return (
 		<div className="p-3 py-5 flex flex-col gap-1">
-			{title ? <h2 className="text-4xl bebas_nueve">{title}</h2> : null}
+			{title ? (
+				<h2 className={`text-4xl bebas_nueve ${styles.title}`}>{title}</h2>
+			) : null}
 			<div className={`flex gap-2 overflow-x-auto ${styles.container}`}>
 				{data?.map((item, index) => (
 					<MovieCard

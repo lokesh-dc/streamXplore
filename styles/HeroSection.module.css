@@ -1,7 +1,7 @@
 .slideContainer {
   position: relative;
   width: 100vw;
-  height: 90vh;
+  height: 85vh;
 }
 
 .imageContainer {
@@ -10,17 +10,39 @@
 }
 
 .imageContainer>img {
-  filter: brightness(60%);
+  filter: brightness(50%);
   height: 100%;
+  object-fit: cover;
+  /* object-position: top; */
 }
 
 .contentContainer {
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   width: 100%;
   text-align: center;
   color: white;
   z-index: 20;
+}
+
+.contentContainer h3 {
+  margin-top: -10px;
+}
+
+.slideContainer .movieCard {
+  z-index: 10 !important;
+  position: absolute;
+  left: 100px;
+  top: 30%;
+  border: 1px solid grey;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.movieCard img {
+  height: 300px;
+  width: 200px;
+  border-radius: 10px;
 }
 
 .contentContainer>h3 {
@@ -45,6 +67,7 @@
 
 
 @media screen and (max-width: 600px) {
+
   .contentContainer {
     bottom: 10px;
   }
@@ -53,9 +76,16 @@
     height: 25vh;
   }
 
-  .contentContainer>h3 {
+  .contentContainer p {
+    font-size: 5px;
+  }
+
+  .contentContainer h3 {
+    margin: 0;
     font-size: 20px;
   }
+
+
 }
 
 
@@ -66,5 +96,15 @@
 
   .contentContainer>h3 {
     font-size: 20px;
+  }
+
+  .slideContainer .movieCard {
+    left: 80px;
+    top: 30%;
+  }
+
+  .movieCard img {
+    height: 150px;
+    width: 90px;
   }
 }

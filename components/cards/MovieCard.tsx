@@ -1,4 +1,4 @@
-import { getImageBaseLink, image_baseLink } from "@/constants";
+import { getImageBaseLink } from "@/constants";
 import Image from "next/image";
 import React, { ReactElement } from "react";
 
@@ -24,7 +24,7 @@ const MovieCard: React.FC<props> = ({ imgSrc, title }): ReactElement => {
 					alt={`${title}`}
 				/>
 			</div>
-			<div className={`${styles.cardContent}`}>{title}</div>
+			{/* <div className={`${styles.cardContent}`}>{title}</div> */}
 		</div>
 	);
 };

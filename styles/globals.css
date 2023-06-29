@@ -3,10 +3,36 @@
 @tailwind utilities;
 
 
+:root {
+    --bebas-nueve: 'Bebas Neue', sans-serif;
+    --oswald: 'Oswald', sans-serif;
+    --primary-color: rgb(244, 22, 22);
+}
+
 .swiper-button-prev,
 .swiper-button-next {
     color: grey !important;
 }
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 14px !important;
+}
+
+.swiper-pagination-bullets .swiper-pagination-bullet-active-prev,
+.swiper-pagination-bullets .swiper-pagination-bullet-active-prev-prev,
+.swiper-pagination-bullets .swiper-pagination-bullet-active-next,
+.swiper-pagination-bullets .swiper-pagination-bullet-active-next-next {
+    background-color: white !important;
+    opacity: 0.5 !important;
+}
+
+.swiper-pagination-bullets .swiper-pagination-bullet-active {
+    background-color: var(--primary-color) !important;
+    border-radius: 5px !important;
+    width: 30px !important;
+}
+
 
 *::-webkit-scrollbar {
     display: none !important;
@@ -18,11 +44,7 @@
 }
 
 
-:root {
-    --bebas-nueve: 'Bebas Neue', sans-serif;
-    --oswald: 'Oswald', sans-serif;
-    --red-color: red;
-}
+
 
 .bebas_nueve {
     font-family: var(--bebas-nueve) !important;
