@@ -18,7 +18,7 @@
 
 .contentContainer {
   position: absolute;
-  bottom: 20px;
+  bottom: 10px;
   width: 100%;
   text-align: center;
   color: white;
@@ -69,11 +69,11 @@
 @media screen and (max-width: 600px) {
 
   .contentContainer {
-    bottom: 10px;
+    bottom: 20px;
   }
 
   .slideContainer {
-    height: 25vh;
+    height: 28vh;
   }
 
   .contentContainer p {
