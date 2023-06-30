@@ -79,6 +79,7 @@ const HeroSection = ({ data }: props) => {
 											path: item.poster_path,
 										})}
 										alt={`${item.title}`}
+										priority
 									/>
 								</div>
 							</div>
