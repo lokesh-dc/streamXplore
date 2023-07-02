@@ -21,7 +21,6 @@ interface props {
 const HeroSection = ({ data }: props) => {
 	return (
 		<div>
-			<NavigationBar />
 			<Swiper
 				pagination={{
 					dynamicBullets: true,
