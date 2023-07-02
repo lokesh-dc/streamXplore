@@ -33,10 +33,10 @@ export async function getServerSideProps() {
 	const trendingTV = await trendingSeries();
 	return {
 		props: {
-			popular,
-			nowPlaying,
-			trending,
-			trendingTV,
+			popular: popular || null,
+			nowPlaying: nowPlaying || null,
+			trending: trending || null,
+			trendingTV: trendingTV || null,
 		},
 	};
 }
