@@ -6,7 +6,7 @@
 :root {
     --bebas-nueve: 'Bebas Neue', sans-serif;
     --oswald: 'Oswald', sans-serif;
-    --primary-color: rgb(244, 22, 22);
+    --primary-color: white
 }
 
 .swiper-button-prev,

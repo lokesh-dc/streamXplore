@@ -12,7 +12,12 @@ interface props {
 	trendingTV: Array<movieDetails> | null;
 }
 
-const HomePage = ({ trending, trendingTV, popular, nowPlaying }: props) => {
+const UpcomingMoviesPage = ({
+	trending,
+	trendingTV,
+	popular,
+	nowPlaying,
+}: props) => {
 	return (
 		<>
 			<HeroSection data={trending} />
@@ -24,7 +29,7 @@ const HomePage = ({ trending, trendingTV, popular, nowPlaying }: props) => {
 	);
 };
 
-export default HomePage;
+export default UpcomingMoviesPage;
 
 export async function getServerSideProps() {
 	const popular = await getPopularMovies();
