@@ -1,30 +1,17 @@
-import HeroSection from "@/components/HeroSection";
-import MovieContainer from "@/components/containers/SwiperMovieContainer";
+import GridMovieContainer from "@/components/containers/GridMovieContainer";
 import { movieDetails } from "@/constants/typescript";
-import getPopularMovies from "@/data/popularMovies";
-import getMoviesPlayingInThetres from "@/data/nowPlayingIntheatres";
-import trendingMovies from "@/data/trendingMovies";
-import trendingSeries from "@/data/trendingSeries";
+import getUpcomingMovies from "@/data/upcomingMovies";
 interface props {
-	trending: Array<movieDetails> | null;
-	popular: Array<movieDetails> | null;
-	nowPlaying: Array<movieDetails> | null;
-	trendingTV: Array<movieDetails> | null;
+	upcoming: Array<movieDetails> | null;
 }
 
-const UpcomingMoviesPage = ({
-	trending,
-	trendingTV,
-	popular,
-	nowPlaying,
-}: props) => {
+const UpcomingMoviesPage = ({ upcoming }: props) => {
 	return (
 		<>
-			<HeroSection data={trending} />
-			<MovieContainer data={popular} title="Popular Movies" />
-			<MovieContainer data={nowPlaying} title="Now Playing in Thatres" />
-			<MovieContainer data={trending} title="Trending Movies" />
-			<MovieContainer data={trendingTV} title="Trending TV Series" />
+			<div style={{ marginTop: "100px" }}>
+				<h1 className="p-5 text-5xl">UPCOMING MOVIES</h1>
+			</div>
+			<GridMovieContainer data={upcoming} title="Popular Movies" />
 		</>
 	);
 };
@@ -32,16 +19,10 @@ const UpcomingMoviesPage = ({
 export default UpcomingMoviesPage;
 
 export async function getServerSideProps() {
-	const popular = await getPopularMovies();
-	const nowPlaying = await getMoviesPlayingInThetres();
-	const trending = await trendingMovies();
-	const trendingTV = await trendingSeries();
+	const upcomingMovies = await getUpcomingMovies();
 	return {
 		props: {
-			popular: popular || null,
-			nowPlaying: nowPlaying || null,
-			trending: trending || null,
-			trendingTV: trendingTV || null,
+			upcoming: upcomingMovies.results || null,
 		},
 	};
 }
