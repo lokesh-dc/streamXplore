@@ -9,16 +9,10 @@ interface props {
 
 const GridMovieContainer: React.FC<props> = ({ data }): ReactElement => {
 	return (
-		<div
-			className="grid grid-cols-4 gap-y-5 justify-center	"
-		>
+		<div className="m-y-3 grid grid-cols-4 gap-y-8 justify-center	">
 			{data?.map((item: movieDetails, index: number) => (
-				<div className="flex justify-center">
-					<MovieCard
-						key={index}
-						imgSrc={`${item.poster_path}`}
-						title={`${item.title}`}
-					/>
+				<div className="flex justify-center" key={index}>
+					<MovieCard imgSrc={`${item.poster_path}`} title={`${item.title}`} />
 				</div>
 			))}
 		</div>

@@ -11,7 +11,9 @@ type props = {
 
 const MovieCard: React.FC<props> = ({ imgSrc, title }): ReactElement => {
 	return (
-		<div className={`${styles.card} flex-col gap-1`}>
+		<div
+			className={`${styles.card} flex-col gap-1 ransform transition duration-500 hover:scale-110`}
+		>
 			<div className={`${styles.cardImage}`}>
 				<Image
 					width={500}
