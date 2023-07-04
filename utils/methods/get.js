@@ -8,6 +8,7 @@ const getMethod = async ({ path, params }) => {
 	const data = await response.json();
 	return {
 		data: data?.results,
+		totalPages: data?.total_pages,
 	};
 };
 
