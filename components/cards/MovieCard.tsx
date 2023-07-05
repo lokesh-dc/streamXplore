@@ -24,7 +24,6 @@ const MovieCard: React.FC<props> = ({ imgSrc, title }): ReactElement => {
 					alt={`${title}`}
 				/>
 			</div>
-			{/* <div className={`${styles.cardContent}`}>{title}</div> */}
 		</div>
 	);
 };
