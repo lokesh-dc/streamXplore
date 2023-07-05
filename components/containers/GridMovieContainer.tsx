@@ -1,10 +1,9 @@
+import InfiniteScroll from "react-infinite-scroll-component";
+
 import { movieDetails } from "@/constants/typescript";
 import MovieCard from "../cards/MovieCard";
 import React, { ReactElement, useEffect, useState } from "react";
 import getMethod from "@/utils/methods/get";
-
-import GetMoreButton from "@/components/buttons/GetMore";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 interface props {
 	upcoming: Array<movieDetails> | null;
@@ -30,24 +29,13 @@ const GridMovieContainer: React.FC<props> = ({
 		setTotalPages(totalPages);
 	};
 
-	useEffect(() => {
-		if (page === 2 || page === totalPages) return;
-		getMoreUpcomingMovies();
-	}, [page]);
-
-	function handlePageChange() {
-		setPage((page) => page + 1);
-	}
-
-	console.log(page);
-
 	return (
 		<>
 			<div className="my-3">
 				<InfiniteScroll
 					dataLength={data.length}
 					next={getMoreUpcomingMovies}
-					hasMore={totalPages >= page}
+					hasMore={totalPages >= page || !data}
 					loader={<h3> Loading...</h3>}
 					className="w-100 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-y-8 justify-center"
 				>
