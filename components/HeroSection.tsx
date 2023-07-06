@@ -15,10 +15,11 @@ import { IoIosPeople } from "react-icons/io";
 import { movieDetails } from "@/constants/typescript";
 
 interface props {
-	data: Array<movieDetails> | null;
+	data: Array<movieDetails> | null | undefined;
 }
 
 const HeroSection = ({ data }: props) => {
+	if (!data) return;
 	return (
 		<div>
 			<Swiper

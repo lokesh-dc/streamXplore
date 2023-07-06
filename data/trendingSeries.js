@@ -1,16 +1,8 @@
-import { api_baseLink } from "@/constants";
-import { options } from "../constants/api";
+import getMethod from "@/utils/methods/get";
 
-export default async function getPopularMovies() {
-	try {
-		const response = await fetch(
-			`${api_baseLink}/trending/tv/day?language=en-US`,
-			options
-		);
-		const data = await response.json();
-		return data?.results;
-	} catch (e) {
-		console.log("Error", e);
-		return e;
-	}
+export default async function getPopularSeries(page) {
+	const movies = await getMethod({
+		path: `/trending/tv/day?language=en-US&page=${page || 1}`,
+	});
+	return movies;
 }

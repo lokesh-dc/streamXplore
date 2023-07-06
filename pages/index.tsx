@@ -6,20 +6,25 @@ import getMoviesPlayingInThetres from "@/data/nowPlayingIntheatres";
 import trendingMovies from "@/data/trendingMovies";
 import trendingSeries from "@/data/trendingSeries";
 interface props {
-	trending: Array<movieDetails> | null;
-	popular: Array<movieDetails> | null;
-	nowPlaying: Array<movieDetails> | null;
-	trendingTV: Array<movieDetails> | null;
+	trending: moviDetailsWithPage | null;
+	popular: moviDetailsWithPage | null;
+	nowPlaying: moviDetailsWithPage | null;
+	trendingTV: moviDetailsWithPage | null;
+}
+
+interface moviDetailsWithPage {
+	data: Array<movieDetails> | null;
+	totalPages: number;
 }
 
 const HomePage = ({ trending, trendingTV, popular, nowPlaying }: props) => {
 	return (
 		<>
-			<HeroSection data={trending} />
-			<MovieContainer data={popular} title="Popular Movies" />
-			<MovieContainer data={nowPlaying} title="Now Playing in Thatres" />
-			<MovieContainer data={trending} title="Trending Movies" />
-			<MovieContainer data={trendingTV} title="Trending TV Series" />
+			<HeroSection data={trending?.data} />
+			<MovieContainer data={popular?.data} title="Popular Movies" />
+			<MovieContainer data={nowPlaying?.data} title="Now Playing in Thatres" />
+			<MovieContainer data={trending?.data} title="Trending Movies" />
+			<MovieContainer data={trendingTV?.data} title="Trending TV Series" />
 		</>
 	);
 };
@@ -31,6 +36,8 @@ export async function getServerSideProps() {
 	const nowPlaying = await getMoviesPlayingInThetres();
 	const trending = await trendingMovies();
 	const trendingTV = await trendingSeries();
+
+	console.log(popular);
 	return {
 		props: {
 			popular: popular || null,
