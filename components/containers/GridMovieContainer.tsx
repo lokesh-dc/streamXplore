@@ -43,9 +43,8 @@ const GridMovieContainer: React.FC<props> = ({
 					className="w-100 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-y-8 items-center justify-center"
 				>
 					{data.map((item, index) => (
-						<div className="flex items-center justify-center">
+						<div className="flex items-center justify-center" key={index}>
 							<MovieCard
-								key={index}
 								imgSrc={`${item.poster_path}`}
 								title={`${item.title}`}
 							/>
