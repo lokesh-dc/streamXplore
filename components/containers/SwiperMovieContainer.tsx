@@ -5,7 +5,7 @@ import styles from "@/styles/MovieContainer.module.css";
 import MovieCard from "../cards/MovieCard";
 
 interface props {
-	data: Array<movieDetails> | null;
+	data: Array<movieDetails> | null | undefined;
 	title?: string;
 }
 

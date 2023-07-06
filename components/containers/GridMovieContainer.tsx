@@ -2,22 +2,24 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import { movieDetails } from "@/constants/typescript";
 import MovieCard from "../cards/MovieCard";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import getMethod from "@/utils/methods/get";
 
 interface props {
 	upcoming: Array<movieDetails> | null;
 	title?: string;
 	apiPath: string;
+	total: number | null;
 }
 
 const GridMovieContainer: React.FC<props> = ({
 	upcoming,
 	apiPath,
+	total,
 }): ReactElement => {
 	const [data, setData] = useState(upcoming || []);
 	const [page, setPage] = useState(2);
-	const [totalPages, setTotalPages] = useState(10);
+	const [totalPages, setTotalPages] = useState(total);
 
 	const getMoreUpcomingMovies = async () => {
 		const { data, totalPages } = await getMethod({
@@ -35,16 +37,19 @@ const GridMovieContainer: React.FC<props> = ({
 				<InfiniteScroll
 					dataLength={data.length}
 					next={getMoreUpcomingMovies}
+					// @ts-ignore
 					hasMore={totalPages >= page || !data}
 					loader={<h3> Loading...</h3>}
-					className="w-100 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-y-8 justify-center"
+					className="w-100 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-y-8 items-center justify-center"
 				>
 					{data.map((item, index) => (
-						<MovieCard
-							key={index}
-							imgSrc={`${item.poster_path}`}
-							title={`${item.title}`}
-						/>
+						<div className="flex items-center justify-center">
+							<MovieCard
+								key={index}
+								imgSrc={`${item.poster_path}`}
+								title={`${item.title}`}
+							/>
+						</div>
 					))}
 				</InfiniteScroll>
 			</div>
