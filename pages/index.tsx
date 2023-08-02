@@ -37,7 +37,6 @@ export async function getServerSideProps() {
 	const trending = await trendingMovies();
 	const trendingTV = await trendingSeries();
 
-	console.log(popular);
 	return {
 		props: {
 			popular: popular || null,

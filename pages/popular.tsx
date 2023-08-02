@@ -11,7 +11,9 @@ const PopularMovies: React.FC<props> = ({ data, totalPages }): ReactElement => {
 	return (
 		<>
 			<div>
-				<h1 className="my-0 md:mt-12 p-5 text-5xl">POPULAR MOVIES</h1>
+				<h1 className="my-0 md:mt-12 p-5 text-5xl text-center">
+					POPULAR MOVIES
+				</h1>
 			</div>
 			<GridMovieContainer
 				upcoming={data}
