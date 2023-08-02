@@ -44,14 +44,15 @@
         width: 160px !important;
     }
 
-    .card .cardImage {
-        height: 250px;
-        border-radius: 2px;
-    }
 
+    .card .cardImage,
     .scroll_card .cardImage {
         height: 250px;
         border-radius: 8px;
+    }
+
+    .card .cardImage {
+        border-radius: 0px;
     }
 
     .title {
