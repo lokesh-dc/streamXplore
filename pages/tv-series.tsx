@@ -11,7 +11,7 @@ const TvSeries: React.FC<props> = ({ data, totalPages }): ReactElement => {
 	return (
 		<>
 			<div>
-				<h1 className="my-0 md:mt-12 p-5 text-5xl">TRENDING TV SERIES</h1>
+				<h1 className="my-0 md:mt-12 px-2 py-1 text-3xl">TRENDING TV SERIES</h1>
 			</div>
 			<GridMovieContainer
 				upcoming={data}

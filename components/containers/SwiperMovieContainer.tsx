@@ -21,6 +21,8 @@ const MovieContainer: React.FC<props> = ({ data, title }): ReactElement => {
 						key={index}
 						imgSrc={`${item.poster_path}`}
 						title={`${item.title}`}
+						movieId={item.id}
+						type={"scroll_card"}
 					/>
 				))}
 			</div>

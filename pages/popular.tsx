@@ -1,4 +1,5 @@
 import GridMovieContainer from "@/components/containers/GridMovieContainer";
+import PageTitle from "@/components/ui/PageTitle";
 import { movieDetails } from "@/constants/typescript";
 import getPopularMovies from "@/data/popularMovies";
 import React, { ReactElement } from "react";
@@ -10,11 +11,7 @@ interface props {
 const PopularMovies: React.FC<props> = ({ data, totalPages }): ReactElement => {
 	return (
 		<>
-			<div>
-				<h1 className="my-0 md:mt-12 p-5 text-5xl text-center">
-					POPULAR MOVIES
-				</h1>
-			</div>
+			<PageTitle title="Popular Movies" />
 			<GridMovieContainer
 				upcoming={data}
 				title="Popular Movies"

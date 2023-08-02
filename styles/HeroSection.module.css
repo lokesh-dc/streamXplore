@@ -1,7 +1,7 @@
 .slideContainer {
   position: relative;
   width: 100vw;
-  height: 85vh;
+  height: 75vh;
 }
 
 .imageContainer {
@@ -33,7 +33,7 @@
   z-index: 10 !important;
   position: absolute;
   left: 100px;
-  top: 30%;
+  top: 25%;
   border: 1px solid grey;
   border-radius: 10px;
   padding: 10px;
