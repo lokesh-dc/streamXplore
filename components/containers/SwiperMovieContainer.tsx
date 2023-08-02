@@ -15,7 +15,7 @@ const MovieContainer: React.FC<props> = ({ data, title }): ReactElement => {
 			{title ? (
 				<h2 className={`text-4xl bebas_nueve ${styles.title}`}>{title}</h2>
 			) : null}
-			<div className={`flex gap-2 overflow-x-auto ${styles.container}`}>
+			<div className={`flex gap-3 overflow-x-auto ${styles.container}`}>
 				{data?.map((item, index) => (
 					<MovieCard
 						key={index}
