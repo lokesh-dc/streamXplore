@@ -40,13 +40,14 @@ const GridMovieContainer: React.FC<props> = ({
 					// @ts-ignore
 					hasMore={totalPages >= page || !data}
 					loader={<h3 className="text-center"> Loading...</h3>}
-					className="w-full md:w-11/12 m-auto grid grid-cols-3 md:grid-cols-2 lg:grid-cols-4 gap-y-3 md:gap-y-8 items-center justify-center"
+					className="w-full md:w-11/12 m-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-8 items-center justify-center px-2 md:px-0"
 				>
 					{data.map((item, index) => (
 						<div className="flex items-center justify-center" key={index}>
 							<MovieCard
 								imgSrc={`${item.poster_path}`}
 								title={`${item.title}`}
+								movieId={item.id}
 							/>
 						</div>
 					))}

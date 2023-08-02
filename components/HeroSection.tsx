@@ -56,8 +56,10 @@ const HeroSection = ({ data }: props) => {
 										className={`${styles.rating} flex items-baseline  justify-center`}
 									>
 										<AiTwotoneStar />
-										<span className="ml-1 text-sm">{item.vote_average}</span> /
-										10
+										<span className="ml-1 text-sm">
+											{item.vote_average ? Math.floor(item.vote_average) : 0}
+										</span>{" "}
+										/ 10
 									</p>
 									<p
 										className={`${styles.rating} flex items-baseline justify-center`}

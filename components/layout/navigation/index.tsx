@@ -18,7 +18,7 @@ const NavigationBar = () => {
 					</h3>
 				))}
 			</div>
-			<div className="block sm:hidden">
+			<div className="block md:hidden">
 				<BiMenuAltRight className={`${styles.menu}`} />
 			</div>
 		</div>
