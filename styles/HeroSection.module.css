@@ -1,7 +1,7 @@
 .slideContainer {
   position: relative;
   width: 100vw;
-  height: 75vh;
+  height: 85vh;
 }
 
 .imageContainer {
@@ -54,6 +54,7 @@
 
 .rating {
   color: rgba(255, 255, 255, 0.809);
+  font-size: 20px;
 }
 
 .rating i {
@@ -61,12 +62,20 @@
 }
 
 .rating>span {
-  font-size: 2em;
+  font-size: 30px;
   color: white;
 }
 
 
 @media screen and (max-width: 600px) {
+
+  .rating {
+    font-size: 10px;
+  }
+
+  .rating>span {
+    font-size: 20px;
+  }
 
   .contentContainer {
     bottom: 20px;

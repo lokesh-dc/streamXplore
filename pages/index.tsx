@@ -21,10 +21,26 @@ const HomePage = ({ trending, trendingTV, popular, nowPlaying }: props) => {
 	return (
 		<>
 			<HeroSection data={trending?.data} />
-			<MovieContainer data={popular?.data} title="Popular Movies" />
-			<MovieContainer data={nowPlaying?.data} title="Now Playing in Thatres" />
-			<MovieContainer data={trending?.data} title="Trending Movies" />
-			<MovieContainer data={trendingTV?.data} title="Trending TV Series" />
+			<MovieContainer
+				data={popular?.data}
+				title="Popular Movies"
+				showType="movie"
+			/>
+			<MovieContainer
+				data={nowPlaying?.data}
+				title="Now Playing in Thatres"
+				showType="movie"
+			/>
+			<MovieContainer
+				data={trending?.data}
+				title="Trending Movies"
+				showType="movie"
+			/>
+			<MovieContainer
+				data={trendingTV?.data}
+				title="Trending TV Series"
+				showType="tv"
+			/>
 		</>
 	);
 };

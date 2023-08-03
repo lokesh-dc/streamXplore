@@ -4,8 +4,7 @@ import { Autoplay, Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { getImageBaseLink, image_baseLink } from "@/constants";
-import NavigationBar from "./layout/navigation";
+import { getImageBaseLink } from "@/constants";
 import Image from "next/image";
 
 import styles from "../styles/HeroSection.module.css";
@@ -56,16 +55,16 @@ const HeroSection = ({ data }: props) => {
 										className={`${styles.rating} flex items-baseline  justify-center`}
 									>
 										<AiTwotoneStar />
-										<span className="ml-1 text-sm">
+										<span className="ml-1">
 											{item.vote_average ? Math.floor(item.vote_average) : 0}
-										</span>{" "}
-										/ 10
+										</span>
+										{"  "}/ 10
 									</p>
 									<p
 										className={`${styles.rating} flex items-baseline justify-center`}
 									>
 										<IoIosPeople />
-										<span className="ml-1 text-sm">{item.vote_count}</span>
+										<span className="ml-1">{item.vote_count}</span>
 									</p>
 								</div>
 								<h3>{item.title}</h3>

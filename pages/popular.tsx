@@ -17,6 +17,7 @@ const PopularMovies: React.FC<props> = ({ data, totalPages }): ReactElement => {
 				title="Popular Movies"
 				apiPath={"/movie/popular"}
 				total={totalPages}
+				showType="movie"
 			/>
 		</>
 	);

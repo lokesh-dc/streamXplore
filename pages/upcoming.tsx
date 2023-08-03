@@ -17,6 +17,7 @@ const UpcomingMoviesPage = ({ upcoming, totalPages }: props) => {
 				title="Popular Movies"
 				apiPath={"/movie/upcoming"}
 				total={totalPages}
+				showType="movie"
 			/>
 		</>
 	);

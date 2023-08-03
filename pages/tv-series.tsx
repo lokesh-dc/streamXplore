@@ -18,6 +18,7 @@ const TvSeries: React.FC<props> = ({ data, totalPages }): ReactElement => {
 				title="Popular Movies"
 				apiPath={"/trending/tv/day"}
 				total={totalPages}
+				showType="tv"
 			/>
 		</>
 	);
