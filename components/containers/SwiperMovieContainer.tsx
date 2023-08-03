@@ -7,9 +7,14 @@ import MovieCard from "../cards/MovieCard";
 interface props {
 	data: Array<movieDetails> | null | undefined;
 	title?: string;
+	showType: string;
 }
 
-const MovieContainer: React.FC<props> = ({ data, title }): ReactElement => {
+const MovieContainer: React.FC<props> = ({
+	data,
+	title,
+	showType,
+}): ReactElement => {
 	return (
 		<div className="p-3 py-5 flex flex-col gap-1">
 			{title ? (
@@ -20,9 +25,10 @@ const MovieContainer: React.FC<props> = ({ data, title }): ReactElement => {
 					<MovieCard
 						key={index}
 						imgSrc={`${item.poster_path}`}
-						title={`${item.title}`}
+						title={`${item?.title || item?.name}`}
 						movieId={item.id}
 						type={"scroll_card"}
+						showType={showType}
 					/>
 				))}
 			</div>

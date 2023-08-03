@@ -11,6 +11,7 @@ type props = {
 	title?: string;
 	movieId: number | null;
 	type?: string | null;
+	showType: string;
 };
 
 const MovieCard: React.FC<props> = ({
@@ -18,9 +19,10 @@ const MovieCard: React.FC<props> = ({
 	title,
 	movieId,
 	type,
+	showType,
 }): ReactElement => {
 	return (
-		<Link href={`movie/${decorateLink(title)}/${movieId}`}>
+		<Link href={`${showType}/${decorateLink(title)}/${movieId}`}>
 			<div
 				className={`${
 					type == "scroll_card" ? styles?.scroll_card : styles.card

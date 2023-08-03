@@ -10,12 +10,14 @@ interface props {
 	title?: string;
 	apiPath: string;
 	total: number | null;
+	showType: string;
 }
 
 const GridMovieContainer: React.FC<props> = ({
 	upcoming,
 	apiPath,
 	total,
+	showType,
 }): ReactElement => {
 	const [data, setData] = useState(upcoming || []);
 	const [page, setPage] = useState(2);
@@ -48,6 +50,7 @@ const GridMovieContainer: React.FC<props> = ({
 								imgSrc={`${item.poster_path}`}
 								title={`${item.title}`}
 								movieId={item.id}
+								showType={showType}
 							/>
 						</div>
 					))}
