@@ -2,6 +2,8 @@ import { getImageBaseLink } from "@/constants";
 import Image from "next/image";
 import React, { ReactElement } from "react";
 
+import styles from "@/styles/LandingHero.module.css";
+
 interface props {
 	backdrop_path: string;
 	title: string;
@@ -12,20 +14,21 @@ const HeroSection: React.FC<props> = ({
 	title,
 }): ReactElement => {
 	return (
-		<div className="relative">
+		<div className={`relative ${styles.landingSection}`}>
 			<Image
-				className="w-screen h-auto md:h-3/6 object-cover"
+				priority
+				className="w-screen h-full object-cover object-top"
 				src={getImageBaseLink({
 					type: "backdrop",
 					quality: "original",
 					path: backdrop_path,
 				})}
-				height={1000}
+				height={500}
 				width={1200}
 				alt={`${title}`}
 			/>
 			<p
-				className="absolute w-screen text-center text-7xl bebas_nueve pb-1 md:pb-10 hidden md:block"
+				className="absolute w-screen text-center text-7xl bebas_nueve pb-1 md:pb-10 hidden md:block" 
 				style={{
 					bottom: 0,
 					zIndex: "1",

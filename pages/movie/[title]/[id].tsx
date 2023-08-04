@@ -55,13 +55,13 @@ const Movie: React.FC<props> = ({
 	vote_count,
 	details,
 }) => {
-	console.log(details);
 	return (
 		<div>
 			<HeroSection backdrop_path={backdrop_path} title={title} />
 			<div className="p-1 md:p-3 flex md:gap-2 w-screen md:w-4/6 m-auto items-center">
 				<div className="w-2/5 hidden md:block">
 					<Image
+						priority
 						className=""
 						src={getImageBaseLink({
 							type: "poster",
