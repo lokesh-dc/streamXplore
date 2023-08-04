@@ -1,0 +1,11 @@
+.landingSection {
+    height: 60vh !important;
+}
+
+
+
+@media screen and (max-width: 600px) {
+    .landingSection {
+        height: 30vh !important
+    }
+}

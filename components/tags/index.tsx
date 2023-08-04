@@ -6,7 +6,6 @@ interface props {
 }
 
 const Tags: React.FC<props> = ({ data }): ReactElement => {
-	console.log(data);
 	return (
 		<div className="flex gap-2 text-zinc-700">
 			{/* @ts-ignore */}
