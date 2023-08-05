@@ -15,7 +15,7 @@
 @media screen and (max-width: 600px) {
     .NavigationBar {
         padding: 10px 5px !important;
-        position: static;
+        position: sticky;
     }
 
 }

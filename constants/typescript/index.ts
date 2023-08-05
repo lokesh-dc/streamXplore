@@ -28,3 +28,28 @@ export interface production_companies {
     name: string;
 	origin_country: string;
 }
+
+export interface movieDetailsPage {
+	adult: boolean;
+	backdrop_path: string;
+	poster_path: string;
+	budget: number;
+	genres: Array<genresType>;
+	homepage: string;
+	imdb_id: number;
+	original_language: string;
+	original_title: string;
+	overview: string;
+	popularity: number;
+	production_companies: Array<production_companies>;
+	production_countries: Array<genresType>;
+	release_date: string;
+	revenue: number;
+	runtime: number;
+	status: string;
+	tagline: string;
+	title: string;
+	vote_average: number;
+	vote_count: number;
+	details: any;
+}

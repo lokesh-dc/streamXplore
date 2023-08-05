@@ -17,7 +17,7 @@ const HeroSection: React.FC<props> = ({
 		<div className={`relative ${styles.landingSection}`}>
 			<Image
 				priority
-				className="w-screen h-full object-cover object-top"
+				className="w-screen h-full object-cover object-top brightness-75 md:brightness-100"
 				src={getImageBaseLink({
 					type: "backdrop",
 					quality: "original",
@@ -28,7 +28,7 @@ const HeroSection: React.FC<props> = ({
 				alt={`${title}`}
 			/>
 			<p
-				className="absolute w-screen text-center text-7xl bebas_nueve pb-1 md:pb-10 hidden md:block" 
+				className="absolute w-screen text-center text-7xl bebas_nueve pb-1 md:pb-10 hidden md:block"
 				style={{
 					bottom: 0,
 					zIndex: "1",

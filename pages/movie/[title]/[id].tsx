@@ -1,38 +1,13 @@
 import React, { ReactElement } from "react";
 import getMovieDetails from "@/data/getMovieDetails";
-import { genresType, production_companies } from "@/constants/typescript";
+import { movieDetailsPage } from "@/constants/typescript";
 import Image from "next/image";
 import { getImageBaseLink } from "@/constants";
 import HeroSection from "@/components/ui/detail/HeroSection";
-import { AiTwotoneStar } from "react-icons/ai";
-import Tags from "@/components/tags";
+import IntroSection from "@/components/ui/detail/IntroSection";
+import PosterImage from "@/components/ui/detail/PosterImage";
 
-interface props {
-	adult: boolean;
-	backdrop_path: string;
-	poster_path: string;
-	budget: number;
-	genres: Array<genresType>;
-	homepage: string;
-	imdb_id: number;
-	original_language: string;
-	original_title: string;
-	overview: string;
-	popularity: number;
-	production_companies: Array<production_companies>;
-	production_countries: Array<genresType>;
-	release_date: string;
-	revenue: number;
-	runtime: string;
-	status: string;
-	tagline: string;
-	title: string;
-	vote_average: number;
-	vote_count: number;
-	details: any;
-}
-
-const Movie: React.FC<props> = ({
+const Movie: React.FC<movieDetailsPage> = ({
 	adult,
 	backdrop_path,
 	poster_path,
@@ -54,41 +29,22 @@ const Movie: React.FC<props> = ({
 	vote_average,
 	vote_count,
 	details,
-}) => {
+}): ReactElement => {
+	console.log(details);
 	return (
 		<div>
-			<HeroSection backdrop_path={backdrop_path} title={title} />
-			<div className="p-1 md:p-3 flex md:gap-2 w-screen md:w-4/6 m-auto items-center">
-				<div className="w-2/5 hidden md:block">
-					<Image
-						priority
-						className=""
-						src={getImageBaseLink({
-							type: "poster",
-							quality: "xl",
-							path: poster_path,
-						})}
-						height={400}
-						width={300}
-						alt={`${title}`}
-					/>
-				</div>
-				<div className="w-screen md:w-3/5 flex flex-col gap-2">
-					<p className="flex gap-1 items-center text-orange-500">
-						<AiTwotoneStar />
-						{vote_average} / 10
-					</p>
-					<h1 className="text-5xl bebas_nueve ">{title}</h1>
-					<div className="flex items-center text-zinc-500	">
-						<p className="pr-2">{release_date.split("-")[0]}</p>
-						<p>|</p>
-						<p className="pl-2">{runtime} minutes</p>
-					</div>
-					<h3 className="oswald">{tagline}</h3>
-					<p className=" text-gray-600">{overview}</p>
-					<Tags data={genres} />
-				</div>
-			</div>
+			<HeroSection backdrop_path={backdrop_path || poster_path} title={title} />
+			<PosterImage poster_path={poster_path} />
+			<IntroSection
+				title={title}
+				poster_path={poster_path}
+				release_date={release_date}
+				runtime={runtime}
+				overview={overview}
+				vote_average={vote_average}
+				tagline={tagline}
+				genres={genres}
+			/>
 		</div>
 	);
 };
@@ -119,6 +75,15 @@ export async function getServerSideProps(context: any) {
 		vote_average,
 		vote_count,
 	} = details;
+
+	if (adult) {
+		return {
+			redirect: {
+				destination: "/popular",
+				permanent: true,
+			},
+		};
+	}
 
 	return {
 		props: {
