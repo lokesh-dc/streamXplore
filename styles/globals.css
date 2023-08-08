@@ -58,3 +58,10 @@
 body {
     font-family: var(--oswald);
 }
+
+/* .text_with-background {
+    background: url("../public/check.jpeg");
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+} */

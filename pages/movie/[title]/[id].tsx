@@ -1,13 +1,18 @@
 import React, { ReactElement } from "react";
 import getMovieDetails from "@/data/getMovieDetails";
 import { movieDetailsPage } from "@/constants/typescript";
-import Image from "next/image";
-import { getImageBaseLink } from "@/constants";
 import HeroSection from "@/components/ui/detail/HeroSection";
 import IntroSection from "@/components/ui/detail/IntroSection";
 import PosterImage from "@/components/ui/detail/PosterImage";
+// import MovieImages from "@/components/containers/MovieImages";
+
+import dynamic from "next/dynamic";
+const MovieImages = dynamic(
+	() => import("@/components/containers/MovieImages")
+);
 
 const Movie: React.FC<movieDetailsPage> = ({
+	id,
 	adult,
 	backdrop_path,
 	poster_path,
@@ -30,7 +35,7 @@ const Movie: React.FC<movieDetailsPage> = ({
 	vote_count,
 	details,
 }): ReactElement => {
-	console.log(details);
+	// console.log(details);
 	return (
 		<div>
 			<HeroSection backdrop_path={backdrop_path || poster_path} title={title} />
@@ -45,6 +50,7 @@ const Movie: React.FC<movieDetailsPage> = ({
 				tagline={tagline}
 				genres={genres}
 			/>
+			<MovieImages movieId={id} />
 		</div>
 	);
 };
@@ -87,6 +93,7 @@ export async function getServerSideProps(context: any) {
 
 	return {
 		props: {
+			id,
 			adult,
 			backdrop_path,
 			poster_path,

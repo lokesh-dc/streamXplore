@@ -2,7 +2,10 @@ import { movieDetails } from "@/constants/typescript";
 import React, { ReactElement } from "react";
 
 import styles from "@/styles/MovieContainer.module.css";
-import MovieCard from "../cards/MovieCard";
+
+import dynamic from "next/dynamic";
+const MovieCard = dynamic(() => import("../cards/MovieCard"));
+// import MovieCard from "../cards/MovieCard";
 
 interface props {
 	data: Array<movieDetails> | null | undefined;
@@ -24,7 +27,8 @@ const MovieContainer: React.FC<props> = ({
 				{data?.map((item, index) => (
 					<MovieCard
 						key={index}
-						imgSrc={`${item.poster_path}`}
+						// @ts-ignore
+						imgSrc={`${item.poster_path || item.file_path}`}
 						title={`${item?.title || item?.name}`}
 						movieId={item.id}
 						type={"scroll_card"}
