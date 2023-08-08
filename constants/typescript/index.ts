@@ -30,6 +30,7 @@ export interface production_companies {
 }
 
 export interface movieDetailsPage {
+	id: string;
 	adult: boolean;
 	backdrop_path: string;
 	poster_path: string;
