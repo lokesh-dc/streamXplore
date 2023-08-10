@@ -7,8 +7,8 @@ import PosterImage from "@/components/ui/detail/PosterImage";
 // import MovieImages from "@/components/containers/MovieImages";
 
 import dynamic from "next/dynamic";
-const MovieImages = dynamic(
-	() => import("@/components/containers/MovieImages")
+const MovieImagesContainer = dynamic(
+	() => import("@/components/containers/MovieImagesContainer")
 );
 
 const Movie: React.FC<movieDetailsPage> = ({
@@ -36,22 +36,25 @@ const Movie: React.FC<movieDetailsPage> = ({
 	details,
 }): ReactElement => {
 	// console.log(details);
+	console.log(poster_path);
 	return (
-		<div>
+		<>
 			<HeroSection backdrop_path={backdrop_path || poster_path} title={title} />
-			<PosterImage poster_path={poster_path} />
-			<IntroSection
-				title={title}
-				poster_path={poster_path}
-				release_date={release_date}
-				runtime={runtime}
-				overview={overview}
-				vote_average={vote_average}
-				tagline={tagline}
-				genres={genres}
-			/>
-			<MovieImages movieId={id} />
-		</div>
+			<div className="pb-96">
+				<PosterImage poster_path={poster_path} />
+				<IntroSection
+					title={title}
+					poster_path={poster_path}
+					release_date={release_date}
+					runtime={runtime}
+					overview={overview}
+					vote_average={vote_average}
+					tagline={tagline}
+					genres={genres}
+				/>
+				<MovieImagesContainer movieId={id} title={title} />
+			</div>
+		</>
 	);
 };
 export default Movie;

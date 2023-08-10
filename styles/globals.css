@@ -59,9 +59,16 @@ body {
     font-family: var(--oswald);
 }
 
-/* .text_with-background {
+.text_with-background {
     background: url("../public/check.jpeg");
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-} */
+}
+
+.movie_image_card {
+
+    display: inline-flex;
+    flex: none;
+    width: 300px;
+}
