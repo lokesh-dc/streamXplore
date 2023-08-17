@@ -17,8 +17,8 @@ const MovieCardImage: React.FC<props> = ({ imgSrc, title }): ReactElement => {
 					type: "backdrop",
 					quality: "lg",
 				})}
-				width={500}
-				height={300}
+				width={250}
+				height={150}
 				alt={`${title} image`}
 			/>
 		</div>
