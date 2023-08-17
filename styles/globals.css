@@ -43,7 +43,9 @@
     scrollbar-width: none !important;
 }
 
-
+#nprogress .bar {
+    background: rgb(220, 51, 51) !important;
+}
 
 
 .bebas_nueve {
