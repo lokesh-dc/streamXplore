@@ -38,7 +38,7 @@ const Movie: React.FC<movieDetailsPage> = ({
 	return (
 		<>
 			<HeroSection backdrop_path={backdrop_path || poster_path} title={title} />
-			<div className="pb-96">
+			<div>
 				<PosterImage poster_path={poster_path} />
 				<IntroSection
 					title={title}
@@ -50,6 +50,7 @@ const Movie: React.FC<movieDetailsPage> = ({
 					tagline={tagline}
 					genres={genres}
 				/>
+				<MovieImagesContainer movieId={id} title="title" />
 			</div>
 		</>
 	);
