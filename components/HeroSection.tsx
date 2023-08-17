@@ -46,7 +46,7 @@ const HeroSection = ({ data }: props) => {
 									alt={`${item.title}`}
 									width={2000}
 									height={500}
-									priority
+									priority={index === 0}
 								/>
 							</div>
 							<div className={`${styles.contentContainer}`}>
@@ -80,7 +80,7 @@ const HeroSection = ({ data }: props) => {
 											path: item.poster_path,
 										})}
 										alt={`${item.title}`}
-										priority
+										priority={index === 0}
 									/>
 								</div>
 							</div>

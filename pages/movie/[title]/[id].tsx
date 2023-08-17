@@ -35,8 +35,6 @@ const Movie: React.FC<movieDetailsPage> = ({
 	vote_count,
 	details,
 }): ReactElement => {
-	// console.log(details);
-	console.log(poster_path);
 	return (
 		<>
 			<HeroSection backdrop_path={backdrop_path || poster_path} title={title} />
@@ -52,7 +50,6 @@ const Movie: React.FC<movieDetailsPage> = ({
 					tagline={tagline}
 					genres={genres}
 				/>
-				<MovieImagesContainer movieId={id} title={title} />
 			</div>
 		</>
 	);
