@@ -33,8 +33,11 @@ const Movie: React.FC<movieDetailsPage> = ({
 	title,
 	vote_average,
 	vote_count,
+	backdrops,
 	details,
 }): ReactElement => {
+	console.log(details);
+
 	return (
 		<>
 			<HeroSection backdrop_path={backdrop_path || poster_path} title={title} />
@@ -50,7 +53,7 @@ const Movie: React.FC<movieDetailsPage> = ({
 					tagline={tagline}
 					genres={genres}
 				/>
-				<MovieImagesContainer movieId={id} title="title" />
+				<MovieImagesContainer title="title" data={backdrops} />
 			</div>
 		</>
 	);
@@ -60,6 +63,16 @@ export default Movie;
 export async function getServerSideProps(context: any) {
 	const { id } = context.query;
 	const details = await getMovieDetails(id);
+
+	if (details?.adult) {
+		return {
+			redirect: {
+				destination: "/popular",
+				permanent: true,
+			},
+		};
+	}
+
 	const {
 		adult,
 		backdrop_path,
@@ -81,16 +94,10 @@ export async function getServerSideProps(context: any) {
 		title,
 		vote_average,
 		vote_count,
+		images,
 	} = details;
 
-	if (adult) {
-		return {
-			redirect: {
-				destination: "/popular",
-				permanent: true,
-			},
-		};
-	}
+	const { backdrops, posters, logos } = images;
 
 	return {
 		props: {
@@ -116,6 +123,7 @@ export async function getServerSideProps(context: any) {
 			vote_average,
 			vote_count,
 			details,
+			backdrops: backdrops || [],
 		},
 	};
 }
