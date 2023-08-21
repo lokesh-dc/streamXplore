@@ -1,3 +1,5 @@
+import { StringLiteral } from "typescript";
+
 export interface movieDetails {
 	adult: boolean | null;
 	backdrop_path: string | null;
@@ -53,4 +55,16 @@ export interface movieDetailsPage {
 	vote_average: number;
 	vote_count: number;
 	details: any;
+	backdrops: Array<movieImages>;
+	logos : Array<movieImages>
+}
+
+export interface movieImages {
+	aspect_ratio: number;
+	file_path: string;
+	height: number;
+	iso_639_1: number;
+	vote_average: number;
+	vote_count : number;
+	width : number;
 }

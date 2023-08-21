@@ -1,26 +1,13 @@
 import { options } from "@/constants/api";
 import React, { ReactElement, useEffect, useState } from "react";
 import MovieImageCard from "@/components/cards/MovieImageCard";
+import { movieImages } from "@/constants/typescript";
 interface props {
-	movieId: string | number;
+	data: movieImages[];
 	title: string;
 }
 
-const MovieImages: React.FC<props> = ({ movieId, title }): ReactElement => {
-	const [movieImageData, setImagesData] = useState([]);
-
-	async function getMovieImages(movieId: string | number) {
-		fetch(`https://api.themoviedb.org/3/movie/${movieId}/images`, options)
-			.then((response) => response.json())
-			.then((response) => setImagesData(response?.backdrops))
-			.catch((err) => console.error(err));
-	}
-
-	console.log(movieImageData);
-
-	useEffect(() => {
-		getMovieImages(movieId);
-	}, [movieId]);
+const MovieImages: React.FC<props> = ({ data, title }): ReactElement => {
 	return (
 		<div className="p-1">
 			<h2 className="py-1 text-2xl uppercase">Images</h2>
@@ -28,7 +15,7 @@ const MovieImages: React.FC<props> = ({ movieId, title }): ReactElement => {
 				className="flex gap-3 overflow-x-auto"
 				style={{ width: "100%", overflowX: "scroll" }}
 			>
-				{movieImageData.map(({ file_path }, index) => (
+				{data.map(({ file_path }, index) => (
 					<MovieImageCard imgSrc={file_path} key={index} title={title} />
 				))}
 			</div>
