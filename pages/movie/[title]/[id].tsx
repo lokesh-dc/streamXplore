@@ -34,13 +34,18 @@ const Movie: React.FC<movieDetailsPage> = ({
 	vote_average,
 	vote_count,
 	backdrops,
+	logos,
 	details,
 }): ReactElement => {
 	console.log(details);
 
 	return (
 		<>
-			<HeroSection backdrop_path={backdrop_path || poster_path} title={title} />
+			<HeroSection
+				backdrop_path={backdrop_path || poster_path}
+				title={title}
+				logos={logos}
+			/>
 			<div>
 				<PosterImage poster_path={poster_path} />
 				<IntroSection
@@ -123,6 +128,7 @@ export async function getServerSideProps(context: any) {
 			vote_average,
 			vote_count,
 			details,
+			logos,
 			backdrops: backdrops || [],
 		},
 	};
