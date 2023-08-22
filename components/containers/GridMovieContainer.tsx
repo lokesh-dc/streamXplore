@@ -33,6 +33,8 @@ const GridMovieContainer: React.FC<props> = ({
 		setTotalPages(totalPages);
 	};
 
+
+
 	return (
 		<>
 			<div className="my-3">

@@ -69,8 +69,17 @@ body {
 }
 
 .movie_image_card {
-
     display: inline-flex;
     flex: none;
     width: 200px;
+}
+
+
+.movie_video_card {
+    display: inline-flex;
+    flex: none;
+    width: 200px;
+    border: 1px solid rgba(128, 128, 128, 0.236);
+    border-radius: 5px;
+    padding: 5px;
 }

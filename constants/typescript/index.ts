@@ -56,7 +56,8 @@ export interface movieDetailsPage {
 	vote_count: number;
 	details: any;
 	backdrops: Array<movieImages>;
-	logos : Array<movieImages>
+	logos: Array<movieImages>;
+	videos: Array<movieVideos>;
 }
 
 export interface movieImages {
@@ -67,4 +68,17 @@ export interface movieImages {
 	vote_average: number;
 	vote_count : number;
 	width : number;
+}
+
+
+export interface movieVideos {
+	iso_639_1: string;
+	iso_3166_1: string;
+	name: string;
+	key: string;
+	size: number;
+	type: string;
+	official: boolean;
+	published_at: string;
+	id: string;
 }
