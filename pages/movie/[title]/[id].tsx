@@ -7,6 +7,7 @@ import PosterImage from "@/components/ui/detail/PosterImage";
 // import MovieImages from "@/components/containers/MovieImages";
 
 import dynamic from "next/dynamic";
+import VideosContainer from "@/components/containers/VideosContainer";
 const MovieImagesContainer = dynamic(
 	() => import("@/components/containers/MovieImagesContainer")
 );
@@ -35,9 +36,10 @@ const Movie: React.FC<movieDetailsPage> = ({
 	vote_count,
 	backdrops,
 	logos,
+	videos,
 	details,
 }): ReactElement => {
-	console.log(details);
+	// console.log(details);
 
 	return (
 		<>
@@ -46,7 +48,7 @@ const Movie: React.FC<movieDetailsPage> = ({
 				title={title}
 				logos={logos}
 			/>
-			<div>
+			<div className="flex flex-col gap-5 px-2">
 				<PosterImage poster_path={poster_path} />
 				<IntroSection
 					title={title}
@@ -58,7 +60,13 @@ const Movie: React.FC<movieDetailsPage> = ({
 					tagline={tagline}
 					genres={genres}
 				/>
-				<MovieImagesContainer title="title" data={backdrops} />
+				{backdrops && backdrops?.length > 0 ? (
+					<MovieImagesContainer title="title" data={backdrops} />
+				) : null}
+
+				{videos && videos?.length > 0 ? (
+					<VideosContainer data={videos} movieId={id} />
+				) : null}
 			</div>
 		</>
 	);
@@ -100,10 +108,11 @@ export async function getServerSideProps(context: any) {
 		vote_average,
 		vote_count,
 		images,
+		videos,
 	} = details;
 
 	const { backdrops, posters, logos } = images;
-
+	const { results } = videos;
 	return {
 		props: {
 			id,
@@ -130,6 +139,7 @@ export async function getServerSideProps(context: any) {
 			details,
 			logos,
 			backdrops: backdrops || [],
+			videos: results,
 		},
 	};
 }
