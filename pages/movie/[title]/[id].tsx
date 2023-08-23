@@ -39,7 +39,7 @@ const Movie: React.FC<movieDetailsPage> = ({
 	videos,
 	details,
 }): ReactElement => {
-	// console.log(details);
+	console.log(details);
 
 	return (
 		<>
@@ -48,7 +48,7 @@ const Movie: React.FC<movieDetailsPage> = ({
 				title={title}
 				logos={logos}
 			/>
-			<div className="flex flex-col gap-5 px-2">
+			<div className="flex flex-col gap-5 pb-5">
 				<PosterImage poster_path={poster_path} />
 				<IntroSection
 					title={title}

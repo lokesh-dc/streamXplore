@@ -40,7 +40,7 @@ const HeroSection: React.FC<props> = ({
 				width={1200}
 				alt={`${title}`}
 			/>
-			{/* <p
+			<p
 				className="absolute w-screen text-center text-7xl bebas_nueve pb-1 md:pb-10 hidden md:block"
 				style={{
 					bottom: 0,
@@ -51,8 +51,8 @@ const HeroSection: React.FC<props> = ({
 				}}
 			>
 				{title}
-			</p> */}
-			<div
+			</p>
+			{/* <div
 				className="absolute w-screen text-center text-7xl bebas_nueve pb-1 md:pb-10 hidden md:flex justify-center"
 				style={{
 					bottom: 0,
@@ -72,7 +72,7 @@ const HeroSection: React.FC<props> = ({
 					height={100}
 					width={300}
 				/>
-			</div>
+			</div> */}
 		</div>
 	);
 };

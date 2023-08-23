@@ -28,7 +28,9 @@ const IntroSection: React.FC<props> = ({
 	genres,
 }): ReactElement => {
 	return (
-		<div className="p-1 md:p-3 flex md:gap-2 w-screen md:w-4/6 m-auto items-center mt-2">
+		<div
+			className="p-3 md:p-3 flex md:gap-2 w-screen md:w-4/6 m-auto items-center mt-2"
+		>
 			<div className="w-2/5 hidden md:block">
 				<Image
 					priority
@@ -48,7 +50,7 @@ const IntroSection: React.FC<props> = ({
 						<AiTwotoneStar />
 						{vote_average} / 10
 					</p>
-					<h1 className="text-5xl bebas_nueve ">{title}</h1>
+					<h1 className="text-5xl bebas_nueve">{title}</h1>
 				</div>
 				<h3 className="oswald">{tagline}</h3>
 				<div className="flex items-center text-zinc-500	">
@@ -56,7 +58,7 @@ const IntroSection: React.FC<props> = ({
 					<p>|</p>
 					<p className="pl-2">{runtime} minutes</p>
 				</div>
-				<p className=" text-gray-600">{overview}</p>
+				<p className=" text-gray-600 text-justify">{overview}</p>
 				<Tags data={genres} />
 			</div>
 		</div>
