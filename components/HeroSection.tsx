@@ -20,7 +20,6 @@ interface props {
 
 const HeroSection = ({ data }: props) => {
 	if (!data) return;
-	console.log(data);
 	return (
 		<div>
 			<Swiper
