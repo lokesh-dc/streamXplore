@@ -28,7 +28,7 @@ const IntroSection: React.FC<props> = ({
 	genres,
 }): ReactElement => {
 	return (
-		<div className=" md:w-4/5 flex md:gap-8  my-3 m-auto items-between">
+		<div className=" md:w-4/5 flex md:gap-8 my-3 m-auto items-center">
 			<div className="hidden md:block">
 				<Image
 					priority
@@ -37,8 +37,8 @@ const IntroSection: React.FC<props> = ({
 						quality: "xl",
 						path: poster_path,
 					})}
-					height={1000}
-					width={1000}
+					height={600}
+					width={600}
 					alt={`${title}`}
 				/>
 			</div>
