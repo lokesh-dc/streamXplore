@@ -51,7 +51,6 @@ const GridMovieContainer: React.FC<props> = ({
 								title={`${item.title}`}
 								movieId={item.id}
 								showType={showType}
-								type={"scroll_card"}
 							/>
 						</div>
 					))}
