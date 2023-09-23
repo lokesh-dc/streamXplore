@@ -24,6 +24,7 @@ interface moviDetailsWithPage {
 }
 
 const HomePage = ({ trending, trendingTV, popular, nowPlaying }: props) => {
+	// console.log({ popular });
 	return (
 		<>
 			<HeroSection data={trending?.data} />

@@ -28,10 +28,8 @@ const IntroSection: React.FC<props> = ({
 	genres,
 }): ReactElement => {
 	return (
-		<div
-			className="p-3 md:p-3 flex md:gap-2 w-screen md:w-4/6 m-auto items-center mt-2"
-		>
-			<div className="w-2/5 hidden md:block">
+		<div className=" md:w-4/5 flex md:gap-8  my-3 m-auto items-between">
+			<div className="hidden md:block">
 				<Image
 					priority
 					src={getImageBaseLink({
@@ -39,16 +37,16 @@ const IntroSection: React.FC<props> = ({
 						quality: "xl",
 						path: poster_path,
 					})}
-					height={400}
-					width={300}
+					height={1000}
+					width={1000}
 					alt={`${title}`}
 				/>
 			</div>
-			<div className="w-screen md:w-3/5 flex flex-col gap-2">
+			<div className="flex flex-col gap-2">
 				<div>
 					<p className="flex gap-1 items-center text-orange-500">
 						<AiTwotoneStar />
-						{vote_average} / 10
+						{Math.floor(vote_average)} / 10
 					</p>
 					<h1 className="text-5xl bebas_nueve">{title}</h1>
 				</div>
