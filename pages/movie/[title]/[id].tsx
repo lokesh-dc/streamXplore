@@ -46,7 +46,7 @@ const Movie: React.FC<movieDetailsPage> = ({
 				title={title}
 				logos={logos}
 			/>
-			<div className="flex flex-col gap-5 pb-5 default_screen_padding">
+			<div className="flex flex-col gap-2 pb-5 default_screen_padding">
 				<PosterImage poster_path={poster_path} />
 				<IntroSection
 					title={title}

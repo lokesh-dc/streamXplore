@@ -1,5 +1,3 @@
-import { StringLiteral } from "typescript";
-
 export interface movieDetails {
 	adult: boolean | null;
 	backdrop_path: string | null;
@@ -16,6 +14,7 @@ export interface movieDetails {
 	video: boolean | string | null;
 	vote_average: number | null;
 	vote_count: number | null;
+	media_type : string | null
 }
 
 

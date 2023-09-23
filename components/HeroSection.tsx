@@ -12,6 +12,7 @@ import styles from "../styles/HeroSection.module.css";
 import { AiTwotoneStar } from "react-icons/ai";
 import { IoIosPeople } from "react-icons/io";
 import { movieDetails } from "@/constants/typescript";
+import Link from "next/link";
 
 interface props {
 	data: Array<movieDetails> | null | undefined;
@@ -19,6 +20,7 @@ interface props {
 
 const HeroSection = ({ data }: props) => {
 	if (!data) return;
+	console.log(data);
 	return (
 		<div>
 			<Swiper
@@ -35,56 +37,60 @@ const HeroSection = ({ data }: props) => {
 			>
 				{data?.map((item, index) => (
 					<SwiperSlide key={index}>
-						<div className={styles.slideContainer}>
-							<div className={styles.imageContainer}>
-								<Image
-									src={getImageBaseLink({
-										type: "backdrop",
-										quality: "xl",
-										path: item.backdrop_path,
-									})}
-									alt={`${item.title}`}
-									width={2000}
-									height={500}
-									priority={index === 0}
-								/>
-							</div>
-							<div className={`${styles.contentContainer}`}>
-								<div className="flex gap-3 justify-center">
-									<p
-										className={`${styles.rating} flex items-baseline  justify-center`}
-									>
-										<AiTwotoneStar />
-										<span className="ml-1">
-											{item.vote_average ? Math.floor(item.vote_average) : 0}
-										</span>
-										{"  "}/ 10
-									</p>
-									<p
-										className={`${styles.rating} flex items-baseline justify-center`}
-									>
-										<IoIosPeople />
-										<span className="ml-1">{item.vote_count}</span>
-									</p>
-								</div>
-								<h3>{item.title}</h3>
-							</div>
-							<div className={`${styles.movieCard} hidden md:flex`}>
-								<div>
+						<Link
+							href={`/${item?.media_type}/${item?.original_title}/${item?.id}`}
+						>
+							<div className={styles.slideContainer}>
+								<div className={styles.imageContainer}>
 									<Image
-										width={300}
-										height={200}
 										src={getImageBaseLink({
-											type: "poster",
-											quality: "lg",
-											path: item.poster_path,
+											type: "backdrop",
+											quality: "xl",
+											path: item.backdrop_path,
 										})}
 										alt={`${item.title}`}
+										width={2000}
+										height={500}
 										priority={index === 0}
 									/>
 								</div>
+								<div className={`${styles.contentContainer}`}>
+									<div className="flex gap-3 justify-center">
+										<p
+											className={`${styles.rating} flex items-baseline  justify-center`}
+										>
+											<AiTwotoneStar />
+											<span className="ml-1">
+												{item.vote_average ? Math.floor(item.vote_average) : 0}
+											</span>
+											{"  "}/ 10
+										</p>
+										<p
+											className={`${styles.rating} flex items-baseline justify-center`}
+										>
+											<IoIosPeople />
+											<span className="ml-1">{item.vote_count}</span>
+										</p>
+									</div>
+									<h3>{item.title}</h3>
+								</div>
+								<div className={`${styles.movieCard} hidden md:flex`}>
+									<div>
+										<Image
+											width={300}
+											height={200}
+											src={getImageBaseLink({
+												type: "poster",
+												quality: "lg",
+												path: item.poster_path,
+											})}
+											alt={`${item.title}`}
+											priority={index === 0}
+										/>
+									</div>
+								</div>
 							</div>
-						</div>
+						</Link>
 					</SwiperSlide>
 				))}
 			</Swiper>
