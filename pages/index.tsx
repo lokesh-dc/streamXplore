@@ -4,7 +4,6 @@ import getPopularMovies from "@/data/popularMovies";
 import getMoviesPlayingInThetres from "@/data/nowPlayingIntheatres";
 import trendingMovies from "@/data/trendingMovies";
 import trendingSeries from "@/data/trendingSeries";
-// import MovieContainer from "@/components/containers/SwiperMovieContainer";
 
 import dynamic from "next/dynamic";
 const MovieContainer = dynamic(

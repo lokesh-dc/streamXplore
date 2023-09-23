@@ -28,8 +28,8 @@ const IntroSection: React.FC<props> = ({
 	genres,
 }): ReactElement => {
 	return (
-		<div className=" md:w-4/5 flex md:gap-8 my-3 m-auto items-center">
-			<div className="hidden md:block">
+		<div className="md:w-4/5 flex md:gap-8 my-3 m-auto items-center">
+			<div className="hidden md:block bg-gray-500">
 				<Image
 					priority
 					src={getImageBaseLink({
@@ -57,7 +57,7 @@ const IntroSection: React.FC<props> = ({
 					<p className="pl-2">{runtime} minutes</p>
 				</div>
 				<p className=" text-gray-600 text-justify">{overview}</p>
-				<Tags data={genres} />
+				<Tags data={genres} title={"Genres"} />
 			</div>
 		</div>
 	);

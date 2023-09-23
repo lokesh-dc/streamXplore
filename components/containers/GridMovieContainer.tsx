@@ -33,8 +33,6 @@ const GridMovieContainer: React.FC<props> = ({
 		setTotalPages(totalPages);
 	};
 
-
-
 	return (
 		<>
 			<div className="my-3">
@@ -53,6 +51,7 @@ const GridMovieContainer: React.FC<props> = ({
 								title={`${item.title}`}
 								movieId={item.id}
 								showType={showType}
+								type={"scroll_card"}
 							/>
 						</div>
 					))}
