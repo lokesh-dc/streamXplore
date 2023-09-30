@@ -30,6 +30,7 @@ const MovieCard: React.FC<props> = ({
 			>
 				<div className={`${styles.cardImage}`}>
 					<Image
+						unoptimized
 						width={500}
 						height={200}
 						src={getImageBaseLink({

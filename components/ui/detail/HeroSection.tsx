@@ -29,6 +29,7 @@ const HeroSection: React.FC<props> = ({
 	return (
 		<div className={`relative ${styles.landingSection}`}>
 			<Image
+				unoptimized
 				priority
 				className="w-screen h-full object-cover object-top brightness-75 md:brightness-100"
 				src={getImageBaseLink({
@@ -62,7 +63,7 @@ const HeroSection: React.FC<props> = ({
 						"linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent)",
 				}}
 			>
-				<Image
+				<Image unoptimized
 					alt={`${title}`}
 					src={`${getImageBaseLink({
 						type: "poster",

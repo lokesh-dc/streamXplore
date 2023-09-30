@@ -42,6 +42,7 @@ const HeroSection = ({ data }: props) => {
 							<div className={styles.slideContainer}>
 								<div className={styles.imageContainer}>
 									<Image
+										unoptimized
 										src={getImageBaseLink({
 											type: "backdrop",
 											quality: "xl",
@@ -76,6 +77,7 @@ const HeroSection = ({ data }: props) => {
 								<div className={`${styles.movieCard} hidden md:flex`}>
 									<div>
 										<Image
+											unoptimized
 											width={300}
 											height={200}
 											src={getImageBaseLink({
