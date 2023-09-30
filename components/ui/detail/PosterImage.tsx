@@ -13,6 +13,7 @@ const PosterImage: React.FC<props> = ({ poster_path }): ReactElement => {
 			style={{ minHeight: "220px" }}
 		>
 			<Image
+				unoptimised
 				className="absolute"
 				style={{ top: "-120px" }}
 				src={getImageBaseLink({
