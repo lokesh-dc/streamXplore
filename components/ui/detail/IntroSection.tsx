@@ -31,7 +31,7 @@ const IntroSection: React.FC<props> = ({
 		<div className="md:w-4/5 flex md:gap-8 my-3 m-auto items-center">
 			<div className="hidden md:block bg-gray-500">
 				<Image
-					unoptimised
+					unoptimized
 					priority
 					src={getImageBaseLink({
 						type: "poster",

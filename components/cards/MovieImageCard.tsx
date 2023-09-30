@@ -12,7 +12,7 @@ const MovieCardImage: React.FC<props> = ({ imgSrc, title }): ReactElement => {
 	return (
 		<div className="movie_image_card">
 			<Image
-				unoptimised
+				unoptimized
 				src={getImageBaseLink({
 					path: imgSrc,
 					type: "backdrop",
