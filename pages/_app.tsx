@@ -9,7 +9,9 @@ export default function App({ Component, pageProps }: AppProps) {
 		<>
 			<NavigationBar />
 			<NextNProgress />
-			<Component {...pageProps} />
+			<div id="content">
+				<Component {...pageProps} />
+			</div>
 		</>
 	);
 }

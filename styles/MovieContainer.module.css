@@ -4,7 +4,7 @@
 
 .card,
 .scroll_card {
-    width: 400px !important;
+    width: 300px !important;
     /* padding: 10px; */
     display: inline-flex;
     flex: none;
@@ -35,7 +35,7 @@
     }
 
     .scroll_card {
-        width: 160px !important;
+        width: 190px !important;
     }
 
 
