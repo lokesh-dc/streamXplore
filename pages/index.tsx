@@ -6,6 +6,7 @@ import trendingMovies from "@/data/trendingMovies";
 import trendingSeries from "@/data/trendingSeries";
 
 import dynamic from "next/dynamic";
+import Head from "next/head";
 const MovieContainer = dynamic(
 	() => import("@/components/containers/SwiperMovieContainer")
 );
@@ -25,6 +26,9 @@ interface moviDetailsWithPage {
 const HomePage = ({ trending, trendingTV, popular, nowPlaying }: props) => {
 	return (
 		<>
+			<Head>
+				<title>Home - OnScreen</title>
+			</Head>
 			<HeroSection data={trending?.data} />
 			<MovieContainer
 				data={popular?.data}

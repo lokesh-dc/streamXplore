@@ -8,6 +8,7 @@ import PosterImage from "@/components/ui/detail/PosterImage";
 
 import dynamic from "next/dynamic";
 import VideosContainer from "@/components/containers/VideosContainer";
+import Head from "next/head";
 const MovieImagesContainer = dynamic(
 	() => import("@/components/containers/MovieImagesContainer")
 );
@@ -41,6 +42,9 @@ const Movie: React.FC<movieDetailsPage> = ({
 }): ReactElement => {
 	return (
 		<>
+			<Head>
+				<title>{original_title}</title>
+			</Head>
 			<HeroSection
 				backdrop_path={backdrop_path || poster_path}
 				title={title}
