@@ -39,8 +39,9 @@ const IntroSection: React.FC<props> = ({
 						path: poster_path,
 					})}
 					height={600}
-					width={600}
+					width={400}
 					alt={`${title}`}
+					style={{ height: "600px", width: "400px" }}
 				/>
 			</div>
 			<div className="flex flex-col gap-2">

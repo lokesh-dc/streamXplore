@@ -41,7 +41,11 @@ const GridMovieContainer: React.FC<props> = ({
 					next={getMoreUpcomingMovies}
 					// @ts-ignore
 					hasMore={totalPages >= page || !data}
-					loader={<h3 className="text-center"> Loading...</h3>}
+					loader={
+						<h3 className="text-center w-screen p-3 bg-grey">
+							Loading more...
+						</h3>
+					}
 					className="w-full md:w-11/12 m-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-8 items-center justify-center px-2 md:px-0"
 				>
 					{data.map((item, index) => (
