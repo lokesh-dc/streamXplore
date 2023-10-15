@@ -16,15 +16,15 @@ const HeroSection: React.FC<props> = ({
 	title,
 	logos,
 }): ReactElement => {
-	const [logoImage, setLogoImage] = useState("");
-	useEffect(() => {
-		for (let i = 0; i < logos.length; i++) {
-			if (logos[i]?.iso_639_1 === "en") {
-				setLogoImage(logos[i]?.file_path);
-				break;
-			}
-		}
-	}, [title]);
+	// const [logoImage, setLogoImage] = useState("");
+	// useEffect(() => {
+	// 	for (let i = 0; i < logos.length; i++) {
+	// 		if (logos[i]?.iso_639_1 === "en") {
+	// 			setLogoImage(logos[i]?.file_path);
+	// 			break;
+	// 		}
+	// 	}
+	// }, [title]);
 
 	return (
 		<div className={`relative ${styles.landingSection}`}>

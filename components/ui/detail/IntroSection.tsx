@@ -1,7 +1,7 @@
 import { AiTwotoneStar } from "react-icons/ai";
 import Tags from "@/components/tags";
 
-import { genresType, movieDetailsPage } from "@/constants/typescript";
+import { genresType } from "@/constants/typescript";
 import React, { ReactElement } from "react";
 import Image from "next/image";
 import { getImageBaseLink } from "@/constants";
@@ -28,7 +28,7 @@ const IntroSection: React.FC<props> = ({
 	genres,
 }): ReactElement => {
 	return (
-		<div className="md:w-4/5 flex md:gap-8 my-3 m-auto items-center">
+		<div className="md:w-4/5 flex md:gap-8 my-3 m-auto items-center justify-center">
 			<div className="hidden md:block bg-gray-500">
 				<Image
 					unoptimized
@@ -38,10 +38,11 @@ const IntroSection: React.FC<props> = ({
 						quality: "xl",
 						path: poster_path,
 					})}
-					height={600}
-					width={400}
+					height={800}
+					width={600}
+					// fill
 					alt={`${title}`}
-					style={{ height: "600px", width: "400px" }}
+					// style={{ height: "600px", width: "400px" }}
 				/>
 			</div>
 			<div className="flex flex-col gap-2">
