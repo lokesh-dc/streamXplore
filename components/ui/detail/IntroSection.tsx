@@ -42,7 +42,7 @@ const IntroSection: React.FC<props> = ({
 					width={600}
 					// fill
 					alt={`${title}`}
-					// style={{ height: "600px", width: "400px" }}
+					// style={{ height: "600px", width: "700px" }}
 				/>
 			</div>
 			<div className="flex flex-col gap-2">
