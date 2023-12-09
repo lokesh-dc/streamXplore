@@ -5,6 +5,7 @@ import { genresType } from "@/constants/typescript";
 import React, { ReactElement } from "react";
 import Image from "next/image";
 import { getImageBaseLink } from "@/constants";
+import ShareIntentComponent from "@/components/functional-components/ShareIntentComponent";
 
 interface props {
 	poster_path: string;
@@ -40,9 +41,7 @@ const IntroSection: React.FC<props> = ({
 					})}
 					height={800}
 					width={600}
-					// fill
 					alt={`${title}`}
-					// style={{ height: "600px", width: "700px" }}
 				/>
 			</div>
 			<div className="flex flex-col gap-2">
@@ -54,10 +53,13 @@ const IntroSection: React.FC<props> = ({
 					<h1 className="text-5xl bebas_nueve">{title}</h1>
 				</div>
 				<h3 className="oswald">{tagline}</h3>
-				<div className="flex items-center text-zinc-500	">
-					<p className="pr-2">{release_date.split("-")[0]}</p>
-					<p>|</p>
-					<p className="pl-2">{runtime} minutes</p>
+				<div className="flex gap-3">
+					<div className="flex items-center text-zinc-500	">
+						<p className="pr-2">{release_date.split("-")[0]}</p>
+						<p>|</p>
+						<p className="pl-2">{runtime} minutes</p>
+					</div>
+					<ShareIntentComponent />
 				</div>
 				<p className=" text-gray-600 text-justify">{overview}</p>
 				<Tags data={genres} title={"Genres"} />
