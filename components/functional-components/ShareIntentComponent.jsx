@@ -2,7 +2,8 @@ import { useRouter } from "next/router";
 import { IoShareSocialOutline } from "react-icons/io5";
 
 export default function ShareIntentComponent() {
-	const router = useRouter();
+    const router = useRouter();
+    
 	const shareIntent = async () => {
 		const currentPath = `${process.env.NEXT_PUBLIC_API_BASELINK}${router?.asPath}`;
 		const shareData = {
