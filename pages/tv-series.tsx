@@ -1,6 +1,6 @@
 import GridMovieContainer from "@/components/containers/GridMovieContainer";
 import { movieDetails } from "@/constants/typescript";
-import getTrendingSeries from "@/data/trendingSeries";
+import getTrendingSeries from "@/dataFetchings/trendingSeries";
 import React, { ReactElement } from "react";
 
 interface props {

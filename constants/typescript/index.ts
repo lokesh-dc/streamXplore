@@ -14,19 +14,19 @@ export interface movieDetails {
 	video: boolean | string | null;
 	vote_average: number | null;
 	vote_count: number | null;
-	media_type : string | null
+	media_type: string | null
 }
 
 
 export interface genresType {
 	id: number;
-	name : string
+	name: string
 }
 
-export interface production_companies { 
+export interface production_companies {
 	id: number;
-    logo_path: string;
-    name: string;
+	logo_path: string;
+	name: string;
 	origin_country: string;
 }
 
@@ -65,8 +65,8 @@ export interface movieImages {
 	height: number;
 	iso_639_1: string;
 	vote_average: number;
-	vote_count : number;
-	width : number;
+	vote_count: number;
+	width: number;
 }
 
 
@@ -80,4 +80,62 @@ export interface movieVideos {
 	official: boolean;
 	published_at: string;
 	id: string;
+}
+
+
+
+export interface seriesDetails {
+	id: string;
+	adult: boolean;
+	backdrop_path: string;
+	poster_path: string;
+	genres: Array<genresType>;
+	homepage: string;
+	imdb_id: number;
+	original_language: string;
+	original_title: string;
+	overview: string;
+	popularity: number;
+	production_companies: Array<production_companies>;
+	production_countries: Array<genresType>;
+	release_date: string;
+	runtime: number;
+	status: string;
+	tagline: string;
+	title: string;
+	vote_average: number;
+	vote_count: number;
+	details: any;
+	backdrops: Array<movieImages>;
+	logos: Array<movieImages>;
+	videos: Array<movieVideos>;
+	seasons: Array<tvSeriesSeasons>;
+	last_episode_to_air: episodeDetails;
+}
+
+export interface tvSeriesSeasons {
+	air_date: string;
+	episode_count: number;
+	id: number;
+	name: string;
+	overview: string;
+	poster_path: string;
+	season_number: number;
+	vote_average: number;
+}
+
+export interface episodeDetails {
+	air_date: string;
+	episode_number: number;
+	episode_type: string;
+	id: number;
+	name: string;
+	overview: string;
+	production_code: string;
+	runtime: number;
+	season_number: number;
+	show_id: number;
+	still_path: number;
+	vote_average: number;
+	vote_count: number;
 }
