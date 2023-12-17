@@ -1,7 +1,7 @@
 import GridMovieContainer from "@/components/containers/GridMovieContainer";
 import PageTitle from "@/components/ui/PageTitle";
 import { movieDetails } from "@/constants/typescript";
-import getPopularMovies from "@/data/popularMovies";
+import getPopularMovies from "@/dataFetchings/popularMovies";
 import React, { ReactElement } from "react";
 
 interface props {

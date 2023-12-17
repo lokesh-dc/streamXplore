@@ -11,7 +11,7 @@ interface props {
 	poster_path: string;
 	title: string;
 	release_date: string;
-	runtime: number;
+	runtime?: number | undefined;
 	overview: string;
 	vote_average: number;
 	tagline: string;
@@ -29,7 +29,7 @@ const IntroSection: React.FC<props> = ({
 	genres,
 }): ReactElement => {
 	return (
-		<div className="md:w-4/5 flex md:gap-8 my-3 m-auto items-center justify-center">
+		<div className="flex md:gap-8 my-3 m-auto items-center justify-center">
 			<div className="hidden md:block bg-gray-500">
 				<Image
 					unoptimized
@@ -55,7 +55,7 @@ const IntroSection: React.FC<props> = ({
 				<h3 className="oswald">{tagline}</h3>
 				<div className="flex gap-3">
 					<div className="flex items-center text-zinc-500	">
-						<p className="pr-2">{release_date.split("-")[0]}</p>
+						<p className="pr-2">{release_date?.split("-")[0]}</p>
 						<p>|</p>
 						<p className="pl-2">{runtime} minutes</p>
 					</div>

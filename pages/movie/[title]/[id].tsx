@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import getMovieDetails from "@/data/getMovieDetails";
+import getMovieDetails from "@/dataFetchings/getMovieDetails";
 import { movieDetailsPage } from "@/constants/typescript";
 import HeroSection from "@/components/ui/detail/HeroSection";
 import IntroSection from "@/components/ui/detail/IntroSection";
@@ -44,11 +44,7 @@ const Movie: React.FC<movieDetailsPage> = ({
 			<Head>
 				<title>{original_title}</title>
 			</Head>
-			<HeroSection
-				backdrop_path={backdrop_path || poster_path}
-				title={title}
-				logos={logos}
-			/>
+			<HeroSection backdrop_path={backdrop_path || poster_path} title={title} />
 			<div className="flex flex-col gap-2 pb-5 default_screen_padding mb-4">
 				<PosterImage poster_path={poster_path} />
 				<IntroSection

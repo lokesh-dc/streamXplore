@@ -1,9 +1,9 @@
 import HeroSection from "@/components/HeroSection";
 import { movieDetails } from "@/constants/typescript";
-import getPopularMovies from "@/data/popularMovies";
-import getMoviesPlayingInThetres from "@/data/nowPlayingIntheatres";
-import trendingMovies from "@/data/trendingMovies";
-import trendingSeries from "@/data/trendingSeries";
+import getPopularMovies from "@/dataFetchings/popularMovies";
+import getMoviesPlayingInThetres from "@/dataFetchings/nowPlayingIntheatres";
+import trendingMovies from "@/dataFetchings/trendingMovies";
+import trendingSeries from "@/dataFetchings/trendingSeries";
 
 import dynamic from "next/dynamic";
 import Head from "next/head";

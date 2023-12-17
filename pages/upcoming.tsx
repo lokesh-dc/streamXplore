@@ -1,6 +1,6 @@
 import GridMovieContainer from "@/components/containers/GridMovieContainer";
 import { movieDetails } from "@/constants/typescript";
-import getUpcomingMovies from "@/data/upcomingMovies";
+import getUpcomingMovies from "@/dataFetchings/upcomingMovies";
 interface props {
 	upcoming: Array<movieDetails> | null;
 	totalPages: number | null;
