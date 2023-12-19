@@ -10,6 +10,7 @@ import VideosContainer from "@/components/containers/VideosContainer";
 import Image from "next/image";
 
 import { getImageBaseLink } from "@/constants";
+import { AiTwotoneStar } from "react-icons/ai";
 
 const MovieImagesContainer = dynamic(
 	() => import("@/components/containers/MovieImagesContainer")
@@ -84,11 +85,11 @@ const Movie: React.FC<seriesDetails> = ({
 				) : null}
 
 				{seasons && seasons?.length ? (
-					<div>
+					<div className="flex flex-col gap-1">
 						<h2 className="py-1 text-2xl uppercase">Seasons</h2>
-						<div className="flex gap-3 border-grey">
+						<div className="flex gap-3 border-grey overflow-x-auto">
 							{seasons?.map((item, index) => (
-								<div key={index}>
+								<div key={index} className="scrolling_seasons_cards">
 									<Image
 										src={getImageBaseLink({
 											path: item?.poster_path,
@@ -99,9 +100,18 @@ const Movie: React.FC<seriesDetails> = ({
 										height={200}
 										alt=""
 									/>
-									<h3>
-										{item?.name} ({item?.episode_count})
-									</h3>
+									<div>
+										<p className="text-sm text-orange-700 flex items-center gap-1">
+											<AiTwotoneStar />
+											{item?.vote_average}/10
+										</p>
+										<h3>
+											{item?.name?.length > 14
+												? `${item?.name?.substring(0, 14)}...`
+												: item?.name}{" "}
+											({item?.episode_count})
+										</h3>
+									</div>
 									{/* <p>Released on : {item?.air_date}</p> */}
 								</div>
 							))}
@@ -180,7 +190,10 @@ export async function getServerSideProps(context: any) {
 			production_countries,
 			release_date: last_air_date,
 			revenue,
-			runtime: episode_run_time ? episode_run_time[0] : null,
+			runtime:
+				episode_run_time && episode_run_time?.length
+					? episode_run_time[0]
+					: null,
 			tagline,
 			title: name,
 			vote_average,

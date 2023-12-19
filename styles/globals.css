@@ -94,3 +94,16 @@ body {
         padding: 0 10px;
     }
 }
+
+.scrolling_seasons_cards {
+    width: 150px !important;
+    /* padding: 10px; */
+    display: inline-flex;
+    flex-direction: column;
+    flex: none;
+    border-radius: 2px;
+    border: 1px solid rgba(128, 128, 128, 0.361);
+    gap: 5px;
+    padding: 5px;
+    height: fit-content;
+}
