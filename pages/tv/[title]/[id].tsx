@@ -44,7 +44,6 @@ const Movie: React.FC<seriesDetails> = ({
 	seasons,
 	last_episode_to_air,
 }): ReactElement => {
-	console.log(details);
 	return (
 		<>
 			<HeroSection backdrop_path={backdrop_path || poster_path} title={title} />
@@ -112,7 +111,7 @@ const Movie: React.FC<seriesDetails> = ({
 											({item?.episode_count})
 										</h3>
 									</div>
-									{/* <p>Released on : {item?.air_date}</p> */}
+									{/* <p> Released on : {item?.air_date}</p> */}
 								</div>
 							))}
 						</div>

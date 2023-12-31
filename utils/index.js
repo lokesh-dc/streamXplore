@@ -1,4 +1,9 @@
 export const decorateLink = (link) => {
 	if (link == null) return "#";
-	return link.toLowerCase().split(" ").join("-");
+	return link
+		.replaceAll(".", "")
+		.replaceAll("?", "")
+		.toLowerCase()
+		.split(" ")
+		.join("-");
 };

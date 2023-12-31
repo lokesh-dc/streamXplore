@@ -6,11 +6,17 @@ interface props {
 	imgSrc: string;
 	imgType?: string;
 	title: string;
+	stateChange?: Function;
 }
 
-const MovieCardImage: React.FC<props> = ({ imgSrc, title }): ReactElement => {
+const MovieCardImage: React.FC<props> = ({
+	imgSrc,
+	title,
+	stateChange,
+}): ReactElement => {
 	return (
-		<div className="movie_image_card">
+		// @ts-ignore
+		<div className="movie_image_card" onClick={() => stateChange(imgSrc)}>
 			<Image
 				unoptimized
 				src={getImageBaseLink({
