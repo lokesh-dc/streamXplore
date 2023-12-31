@@ -29,8 +29,8 @@ const IntroSection: React.FC<props> = ({
 	genres,
 }): ReactElement => {
 	return (
-		<div className="flex md:gap-8 my-3 m-auto items-center justify-center">
-			<div className="hidden md:block bg-gray-500">
+		<div className="flex md:gap-8 my-3 m-auto items-center">
+			<div className="hidden md:block w-auto">
 				<Image
 					unoptimized
 					priority
@@ -39,12 +39,12 @@ const IntroSection: React.FC<props> = ({
 						quality: "xl",
 						path: poster_path,
 					})}
-					height={800}
-					width={600}
+					height={350}
+					width={250}
 					alt={`${title}`}
 				/>
 			</div>
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col gap-2 w-full md:w-2/3">
 				<div>
 					<p className="flex gap-1 items-center text-orange-500">
 						<AiTwotoneStar />

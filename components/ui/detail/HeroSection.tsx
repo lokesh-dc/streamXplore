@@ -1,6 +1,6 @@
 import { getImageBaseLink } from "@/constants";
 import Image from "next/image";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 
 import styles from "@/styles/LandingHero.module.css";
 interface props {

@@ -18,7 +18,7 @@
 
 .contentContainer {
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   width: 100%;
   text-align: center;
   color: white;
@@ -46,7 +46,7 @@
 }
 
 .contentContainer>h3 {
-  font-size: 80px;
+  font-size: 40px;
   font-family: var(--bebas_nueve) !important;
   text-transform: uppercase;
   margin: 0;
@@ -68,7 +68,6 @@
 
 
 @media screen and (max-width: 600px) {
-
   .rating {
     font-size: 10px;
   }
@@ -91,10 +90,8 @@
 
   .contentContainer h3 {
     margin: 0;
-    font-size: 20px;
+    font-size: 18px;
   }
-
-
 }
 
 
