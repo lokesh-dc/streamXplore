@@ -1,6 +1,5 @@
-import { getImageBaseLink } from "@/constants";
-import { movieImages } from "@/constants/typescript";
-import Image from "next/image";
+import YoutubeEmbedComponent from "@/components/functional-components/YoutubeEmbedComponent";
+import { movieVideos } from "@/constants/typescript";
 import React, { ReactElement } from "react";
 
 import { IoMdClose } from "react-icons/io";
@@ -9,50 +8,49 @@ import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
 interface props {
 	position: number;
 	bodyType?: string;
-	mediaSource?: string | string[] | undefined;
-	changeModalImage: Function;
-	data: Array<movieImages>;
+	videoId: string;
+	title: string;
+	changeModalVideo: Function;
+	data: Array<movieVideos>;
 }
 
-const Modal: React.FC<props> = ({
+const YoutubeVideoModal: React.FC<props> = ({
 	position,
-	mediaSource,
-	changeModalImage,
+	videoId,
+	title,
+	changeModalVideo,
 	data,
 }): ReactElement => {
 	const handleModalImageChange = (event: any, incre: number) => {
 		event.stopPropagation();
 		if (position + incre < data.length && position + incre > 0)
-			changeModalImage(position + incre, data[position + incre]?.file_path);
+			changeModalVideo(
+				position + incre,
+				data[position + incre]?.key,
+				data[position]?.name
+			);
 	};
 
 	return (
 		<div
 			className="fixed top-0 z-[2] h-screen w-screen bg-black/90 flex flex-col justify-center items-center gap-2 default_screen_adjust"
 			style={{ padding: "0 10px", overflowY: "hidden" }}
-			onClick={(event) => {
-				event.stopPropagation();
-				changeModalImage("");
-			}}
+			// onClickCapture={() => {
+			// 	changeModalVideo("");
+			// }}
 		>
 			<div
 				className="w-full text-white flex"
 				style={{ justifyContent: "end" }}
-				onClick={() => changeModalImage("")}
+				onClick={() => changeModalVideo({})}
 			>
 				<IoMdClose style={{ fontSize: "30px" }} />
 			</div>
-			<div className="h-fit">
-				<Image
-					unoptimized
-					src={getImageBaseLink({
-						path: mediaSource,
-						type: "backdrop",
-						quality: "lg",
-					})}
-					width={900}
-					height={500}
-					alt={`image`}
+			<div>
+				<YoutubeEmbedComponent
+					classes={"w-screen md:w-80 z-[2]"}
+					videoId={videoId}
+					title={title}
 				/>
 			</div>
 			<div
@@ -88,4 +86,4 @@ const Modal: React.FC<props> = ({
 		</div>
 	);
 };
-export default Modal;
+export default YoutubeVideoModal;

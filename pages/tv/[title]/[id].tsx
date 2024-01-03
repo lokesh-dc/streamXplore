@@ -5,12 +5,13 @@ import HeroSection from "@/components/ui/detail/HeroSection";
 import PosterImage from "@/components/ui/detail/PosterImage";
 import IntroSection from "@/components/ui/detail/IntroSection";
 
-import VideosContainer from "@/components/containers/VideosContainer";
+import VideosContainer from "@/components/functional-components/VideoContainer";
 import Image from "next/image";
 
 import { getImageBaseLink } from "@/constants";
 import { AiTwotoneStar } from "react-icons/ai";
 import ImagesModalContainer from "@/components/functional-components/ImagesModalContainer";
+import YoutubeEmbedComponent from "@/components/functional-components/YoutubeEmbedComponent";
 
 const Movie: React.FC<seriesDetails> = ({
 	id,
@@ -114,10 +115,7 @@ const Movie: React.FC<seriesDetails> = ({
 					</div>
 				) : null}
 				<ImagesModalContainer backdrops={backdrops} title="title" />
-
-				{videos && videos?.length > 0 ? (
-					<VideosContainer data={videos} movieId={id} />
-				) : null}
+				<VideosContainer data={videos} movieId={id} />
 			</div>
 		</>
 	);

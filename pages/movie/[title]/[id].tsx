@@ -1,12 +1,11 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import getMovieDetails from "@/dataFetchings/getMovieDetails";
 import { movieDetailsPage } from "@/constants/typescript";
 import HeroSection from "@/components/ui/detail/HeroSection";
 import IntroSection from "@/components/ui/detail/IntroSection";
 import PosterImage from "@/components/ui/detail/PosterImage";
 
-import dynamic from "next/dynamic";
-import VideosContainer from "@/components/containers/VideosContainer";
+import VideosContainer from "@/components/functional-components/VideoContainer";
 import Head from "next/head";
 import ImagesModalContainer from "@/components/functional-components/ImagesModalContainer";
 
@@ -57,9 +56,7 @@ const Movie: React.FC<movieDetailsPage> = ({
 				/>
 				<ImagesModalContainer backdrops={backdrops} title="title" />
 
-				{videos && videos?.length > 0 ? (
-					<VideosContainer data={videos} movieId={id} />
-				) : null}
+				<VideosContainer data={videos} movieId={id} />
 			</div>
 		</>
 	);
