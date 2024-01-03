@@ -53,6 +53,11 @@
     padding: 0 100px;
 }
 
+.default_screen_adjust {
+    margin: 0 -100px;
+}
+
+
 .bebas_nueve {
     font-family: var(--bebas-nueve) !important;
     letter-spacing: 1px;
@@ -92,6 +97,10 @@ body {
 @media screen and (max-width:600px) {
     .default_screen_padding {
         padding: 0 10px;
+    }
+
+    .default_screen_adjust {
+        margin: 0 -10px;
     }
 }
 

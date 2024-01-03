@@ -6,7 +6,7 @@ import Link from "next/link";
 interface props {
 	data: movieImages[];
 	title: string;
-	stateChange?: Function | null | undefined;
+	stateChange: Function;
 }
 
 const MovieImages: React.FC<props> = ({
@@ -23,6 +23,7 @@ const MovieImages: React.FC<props> = ({
 			>
 				{data.map(({ file_path }, index) => (
 					<MovieImageCard
+						position={index}
 						imgSrc={file_path}
 						key={index}
 						title={title}

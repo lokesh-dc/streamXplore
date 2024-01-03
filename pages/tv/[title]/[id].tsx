@@ -5,16 +5,12 @@ import HeroSection from "@/components/ui/detail/HeroSection";
 import PosterImage from "@/components/ui/detail/PosterImage";
 import IntroSection from "@/components/ui/detail/IntroSection";
 
-import dynamic from "next/dynamic";
 import VideosContainer from "@/components/containers/VideosContainer";
 import Image from "next/image";
 
 import { getImageBaseLink } from "@/constants";
 import { AiTwotoneStar } from "react-icons/ai";
-
-const MovieImagesContainer = dynamic(
-	() => import("@/components/containers/MovieImagesContainer")
-);
+import ImagesModalContainer from "@/components/functional-components/ImagesModalContainer";
 
 const Movie: React.FC<seriesDetails> = ({
 	id,
@@ -117,9 +113,8 @@ const Movie: React.FC<seriesDetails> = ({
 						</div>
 					</div>
 				) : null}
-				{backdrops && backdrops?.length > 0 ? (
-					<MovieImagesContainer title="title" data={backdrops} />
-				) : null}
+				<ImagesModalContainer backdrops={backdrops} title="title" />
+
 				{videos && videos?.length > 0 ? (
 					<VideosContainer data={videos} movieId={id} />
 				) : null}
