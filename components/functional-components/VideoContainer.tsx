@@ -46,8 +46,6 @@ const VideosContainer: React.FC<props> = ({ data, movieId }): ReactElement => {
 		setVideoModal({ position, key: key, title: title });
 	};
 
-	console.log({ modalVideo });
-
 	return (
 		<>
 			<h2 className={`text-2xl uppercase`}>Videos</h2>
