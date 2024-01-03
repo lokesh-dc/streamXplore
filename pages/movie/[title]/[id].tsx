@@ -8,10 +8,7 @@ import PosterImage from "@/components/ui/detail/PosterImage";
 import dynamic from "next/dynamic";
 import VideosContainer from "@/components/containers/VideosContainer";
 import Head from "next/head";
-import Modal from "@/modals/Modal";
-const MovieImagesContainer = dynamic(
-	() => import("@/components/containers/MovieImagesContainer")
-);
+import ImagesModalContainer from "@/components/functional-components/ImagesModalContainer";
 
 const Movie: React.FC<movieDetailsPage> = ({
 	id,
@@ -40,11 +37,6 @@ const Movie: React.FC<movieDetailsPage> = ({
 	videos,
 	details,
 }): ReactElement => {
-	const [modalImage, setModalImage] = useState("");
-	const changeModalImage = (imgSrc: string) => {
-		setModalImage(imgSrc);
-	};
-
 	return (
 		<>
 			<Head>
@@ -63,27 +55,12 @@ const Movie: React.FC<movieDetailsPage> = ({
 					tagline={tagline}
 					genres={genres}
 				/>
-				{backdrops && backdrops?.length > 0 ? (
-					<MovieImagesContainer
-						title="title"
-						data={backdrops}
-						stateChange={changeModalImage}
-					/>
-				) : null}
+				<ImagesModalContainer backdrops={backdrops} title="title" />
 
 				{videos && videos?.length > 0 ? (
 					<VideosContainer data={videos} movieId={id} />
 				) : null}
 			</div>
-			{modalImage ? (
-				<>
-					<Modal
-						bodyType={"image"}
-						mediaSource={modalImage}
-						closeModal={changeModalImage}
-					/>
-				</>
-			) : null}
 		</>
 	);
 };

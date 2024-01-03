@@ -1,22 +1,46 @@
 import { getImageBaseLink } from "@/constants";
+import { movieImages } from "@/constants/typescript";
 import Image from "next/image";
 import React, { ReactElement } from "react";
+
+import { IoMdClose } from "react-icons/io";
+import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
+
 interface props {
+	position: number;
 	bodyType?: string;
 	mediaSource?: string | string[] | undefined;
-	closeModal: Function;
+	changeModalImage: Function;
+	data: Array<movieImages>;
 }
 
 const Modal: React.FC<props> = ({
-	bodyType,
+	position,
 	mediaSource,
-	closeModal,
+	changeModalImage,
+	data,
 }): ReactElement => {
+	const handleModalImageChange = (event: any, incre: number) => {
+		event.stopPropagation();
+		if (position + incre < data.length && position + incre > 0)
+			changeModalImage(position + incre, data[position + incre]?.file_path);
+	};
+
 	return (
 		<div
-			className="fixed top-0 z-[2035] h-screen w-screen bg-black/90 flex items-center"
-			onClick={() => closeModal("")}
+			className="fixed top-0 z-[2035] h-screen w-screen bg-black/90 flex flex-col justify-center gap-2 default_screen_adjust"
+			style={{ padding: "0 10px", overflowY: "hidden" }}
+			onClick={(event) => {
+				event.stopPropagation();
+				changeModalImage("");
+			}}
 		>
+			<div
+				className="text-white flex flex-col justify-end items-end"
+				onClick={() => changeModalImage("")}
+			>
+				<IoMdClose style={{ fontSize: "30px" }} />
+			</div>
 			<div className="h-fit">
 				<Image
 					unoptimized
@@ -29,6 +53,36 @@ const Modal: React.FC<props> = ({
 					height={300}
 					alt={`image`}
 				/>
+			</div>
+			<div
+				className="w-72 flex justify-between"
+				style={{ margin: "20px auto" }}
+			>
+				<div
+					className="p-3 flex items-center"
+					onClick={(event) => handleModalImageChange(event, -1)}
+					style={{
+						color: position == 0 ? "rgba(255,255,255,0.4)" : "white",
+					}}
+				>
+					<RiArrowLeftSLine />
+					previous
+				</div>
+				<p className="p-3" style={{ color: "rgba(255,255,255,0.4)" }}>
+					{position + 1} / {data?.length}
+				</p>
+
+				<div
+					className="p-3 flex items-center"
+					style={{
+						color:
+							position == data?.length - 1 ? "rgba(255,255,255,0.4)" : "white",
+					}}
+					onClick={(event) => handleModalImageChange(event, 1)}
+				>
+					next
+					<RiArrowRightSLine style={{ fontSize: "18px" }} />
+				</div>
 			</div>
 		</div>
 	);

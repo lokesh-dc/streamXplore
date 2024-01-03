@@ -3,20 +3,25 @@ import Image from "next/image";
 import React, { ReactElement } from "react";
 
 interface props {
+	position: number;
 	imgSrc: string;
 	imgType?: string;
 	title: string;
-	stateChange?: Function;
+	stateChange: Function;
 }
 
 const MovieCardImage: React.FC<props> = ({
+	position,
 	imgSrc,
 	title,
 	stateChange,
 }): ReactElement => {
 	return (
 		// @ts-ignore
-		<div className="movie_image_card" onClick={() => stateChange(imgSrc)}>
+		<div
+			className="movie_image_card"
+			onClick={() => stateChange(position, imgSrc)}
+		>
 			<Image
 				unoptimized
 				src={getImageBaseLink({
