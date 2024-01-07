@@ -26,7 +26,7 @@ const MovieCard: React.FC<props> = ({
 			<div
 				className={`${
 					type == "scroll_card" ? styles?.scroll_card : styles.card
-				} flex-col gap-1 ransform`}
+				} flex-col gap-1 transform`}
 			>
 				<div className={`${styles.cardImage}`}>
 					<Image
@@ -41,6 +41,7 @@ const MovieCard: React.FC<props> = ({
 						alt={`${title}`}
 					/>
 				</div>
+				
 			</div>
 		</Link>
 	);

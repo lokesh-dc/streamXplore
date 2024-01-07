@@ -33,22 +33,22 @@ const YoutubeVideoModal: React.FC<props> = ({
 
 	return (
 		<div
-			className="fixed top-0 z-[2] h-screen w-screen bg-black/90 flex flex-col justify-center items-center gap-2 default_screen_adjust"
-			style={{ padding: "0 10px", overflowY: "hidden" }}
+			className="fixed top-0 w-screen h-screen bg-black/90 flex flex-col justify-center items-center gap-2 default_screen_adjust"
+			style={{ padding: "0 10px", overflowY: "hidden", zIndex: 2055 }}
 			// onClickCapture={() => {
 			// 	changeModalVideo("");
 			// }}
 		>
 			<div
-				className="w-full text-white flex"
+				className="text-white flex w-screen md:w-11/12"
 				style={{ justifyContent: "end" }}
 				onClick={() => changeModalVideo({})}
 			>
 				<IoMdClose style={{ fontSize: "30px" }} />
 			</div>
-			<div>
+			<div className="youtubeModal">
 				<YoutubeEmbedComponent
-					classes={"w-screen md:w-80 z-[2]"}
+					classes={"w-full md:w-80 z-[2]"}
 					videoId={videoId}
 					title={title}
 				/>

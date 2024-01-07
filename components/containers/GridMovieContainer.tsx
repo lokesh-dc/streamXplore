@@ -46,16 +46,30 @@ const GridMovieContainer: React.FC<props> = ({
 							Loading more...
 						</h3>
 					}
-					className="w-full md:w-11/12 m-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-8 items-center justify-center px-2 md:px-0"
+					className="w-full md:w-11/12 m-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-8 items-start justify-start px-2 md:px-0"
 				>
 					{data.map((item, index) => (
-						<div className="flex items-center justify-center" key={index}>
+						<div
+							className="flex flex-col rounded-md p-2 shadow-sm hover:shadow-lg"
+							key={index}
+						>
 							<MovieCard
 								imgSrc={`${item.poster_path}`}
 								title={`${item.title}`}
 								movieId={item.id}
 								showType={showType}
 							/>
+							<div className="flex flex-col gap-1 justify-between items-baseline">
+								<p className="text">{item.title || item?.name}</p>
+								<div className="flex gap-2 justify-end">
+									<p className="text-orange-500 text-sm">
+										{item?.vote_average?.toFixed(1)}/10
+									</p>
+									<p className="text-gray-400 text-sm">
+										{item?.release_date?.split("-")[0]}
+									</p>
+								</div>
+							</div>
 						</div>
 					))}
 				</InfiniteScroll>
