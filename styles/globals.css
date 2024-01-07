@@ -9,7 +9,13 @@
     --primary-color: white
 }
 
+p {
+    font-weight: 400;
+}
 
+.cursor-pointer {
+    cursor: pointer;
+}
 
 .swiper-button-prev,
 .swiper-button-next {
@@ -115,4 +121,15 @@ body {
     gap: 5px;
     padding: 5px;
     height: fit-content;
+}
+
+
+.youtubeModal {
+    width: 60%
+}
+
+@media screen and (max-width : 600px) {
+    .youtubeModal {
+        width: 100%
+    }
 }

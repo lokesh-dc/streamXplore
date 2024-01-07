@@ -1,4 +1,5 @@
 import GridMovieContainer from "@/components/containers/GridMovieContainer";
+import PageTitle from "@/components/ui/PageTitle";
 import { movieDetails } from "@/constants/typescript";
 import getUpcomingMovies from "@/dataFetchings/upcomingMovies";
 interface props {
@@ -9,9 +10,7 @@ interface props {
 const UpcomingMoviesPage = ({ upcoming, totalPages }: props) => {
 	return (
 		<>
-			<div>
-				<h1 className="my-0 md:mt-12 p-5 text-5xl">UPCOMING MOVIES</h1>
-			</div>
+			<PageTitle title="UPCOMING MOVIES" />
 			<GridMovieContainer
 				upcoming={upcoming}
 				title="Popular Movies"

@@ -28,15 +28,15 @@ const Modal: React.FC<props> = ({
 
 	return (
 		<div
-			className="fixed top-0 z-[2] h-screen w-screen bg-black/90 flex flex-col justify-center items-center gap-2 default_screen_adjust"
-			style={{ padding: "0 10px", overflowY: "hidden" }}
+			className="fixed top-0 z-[2055] h-screen w-screen bg-black/90 flex flex-col justify-center items-center gap-2 default_screen_adjust"
+			style={{ padding: "0 10px", overflowY: "hidden", zIndex: 2055 }}
 			onClick={(event) => {
 				event.stopPropagation();
 				changeModalImage("");
 			}}
 		>
 			<div
-				className="w-full text-white flex"
+				className="w-full text-white flex cursor-pointer"
 				style={{ justifyContent: "end" }}
 				onClick={() => changeModalImage("")}
 			>
@@ -60,7 +60,7 @@ const Modal: React.FC<props> = ({
 				style={{ margin: "20px auto" }}
 			>
 				<div
-					className="p-3 flex items-center"
+					className="p-3 flex items-center cursor-pointer"
 					onClick={(event) => handleModalImageChange(event, -1)}
 					style={{
 						color: position == 0 ? "rgba(255,255,255,0.4)" : "white",
@@ -74,7 +74,7 @@ const Modal: React.FC<props> = ({
 				</p>
 
 				<div
-					className="p-3 flex items-center"
+					className="p-3 flex items-center cursor-pointer"
 					style={{
 						color:
 							position == data?.length - 1 ? "rgba(255,255,255,0.4)" : "white",

@@ -1,8 +1,10 @@
+import React, { ReactElement } from "react";
 import GridMovieContainer from "@/components/containers/GridMovieContainer";
 import PageTitle from "@/components/ui/PageTitle";
-import { movieDetails } from "@/constants/typescript";
+import SelectTag from "@/components/Interactive-components/SelectTag";
 import getPopularMovies from "@/dataFetchings/popularMovies";
-import React, { ReactElement } from "react";
+
+import { movieDetails } from "@/constants/typescript";
 
 interface props {
 	data: Array<movieDetails> | null;
@@ -11,7 +13,10 @@ interface props {
 const PopularMovies: React.FC<props> = ({ data, totalPages }): ReactElement => {
 	return (
 		<>
-			<PageTitle title="Popular Movies" />
+			<div className="flex flex-col justify-between">
+				<PageTitle title="Popular Movies" />
+				{/* <SelectTag /> */}
+			</div>
 			<GridMovieContainer
 				upcoming={data}
 				title="Popular Movies"
