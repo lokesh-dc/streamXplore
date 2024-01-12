@@ -3,10 +3,10 @@ import Image from "next/image";
 import React, { ReactElement } from "react";
 
 interface props {
-	position: number;
-	imgSrc: string;
+	position: number | undefined | null;
+	imgSrc: string | null;
 	imgType?: string;
-	title: string;
+	title: string | null;
 	stateChange: Function;
 }
 

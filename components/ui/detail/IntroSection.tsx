@@ -29,7 +29,7 @@ const IntroSection: React.FC<props> = ({
 	genres,
 }): ReactElement => {
 	return (
-		<div className="flex md:gap-8 my-3 m-auto items-center">
+		<div className="flex md:gap-8 my-3 items-center">
 			<div className="hidden md:block w-auto">
 				<Image
 					unoptimized

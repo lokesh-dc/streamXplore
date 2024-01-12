@@ -1,0 +1,15 @@
+.movieCardWrapper {
+    width: 200px;
+    border: 1px solid rgba(81, 81, 81, 0.3);
+    padding: 5px;
+}
+
+.movieCardWrapper img {
+    width: 100% !important;
+}
+
+@media screen and (max-width : 600px) {
+    .movieCardWrapper {
+        width: 48%;
+    }
+}

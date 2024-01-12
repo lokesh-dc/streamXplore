@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import LiteYouTubeEmbed from "react-lite-youtube-embed";
-import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
+// import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 
 interface props {
 	videoId: string;
