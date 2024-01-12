@@ -1,8 +1,6 @@
-import { options } from "@/constants/api";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import MovieImageCard from "@/components/cards/MovieImageCard";
 import { movieImages } from "@/constants/typescript";
-import Link from "next/link";
 interface props {
 	data: movieImages[];
 	title: string;

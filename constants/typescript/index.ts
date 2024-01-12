@@ -57,6 +57,14 @@ export interface movieDetailsPage {
 	backdrops: Array<movieImages>;
 	logos: Array<movieImages>;
 	videos: Array<movieVideos>;
+	recommendations: movieRecommendations;
+}
+
+export interface movieRecommendations {
+	page: number;
+	results: Array<movieDetails>;
+	total_pages: number;
+	total_results: number;
 }
 
 export interface movieImages {

@@ -2,7 +2,7 @@ import { options } from "@/constants/api";
 
 export default function getMovieDetails(id) {
 	const details = fetch(
-		`https://api.themoviedb.org/3/movie/${id}?append_to_response=videos,credits,images`,
+		`https://api.themoviedb.org/3/movie/${id}?append_to_response=videos,credits,images,recommendations`,
 		options
 	)
 		.then((response) => response.json())
