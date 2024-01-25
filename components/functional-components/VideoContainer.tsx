@@ -42,7 +42,6 @@ const VideosContainer: React.FC<props> = ({ data, movieId }): ReactElement => {
 		title: "",
 	});
 	const changeModalVideo = (position: number, key: string, title: string) => {
-		console.log({ key, title });
 		setVideoModal({ position, key: key, title: title });
 	};
 

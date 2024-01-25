@@ -55,6 +55,7 @@ const Movie: React.FC<seriesDetails> = ({
 					vote_average={vote_average}
 					tagline={tagline}
 					genres={genres}
+					pageType={"tv-series"}
 				/>
 
 				{last_episode_to_air ? (

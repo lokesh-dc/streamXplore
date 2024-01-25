@@ -15,11 +15,12 @@ interface props {
 }
 
 const MoviesContainer: React.FC<props> = ({ data, title }): ReactElement => {
-	return (
+	// @ts-ignore
+	return Array.isArray(data) && data?.length > 0 ? (
 		<div className="flex flex-col gap-1">
 			<h2 className="py-1 text-2xl uppercase">{title}</h2>
 			<div
-				className={`flex gap-x-3 gap-y-6 justify-between  flex-wrap ${styles?.container}`}
+				className={`flex gap-x-3 gap-y-6 justify-start  flex-wrap ${styles?.container}`}
 			>
 				{data?.map((movieItem, index) => {
 					if (!movieItem?.poster_path || !movieItem?.backdrop_path) return null;
@@ -61,7 +62,7 @@ const MoviesContainer: React.FC<props> = ({ data, title }): ReactElement => {
 				})}
 			</div>
 		</div>
-	);
+	) : null;
 };
 
 export default MoviesContainer;

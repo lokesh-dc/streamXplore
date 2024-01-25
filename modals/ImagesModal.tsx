@@ -22,7 +22,6 @@ const Modal: React.FC<props> = ({
 }): ReactElement => {
 	const handleModalImageChange = (event: any, incre: number) => {
 		event.stopPropagation();
-		console.log({ position });
 		if (position + incre < data.length && position + incre >= 0)
 			changeModalImage(position + incre, data[position + incre]?.file_path);
 	};
