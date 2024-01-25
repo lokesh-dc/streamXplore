@@ -16,6 +16,7 @@ interface props {
 	vote_average: number;
 	tagline: string;
 	genres: Array<genresType>;
+	pageType: string;
 }
 
 const IntroSection: React.FC<props> = ({
@@ -27,6 +28,7 @@ const IntroSection: React.FC<props> = ({
 	vote_average,
 	tagline,
 	genres,
+	pageType = "movies",
 }): ReactElement => {
 	return (
 		<div className="flex md:gap-8 my-3 items-center">
@@ -62,7 +64,7 @@ const IntroSection: React.FC<props> = ({
 					<ShareIntentComponent />
 				</div>
 				<p className=" text-gray-600 text-justify">{overview}</p>
-				<Tags data={genres} title={"Genres"} />
+				<Tags pageType={pageType} data={genres} title={"Genres"} />
 			</div>
 		</div>
 	);

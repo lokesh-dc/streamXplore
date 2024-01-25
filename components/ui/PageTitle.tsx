@@ -7,7 +7,7 @@ type props = {
 const PageTitle: React.FC<props> = ({ title }): ReactElement => {
 	return (
 		<div>
-			<h1 className="px-2 md:px-9 py-1 md:py-5 my-0 md:mt-12 p-5 text-3xl md:text-5xl uppercase bebas-nueve">
+			<h1 className="px-2 md:px-9 py-1 md:py-5 md:pb-2 my-0 md:mt-12 p-5 text-3xl md:text-5xl uppercase bebas-nueve">
 				{title}
 			</h1>
 		</div>
