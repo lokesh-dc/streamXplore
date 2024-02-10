@@ -42,7 +42,6 @@ const Movie: React.FC<seriesDetails> = ({
 	seasons,
 	last_episode_to_air,
 }): ReactElement => {
-	console.log(last_episode_to_air);
 	return (
 		<>
 			<Head>

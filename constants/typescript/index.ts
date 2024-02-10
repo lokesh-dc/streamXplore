@@ -17,6 +17,12 @@ export interface movieDetails {
 	media_type: string | null
 }
 
+export interface searchedDataEntry extends movieDetails {
+	name: string;
+	media_type: string;
+	profile_path: string | null;
+	first_air_date: string
+}
 
 export interface genresType {
 	id: number;

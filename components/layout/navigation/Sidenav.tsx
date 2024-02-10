@@ -8,6 +8,10 @@ type props = {
 
 const sideNavData = [
 	{
+		text: "Discover Movies",
+		href: "/movies",
+	},
+	{
 		text: "Popular Movies",
 		href: "/popular",
 	},

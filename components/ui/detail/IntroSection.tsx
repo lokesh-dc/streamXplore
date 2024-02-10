@@ -59,7 +59,7 @@ const IntroSection: React.FC<props> = ({
 					<div className="flex items-center text-zinc-500	">
 						<p className="pr-2">{release_date?.split("-")[0]}</p>
 						<p>|</p>
-						<p className="pl-2">{runtime} minutes</p>
+						{runtime ? <p className="pl-2">{runtime} minutes</p> : null}
 					</div>
 					<ShareIntentComponent />
 				</div>
