@@ -11,7 +11,8 @@ import Image from "next/image";
 import { getImageBaseLink } from "@/constants";
 import { AiTwotoneStar } from "react-icons/ai";
 import ImagesModalContainer from "@/components/functional-components/ImagesModalContainer";
-import YoutubeEmbedComponent from "@/components/functional-components/YoutubeEmbedComponent";
+import path from "path";
+import Head from "next/head";
 
 const Movie: React.FC<seriesDetails> = ({
 	id,
@@ -41,10 +42,14 @@ const Movie: React.FC<seriesDetails> = ({
 	seasons,
 	last_episode_to_air,
 }): ReactElement => {
+	console.log(last_episode_to_air);
 	return (
 		<>
+			<Head>
+				<title>{title}</title>
+			</Head>
 			<HeroSection backdrop_path={backdrop_path || poster_path} title={title} />
-			<div className="flex flex-col gap-2 pb-5 default_screen_padding mb-4">
+			<div className="flex flex-col gap-3 pb-5 default_screen_padding mb-4">
 				<PosterImage poster_path={poster_path} />
 				<IntroSection
 					title={title}
@@ -59,24 +64,41 @@ const Movie: React.FC<seriesDetails> = ({
 				/>
 
 				{last_episode_to_air ? (
-					<div className="flex flex-col gap-2">
-						<h2 className="py-1 text-2xl uppercase">Latest Episode</h2>
-						<div className="flex flex-col gap-1 p-2 bg-gray-200 w-fit">
-							<div className="flex gap-2 items-center">
-								{last_episode_to_air?.episode_type == "finale" ? (
-									<p className="bg-orange-300 w-min px-2 py-1">FINALE</p>
-								) : null}
-								<p>
-									S{last_episode_to_air?.season_number}.E
-									{last_episode_to_air?.episode_number}
+					<div className="flex flex-col gap-2 border-dashed  border-2 border-gray-300 bg-gray-50 p-2">
+						<div className="flex justify-between md:justify-start gap-7 items-center">
+							<h2 className="py-1 text-2xl uppercase">Latest Episode</h2>
+							<p>{last_episode_to_air?.air_date}</p>
+						</div>
+						<div className="flex flex-col md:flex-row gap-3 p-2 w-fit">
+							<div className="w-full md:w-1/3">
+								<Image
+									src={getImageBaseLink({
+										path: last_episode_to_air?.still_path,
+										type: "still",
+										quality: "",
+									})}
+									width={450}
+									height={100}
+									alt=""
+								/>
+							</div>
+							<div className="w-full md:w-2/3">
+								<div className="flex gap-2 items-center">
+									{last_episode_to_air?.episode_type == "finale" ? (
+										<p className="bg-orange-300 w-min px-2 py-1">FINALE</p>
+									) : null}
+									<p>
+										S{last_episode_to_air?.season_number}.E
+										{last_episode_to_air?.episode_number}
+									</p>
+								</div>
+								<h3 className="text-xl md:text-2xl">
+									{last_episode_to_air?.name}
+								</h3>
+								<p className="text-gray-500 w-full md:w-1/2">
+									{last_episode_to_air?.overview}
 								</p>
 							</div>
-							{/* <div className="flex gap-3">
-								<p>{last_episode_to_air?.air_date}</p>
-								<p>({last_episode_to_air?.runtime} minutes)</p>
-							</div> */}
-							<h3>{last_episode_to_air?.name}</h3>
-							<p className="text-gray-500">{last_episode_to_air?.overview}</p>
 						</div>
 					</div>
 				) : null}
