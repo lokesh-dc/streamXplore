@@ -5,6 +5,8 @@ import React, { ReactElement } from "react";
 
 import { IoMdClose } from "react-icons/io";
 import { AiTwotoneStar } from "react-icons/ai";
+import Link from "next/link";
+import { decorateLink } from "@/utils";
 
 interface props {
 	toggleModalVisibility: Function;
@@ -49,6 +51,7 @@ const SearchModal: React.FC<props> = ({
 					{resultData?.map(
 						(
 							{
+								id,
 								media_type,
 								profile_path,
 								poster_path,
@@ -62,20 +65,31 @@ const SearchModal: React.FC<props> = ({
 							index
 						) =>
 							["tv", "movie"]?.includes(media_type) ? (
-								<div
+								<Link
+									href={`/${media_type}/${decorateLink(name || title)}/${id}`}
 									key={index}
-									className="p-2 flex gap-2 border-dashed border-2 border-gray-300 bg-gray-50 "
-									// style={{
-									// 	backgroundImage: `url(${getImageBaseLink({
-									// 		path: backdrop_path,
-									// 		type: "backdrop",
-									// 		quality: "lg",
-									// 	})}
-									// 	)`,
-									// 	backgroundPosition: "center",
-									// }}
+									className="relative p-2 flex gap-2 border-dashed border-2 border-gray-300 bg-gray-50 "
+									// @ts-ignore
+									onClick={toggleModalVisibility}
 								>
-									<div>
+									<div
+										className="absolute top-0 left-0"
+										style={{
+											zIndex: 0,
+											backgroundImage: `url(${getImageBaseLink({
+												path: backdrop_path,
+												type: "backdrop",
+												quality: "lg",
+											})}
+										)`,
+											backgroundColor: "rgba(0,0,0,0.2)",
+											backgroundPosition: "center",
+											filter: `brightness(40%)`,
+											height: "100%",
+											width: "100%",
+										}}
+									></div>
+									<div style={{ zIndex: 1 }}>
 										<Image
 											src={getImageBaseLink({
 												path: poster_path || profile_path,
@@ -87,7 +101,10 @@ const SearchModal: React.FC<props> = ({
 											alt=""
 										/>
 									</div>
-									<div>
+									<div
+										style={{ zIndex: 1 }}
+										className={`${backdrop_path ? "text-white" : ""} `}
+									>
 										<p className="text-sm">
 											{(first_air_date || release_date)?.split("-")[0]}
 										</p>
@@ -101,7 +118,7 @@ const SearchModal: React.FC<props> = ({
 											<AiTwotoneStar /> {vote_average?.toFixed(1)} / 10
 										</p>
 									</div>
-								</div>
+								</Link>
 							) : null
 					)}
 				</div>
