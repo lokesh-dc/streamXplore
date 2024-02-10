@@ -3,8 +3,9 @@ import { searchedDataEntry } from "@/constants/typescript";
 import Image from "next/image";
 import React, { ReactElement } from "react";
 
-import { IoMdClose } from "react-icons/io";
+import { IoMdClose, IoIosArrowDown } from "react-icons/io";
 import { AiTwotoneStar } from "react-icons/ai";
+
 import Link from "next/link";
 import { decorateLink } from "@/utils";
 
@@ -21,7 +22,7 @@ const SearchModal: React.FC<props> = ({
 }): ReactElement => {
 	return (
 		<div
-			className="fixed top-0 left-0 z-[2055] h-screen w-screen bg-black/90 flex flex-col gap-2 fadein"
+			className="fixed top-0 left-0 z-[2055] h-screen w-screen bg-black/90 flex flex-col items-center flex-start gap-2 fadein"
 			style={{
 				padding: "100px 10px",
 				overflowY: "hidden",
@@ -29,14 +30,13 @@ const SearchModal: React.FC<props> = ({
 			}}
 		>
 			<div
-				className="w-full text-white flex cursor-pointer"
-				style={{ justifyContent: "end" }}
+				className="w-full md:w-2/3  text-white flex justify-end cursor-pointer"
 				// @ts-ignore
 				onClick={toggleModalVisibility}
 			>
 				<IoMdClose style={{ fontSize: "30px" }} />
 			</div>
-			<div className="w-full">
+			<div className="w-full md:w-2/3 ">
 				<input
 					className="w-full p-3"
 					placeholder="Search for any movie or tv-series"
@@ -45,7 +45,7 @@ const SearchModal: React.FC<props> = ({
 			</div>
 			{resultData?.length ? (
 				<div
-					className="p-2 flex flex-col gap-2 bg-white"
+					className="w-full md:w-2/3  p-2 flex flex-col gap-2 bg-white"
 					style={{ overflowY: "auto" }}
 				>
 					{resultData?.map(
@@ -68,7 +68,7 @@ const SearchModal: React.FC<props> = ({
 								<Link
 									href={`/${media_type}/${decorateLink(name || title)}/${id}`}
 									key={index}
-									className="relative p-2 flex gap-2 border-dashed border-2 border-gray-300 bg-gray-50 "
+									className="relative p-2 flex gap-2 border-dashed border-2 border-gray-300 bg-gray-50"
 									// @ts-ignore
 									onClick={toggleModalVisibility}
 								>
@@ -96,8 +96,8 @@ const SearchModal: React.FC<props> = ({
 												type: "poster",
 												quality: "lg",
 											})}
-											height={100}
-											width={70}
+											height={200}
+											width={100}
 											alt=""
 										/>
 									</div>
@@ -121,6 +121,9 @@ const SearchModal: React.FC<props> = ({
 								</Link>
 							) : null
 					)}
+					<div className="flex gap-2 items-center justify-center border-dashed border-2 border-gray-300 p-2">
+						load more <IoIosArrowDown />
+					</div>
 				</div>
 			) : null}
 		</div>
