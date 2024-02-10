@@ -8,8 +8,16 @@
     backdrop-filter: blur(8px);
 }
 
-.menu {
+.brand {
     font-size: 20px;
+}
+
+.menu {
+    font-size: 40px;
+}
+
+.searchIcon {
+    font-size: 30px;
 }
 
 @media screen and (max-width: 600px) {
