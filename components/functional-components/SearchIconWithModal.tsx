@@ -11,6 +11,7 @@ const SearchIconWithModal = () => {
 
 	const toggleModalVisibility = () => {
 		changeModalVisibility(!isModalOpen);
+		setResultData([]);
 	};
 
 	const [query, setQuery] = useState("");
