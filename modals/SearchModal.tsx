@@ -38,6 +38,7 @@ const SearchModal: React.FC<props> = ({
 			</div>
 			<div className="w-full md:w-2/3 ">
 				<input
+					type="search"
 					className="w-full p-3"
 					placeholder="Search for any movie or tv-series"
 					onChange={(event) => handleQueryChange(event.target.value)}
@@ -121,9 +122,9 @@ const SearchModal: React.FC<props> = ({
 								</Link>
 							) : null
 					)}
-					<div className="flex gap-2 items-center justify-center border-dashed border-2 border-gray-300 p-2">
+					{/* <div className="flex gap-2 items-center justify-center border-dashed border-2 border-gray-300 p-2">
 						load more <IoIosArrowDown />
-					</div>
+					</div> */}
 				</div>
 			) : null}
 		</div>
