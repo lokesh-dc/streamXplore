@@ -45,7 +45,8 @@ const VideosContainer: React.FC<props> = ({ data, movieId }): ReactElement => {
 		setVideoModal({ position, key: key, title: title });
 	};
 
-	return (
+	// @ts-ignore
+	return Object.keys(movieVideos)?.length ? (
 		<>
 			<h2 className={`text-2xl uppercase`}>Videos</h2>
 			<div className="flex flex-col gap-4 pl-3">
@@ -80,7 +81,7 @@ const VideosContainer: React.FC<props> = ({ data, movieId }): ReactElement => {
 				/>
 			) : null}
 		</>
-	);
+	) : null;
 };
 
 export default VideosContainer;
