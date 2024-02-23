@@ -61,7 +61,7 @@ const IntroSection: React.FC<props> = ({
 						<p>|</p>
 						{runtime ? <p className="pl-2">{runtime} minutes</p> : null}
 					</div>
-					<ShareIntentComponent />
+					<ShareIntentComponent text={title} />
 				</div>
 				<p className=" text-gray-600 text-justify">{overview}</p>
 				<Tags pageType={pageType} data={genres} title={"Genres"} />
