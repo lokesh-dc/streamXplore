@@ -23,6 +23,7 @@ export default function ShareIntentComponent({ text }) {
 			console.log("Share is not present in navigator");
 		}
 	};
+	
 
 	return (
 		<button
