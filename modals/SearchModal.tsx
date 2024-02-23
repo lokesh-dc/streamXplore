@@ -77,20 +77,20 @@ const SearchModal: React.FC<props> = ({
 										className="absolute top-0 left-0"
 										style={{
 											zIndex: 0,
-											backgroundImage: `url(${getImageBaseLink({
-												path: backdrop_path,
-												type: "backdrop",
-												quality: "lg",
-											})}
-										)`,
-											backgroundColor: "rgba(0,0,0,0.2)",
-											backgroundPosition: "center",
-											filter: `brightness(40%)`,
-											height: "100%",
-											width: "100%",
+											// 	backgroundImage: `url(${getImageBaseLink({
+											// 		path: backdrop_path,
+											// 		type: "backdrop",
+											// 		quality: "lg",
+											// 	})}
+											// )`,
+											// backgroundColor: "rgba(0,0,0,0.2)",
+											// backgroundPosition: "center",
+											// filter: `brightness(40%)`,
+											// height: "100%",
+											// width: "100%",
 										}}
 									></div>
-									<div style={{ zIndex: 1 }}>
+									<div className="w-1/3" style={{ zIndex: 1 }}>
 										<Image
 											src={getImageBaseLink({
 												path: poster_path || profile_path,
@@ -102,18 +102,13 @@ const SearchModal: React.FC<props> = ({
 											alt=""
 										/>
 									</div>
-									<div
-										style={{ zIndex: 1 }}
-										className={`${backdrop_path ? "text-white" : ""} `}
-									>
+									<div className="w-2/3" style={{ zIndex: 1 }}>
 										<p className="text-sm">
 											{(first_air_date || release_date)?.split("-")[0]}
 										</p>
 										<p className="text-xl">
 											{/* @ts-ignore */}
-											{(name || title)?.length > 35
-												? `${(name || title)?.substring(0, 34)}...`
-												: name || title}
+											{name || title}
 										</p>
 										<p className="text-orange-500 flex gap-1 items-center">
 											<AiTwotoneStar /> {vote_average?.toFixed(1)} / 10

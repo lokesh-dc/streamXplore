@@ -25,7 +25,6 @@ A movie and TV show database, inspired by IMDb. Built with Next.js and styled wi
 3. Set up environment variables:
    
     Create a .env file in the root of the project and add the following:
-
     ```bash
      NEXT_PUBLIC_API_BASELINK
      NEXT_PUBLIC_TOKEN=your_tmdb_api_key
