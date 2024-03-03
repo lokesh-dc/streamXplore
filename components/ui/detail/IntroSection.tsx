@@ -63,7 +63,7 @@ const IntroSection: React.FC<props> = ({
 					</div>
 					<ShareIntentComponent text={title} />
 				</div>
-				<p className=" text-gray-600 text-justify">{overview}</p>
+				<p className=" text-gray-600 text-justify ">{overview}</p>
 				<Tags pageType={pageType} data={genres} title={"Genres"} />
 			</div>
 		</div>
