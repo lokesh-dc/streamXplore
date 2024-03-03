@@ -44,13 +44,14 @@ const MoviesContainer: React.FC<props> = ({ data, title }): ReactElement => {
 									height={150}
 									alt={`${title} image`}
 								/>
-								<div className="flex justify-between">
-									<p className="text-orange-600 flex gap-1 items-center">
+
+								<div className="flex justify-between text-xs">
+									<p className="text-orange-500 flex gap-1 items-center">
 										<AiTwotoneStar />
 										{movieItem?.vote_average?.toFixed(1)} / 10
 									</p>
 									{movieItem?.release_date ? (
-										<p className="text-grey-100">
+										<p className="text-gray-500">
 											{movieItem?.release_date?.split("-")[0]}
 										</p>
 									) : null}

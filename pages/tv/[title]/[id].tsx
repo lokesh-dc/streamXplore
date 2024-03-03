@@ -9,10 +9,9 @@ import VideosContainer from "@/components/functional-components/VideoContainer";
 import Image from "next/image";
 
 import { getImageBaseLink } from "@/constants";
-import { AiTwotoneStar } from "react-icons/ai";
 import ImagesModalContainer from "@/components/functional-components/ImagesModalContainer";
-import path from "path";
 import Head from "next/head";
+import SeasonsContainer from "@/components/containers/SeasonsContianer";
 
 const Movie: React.FC<seriesDetails> = ({
 	id,
@@ -94,7 +93,7 @@ const Movie: React.FC<seriesDetails> = ({
 								<h3 className="text-xl md:text-2xl">
 									{last_episode_to_air?.name}
 								</h3>
-								<p className="text-gray-500 w-full md:w-1/2">
+								<p className="text-gray-500 w-full md:w-3/4">
 									{last_episode_to_air?.overview}
 								</p>
 							</div>
@@ -102,42 +101,7 @@ const Movie: React.FC<seriesDetails> = ({
 					</div>
 				) : null}
 
-				{seasons && seasons?.length ? (
-					<div className="flex flex-col gap-1">
-						<h2 className="py-1 text-2xl uppercase">Seasons</h2>
-						<div className="flex gap-5 border-grey overflow-x-auto">
-							{seasons?.map((item, index) =>
-								item?.name != "Specials" ? (
-									<div key={index} className="scrolling_seasons_cards">
-										<Image
-											src={getImageBaseLink({
-												path: item?.poster_path,
-												type: "poster",
-												quality: "xl",
-											})}
-											width={150}
-											height={200}
-											alt=""
-										/>
-										<div>
-											<p className="text-sm text-orange-700 flex items-center gap-1">
-												<AiTwotoneStar />
-												{item?.vote_average}/10
-											</p>
-											<h3>
-												{item?.name?.length > 14
-													? `${item?.name?.substring(0, 14)}...`
-													: item?.name}{" "}
-												({item?.episode_count})
-											</h3>
-										</div>
-										{/* <p> Released on : {item?.air_date}</p> */}
-									</div>
-								) : null
-							)}
-						</div>
-					</div>
-				) : null}
+				<SeasonsContainer data={seasons} seriesId={id} />
 				<ImagesModalContainer backdrops={backdrops} title="title" />
 				<VideosContainer data={videos} movieId={id} />
 			</div>
