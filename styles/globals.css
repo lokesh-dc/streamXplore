@@ -165,3 +165,16 @@ body {
     line-clamp: 2;
     -webkit-box-orient: vertical;
 }
+
+@media screen and (min-width:600px) {
+    .seasonModal {
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .seasonModal .body {
+        width: 50% !important;
+        border-radius: 16px !important;
+    }
+
+}
