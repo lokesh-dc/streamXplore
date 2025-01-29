@@ -57,8 +57,8 @@ const Movie: React.FC<movieDetailsPage> = ({
 					genres={genres}
 					pageType={"movies"}
 				/>
-				<ImagesModalContainer backdrops={backdrops} title="title" />
 				<VideosContainer data={videos} movieId={id} />
+				<ImagesModalContainer backdrops={backdrops} title="title" />
 				<MoviesContainer
 					data={recommendations?.results}
 					title="Recommendations"
