@@ -125,6 +125,7 @@ export interface seriesDetails {
 	videos: Array<movieVideos>;
 	seasons: Array<tvSeriesSeasons>;
 	last_episode_to_air: episodeDetails;
+	next_episode_to_air: episodeDetails;
 }
 
 export interface tvSeriesSeasons {
