@@ -110,7 +110,7 @@ const SeasonsModal: React.FC<props> = ({
 												? `0${epi?.episode_number}`
 												: epi?.episode_number}
 										</p>
-										<div className="flex gap-2 w-full">
+										<div className="flex justify-between gap-2 w-full">
 											{epi?.still_path || isEpisodeReleased(epi?.air_date) ? (
 												<Image
 													unoptimized
@@ -136,14 +136,19 @@ const SeasonsModal: React.FC<props> = ({
 													<p>{epi?.air_date}</p>
 												</div>
 											)}
-											<div style={{ minWidth: "55%" }}>
+											<div style={{ minWidth: "55%", maxWidth: "100%" }}>
 												<div className="flex justify-between text-sm">
 													<p className="text-orange-500">
 														{epi?.vote_average.toFixed(1)} / 10
 													</p>
-													{epi?.runtime ? (
-														<p className="text-gray-400">{epi?.runtime} mins</p>
-													) : null}
+													<div className="flex gap-2">
+														{epi?.runtime ? (
+															<p className="text-gray-400">
+																{epi?.runtime} mins
+															</p>
+														) : null}
+														{epi?.air_date ? <p>{epi?.air_date}</p> : null}
+													</div>
 												</div>
 												<p className="text-md limitTo2Lines">{epi?.name}</p>
 												<p className="text-gray-500 limitTo1Lines text-xs">
