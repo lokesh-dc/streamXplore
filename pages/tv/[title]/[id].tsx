@@ -109,18 +109,20 @@ const Movie: React.FC<seriesDetails> = ({
 							<p>{next_episode_to_air?.air_date}</p>
 						</div>
 						<div className="flex flex-col md:flex-row gap-3 p-2 w-fit">
-							<div className="w-full md:w-1/3">
-								<Image
-									src={getImageBaseLink({
-										path: next_episode_to_air?.still_path,
-										type: "still",
-										quality: "",
-									})}
-									width={450}
-									height={100}
-									alt=""
-								/>
-							</div>
+							{next_episode_to_air?.still_path ? (
+								<div className="w-full md:w-1/3">
+									<Image
+										src={getImageBaseLink({
+											path: next_episode_to_air?.still_path,
+											type: "still",
+											quality: "",
+										})}
+										width={450}
+										height={100}
+										alt=""
+									/>
+								</div>
+							) : null}
 							<div className="w-full md:w-2/3">
 								<div className="flex gap-2 items-center">
 									{next_episode_to_air?.episode_type == "finale" ? (
