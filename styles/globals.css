@@ -69,14 +69,6 @@ p {
     letter-spacing: 1px;
 }
 
-.oswald {
-    font-family: var(--oswald) !important;
-}
-
-body {
-    font-family: var(--oswald);
-}
-
 .text_with-background {
     -webkit-background-clip: text;
     background-clip: text;

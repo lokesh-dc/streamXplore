@@ -1,3 +1,4 @@
+"use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 
@@ -12,7 +13,9 @@ import styles from "../styles/HeroSection.module.css";
 import { AiTwotoneStar } from "react-icons/ai";
 import { IoIosPeople } from "react-icons/io";
 import { movieDetails } from "@/constants/typescript";
-import Link from "next/link";
+import { Button } from "./buttons";
+
+import { FaArrowRight } from "react-icons/fa";
 
 interface props {
 	data: Array<movieDetails> | null | undefined;
@@ -26,55 +29,58 @@ const HeroSection = ({ data }: props) => {
 				pagination={{
 					dynamicBullets: true,
 				}}
-				autoplay={{
-					delay: 7000,
-					disableOnInteraction: false,
-				}}
+				// autoplay={{
+				// 	delay: 10000,
+				// 	disableOnInteraction: false,
+				// }}
 				navigation={true}
 				modules={[Navigation, Pagination, Autoplay]}
-				className="mySwiper z-0"
+				className="z-0"
 			>
 				{data?.map((item, index) => (
 					<SwiperSlide key={index}>
-						<Link
-							href={`/${item?.media_type}/${item?.original_title}/${item?.id}`}
-						>
-							<div className={styles.slideContainer}>
-								<div className={styles.imageContainer}>
-									<Image
-										unoptimized
-										src={getImageBaseLink({
-											type: "backdrop",
-											quality: "xl",
-											path: item.backdrop_path,
-										})}
-										alt={`${item.title}`}
-										width={2000}
-										height={500}
-										priority={index === 0}
-									/>
-								</div>
-								<div className={`${styles.contentContainer}`}>
-									<div className="flex gap-3 justify-center">
+						<div className={styles.slideContainer}>
+							<div className={styles.imageContainer}>
+								<Image
+									unoptimized
+									src={getImageBaseLink({
+										type: "backdrop",
+										quality: "xl",
+										path: item.backdrop_path,
+									})}
+									alt={`${item.title}`}
+									width={2000}
+									height={500}
+									priority={index === 0}
+								/>
+							</div>
+							<div className={`${styles.contentContainer}`}>
+								<div className="flex gap-3">
+									{item.vote_average ? (
 										<p
-											className={`${styles.rating} flex items-baseline  justify-center`}
+											className={`${styles.rating} flex items-baseline justify-center`}
 										>
 											<AiTwotoneStar />
 											<span className="ml-1">
-												{item.vote_average ? Math.floor(item.vote_average) : 0}
+												{Math.floor(item.vote_average)}
 											</span>
-											{"  "}/ 10
+											/ 10
 										</p>
+									) : null}
+									{item.vote_count ? (
 										<p
 											className={`${styles.rating} flex items-baseline justify-center`}
 										>
 											<IoIosPeople />
 											<span className="ml-1">{item.vote_count}</span>
 										</p>
-									</div>
-									<h3>{item.title}</h3>
+									) : null}
 								</div>
-								<div className={`${styles.movieCard} hidden md:flex`}>
+								<h3>{item.title}</h3>
+								<p className="w-1/2 line-clamp-3">{item?.overview}</p>
+								<Button rightIcon={<FaArrowRight />}>More Info</Button>
+							</div>
+							{/* <div className={`${styles.movieCard} hidden md:flex`}>
 									<div>
 										<Image
 											unoptimized
@@ -89,9 +95,8 @@ const HeroSection = ({ data }: props) => {
 											priority={index === 0}
 										/>
 									</div>
-								</div>
-							</div>
-						</Link>
+								</div> */}
+						</div>
 					</SwiperSlide>
 				))}
 			</Swiper>

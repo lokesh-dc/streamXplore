@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 
 import { BiMenuAltRight } from "react-icons/bi";
@@ -6,16 +7,31 @@ import styles from "@/styles/Navigation.module.css";
 import { decorateLink } from "@/utils";
 
 import SideNav from "./Sidenav";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchIconWithModal from "@/components/functional-components/SearchIconWithModal";
 const menu = ["movies", "tv series", "popular", "upcoming"];
 
 const NavigationBar = () => {
 	const [sidebarStatus, toggleSidebar] = useState(true);
+	const [scrolled, setScrolled] = useState(false);
+
+	useEffect(() => {
+		const onScroll = () => {
+			setScrolled(window.scrollY > 0);
+		};
+
+		window.addEventListener("scroll", onScroll);
+		onScroll();
+
+		return () => window.removeEventListener("scroll", onScroll);
+	}, []);
+
 	return (
 		<>
 			<div
-				className={`flex p-5 items-center justify-between ${styles.NavigationBar}`}
+				// className={` ${styles.NavigationBar}`}
+				className={`flex p-5 items-center justify-between fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-smooth,
+					${scrolled ? "glass glass-lg" : "bg-transparent"} ${styles.NavigationBar}`}
 			>
 				<h2 className={`${styles.brand}`}>
 					<Link href={"/"}>ON_SCREEN</Link>

@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 22px;
+
+    --blur-sm: 8px;
+    --blur-md: 14px;
+    --blur-lg: 20px;
+
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+[data-theme="dark"] {
+    --bg-main: #0b0b0b;
+    --bg-secondary: #121212;
+
+    --glass-bg: rgba(56, 56, 56, 0.3);
+    ;
+    --glass-border: rgba(255, 255, 255, 0.14);
+
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="light"] {
+    --bg-main: #f4f4f4;
+    --bg-secondary: #ffffff;
+
+    --glass-bg: rgba(255, 255, 255, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.35);
+
+    --text-primary: #111111;
+    --text-secondary: rgba(0, 0, 0, 0.6);
+
+    --shadow-glass: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top,
+            #1a1a1a,
+            #0b0b0b 60%);
+    color: var(--text-primary);
+    position: relative;
+}
+
+[data-theme="light"] body {
+    background:
+        radial-gradient(circle at top,
+            #ffffff,
+            #f1f1f1 60%);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+        repeating-radial-gradient(circle at 0 0,
+            rgba(255, 255, 255, 0.06),
+            rgba(255, 255, 255, 0.06) 2px,
+            rgba(0, 0, 0, 0) 2px,
+            rgba(0, 0, 0, 0) 4px);
+
+    opacity: 0.15;
+    mix-blend-mode: overlay;
+}
+
+[data-theme="light"] body::before {
+    opacity: 0.025;
+    mix-blend-mode: multiply;
+}
+
+@layer components {
+    .glass {
+        background: var(--glass-bg);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+    }
+
+    .glass-sm {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .glass-lg {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+}
