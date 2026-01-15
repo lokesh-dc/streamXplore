@@ -1,14 +1,15 @@
 import { api_baseLink } from "@/constants";
 import { options } from "@/constants/api";
-const getMethod = async ({ path, params }) => {
+const getMethod = async ({ path, params, props = {} }) => {
 	const response = await fetch(
 		`${api_baseLink}${path}&include_adult=false`,
-		options
+		options,
+		{ next: { revalidate: 86400 }, ...props }
 	);
 
-	const data = await response.json();
+	let data = await response.json();
 	return {
-		data: data?.results,
+		data: data?.results || data?.genres,
 		totalPages: data?.total_pages,
 	};
 };

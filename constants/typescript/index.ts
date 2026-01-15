@@ -14,7 +14,8 @@ export interface movieDetails {
 	video: boolean | string | null;
 	vote_average: number | null;
 	vote_count: number | null;
-	media_type: string | null
+	media_type: string | null;
+	genres: Array<any>
 }
 
 export interface searchedDataEntry extends movieDetails {

@@ -1,11 +1,8 @@
 .NavigationBar {
     z-index: 10 !important;
     width: 100%;
-    position: sticky;
-    top: 0;
     position: fixed;
-    background-color: rgba(230, 228, 228, 0.3);
-    backdrop-filter: blur(8px);
+    top: 0;
 }
 
 .brand {
@@ -13,7 +10,7 @@
 }
 
 .menu {
-    font-size: 40px;
+    font-size: 30px;
 }
 
 .searchIcon {

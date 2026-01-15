@@ -22,7 +22,12 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -30,7 +35,9 @@
     "**/*.tsx",
     "components/SwiperCurousel.tsx",
     "constants/index.js",
-    "utils/methods/get.js"
+    "utils/methods/get.js",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
