@@ -57,12 +57,11 @@ const HomePage = ({ trending, trendingTV, popular, nowPlaying }: props) => {
 export default HomePage;
 
 export async function getServerSideProps() {
-
 	const [popular, nowPlaying, trending, trendingTV] = await Promise.all([
-		getPopularMovies(),
-		getMoviesPlayingInThetres(),
+		getPopularMovies(1),
+		getMoviesPlayingInThetres(1),
 		trendingMovies(),
-		trendingSeries(),
+		trendingSeries(1),
 	]);
 
 	return {

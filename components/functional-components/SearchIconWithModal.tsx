@@ -36,7 +36,7 @@ const SearchIconWithModal = () => {
 	return (
 		<>
 			<button onClick={() => toggleModalVisibility()}>
-				<FiSearch style={{ fontSize: "30px" }} />
+				<FiSearch style={{ fontSize: "20px" }} />
 			</button>
 			{isModalOpen ? (
 				<SearchModal

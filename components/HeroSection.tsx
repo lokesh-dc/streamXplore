@@ -29,10 +29,10 @@ const HeroSection = ({ data }: props) => {
 				pagination={{
 					dynamicBullets: true,
 				}}
-				// autoplay={{
-				// 	delay: 10000,
-				// 	disableOnInteraction: false,
-				// }}
+				autoplay={{
+					delay: 10000,
+					disableOnInteraction: true,
+				}}
 				navigation={true}
 				modules={[Navigation, Pagination, Autoplay]}
 				className="z-0"
@@ -43,11 +43,13 @@ const HeroSection = ({ data }: props) => {
 							<div className={styles.imageContainer}>
 								<Image
 									unoptimized
-									src={getImageBaseLink({
+									src={
+										getImageBaseLink({
 										type: "backdrop",
 										quality: "xl",
 										path: item.backdrop_path,
-									})}
+										})
+									}
 									alt={`${item.title}`}
 									width={2000}
 									height={500}
@@ -76,26 +78,11 @@ const HeroSection = ({ data }: props) => {
 										</p>
 									) : null}
 								</div>
+								{item?.genres?.map((gen) => (<div>{ gen?.name}</div>))}
 								<h3>{item.title}</h3>
 								<p className="w-1/2 line-clamp-3">{item?.overview}</p>
 								<Button rightIcon={<FaArrowRight />}>More Info</Button>
 							</div>
-							{/* <div className={`${styles.movieCard} hidden md:flex`}>
-									<div>
-										<Image
-											unoptimized
-											width={300}
-											height={200}
-											src={getImageBaseLink({
-												type: "poster",
-												quality: "lg",
-												path: item.poster_path,
-											})}
-											alt={`${item.title}`}
-											priority={index === 0}
-										/>
-									</div>
-								</div> */}
 						</div>
 					</SwiperSlide>
 				))}

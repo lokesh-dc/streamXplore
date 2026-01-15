@@ -2,6 +2,7 @@
 import Link from "next/link";
 
 import { BiMenuAltRight } from "react-icons/bi";
+import { BiUser } from "react-icons/bi";
 
 import styles from "@/styles/Navigation.module.css";
 import { decorateLink } from "@/utils";
@@ -36,7 +37,7 @@ const NavigationBar = () => {
 				<h2 className={`${styles.brand}`}>
 					<Link href={"/"}>ON_SCREEN</Link>
 				</h2>
-				<div className="gap-5 hidden md:flex content-center items-center">
+				<div className="gap-5 hidden md:flex content-center items-center glass glass-lg rounded-md px-3 py-2">
 					{menu?.map((item, index) => (
 						<h3 key={index} className="uppercase">
 							<Link href={decorateLink(`/${item}`)}>{item}</Link>
@@ -44,8 +45,10 @@ const NavigationBar = () => {
 					))}
 				</div>
 
-				<div className="flex gap-2">
+				<div className="flex gap-3 glass glass-lg rounded-md px-3 py-2 border border-white/40">
 					<SearchIconWithModal />
+					<BiUser style={{ fontSize: "20px" }} />
+
 					<button
 						className="md:hidden"
 						data-te-sidenav-toggle-ref

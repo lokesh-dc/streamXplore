@@ -13,7 +13,6 @@
   filter: brightness(50%);
   height: 100%;
   object-fit: cover;
-  /* object-position: top; */
 }
 
 .contentContainer {
@@ -66,7 +65,7 @@
 
 
 .rating {
-  color: rgba(255, 255, 255, 0.809);
+  color: rgba(255, 255, 255, 0.358) !important;
   font-size: 12px;
 }
 
@@ -77,9 +76,7 @@
 
 .rating>span {
   font-size: 30px;
-  color: white;
 }
-
 
 @media screen and (max-width: 600px) {
   .rating {
