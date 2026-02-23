@@ -2,9 +2,8 @@
 
 const nextConfig = {
 	reactStrictMode: false,
-	swcMinify: true,
 	images: {
-		domains: ["image.tmdb.org"],
+		remotePatterns: [{ hostname: "image.tmdb.org" }],
 	},
 	staticPageGenerationTimeout: 1000,
 };

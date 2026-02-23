@@ -24,15 +24,14 @@ export default async function HomePage() {
 			<NavigationBar />
 			<div className="flex flex-col gap-4">
 				<HeroSection data={nowPlaying?.data} />
-				<div className="flex flex-col gap-4 px-4 my-4">
+				{/* <div className="flex flex-col gap-4 px-4 my-4">
 					<div className="flex flex-col gap-3">
 						<div className="flex justify-between">
 							<h2>Trending Now</h2>
 							<Button
 								size="sm"
 								variant="secondary"
-								rightIcon={<FaArrowRight />}
-							>
+								rightIcon={<FaArrowRight />}>
 								See More
 							</Button>
 						</div>
@@ -56,7 +55,13 @@ export default async function HomePage() {
 							))}
 						</div>
 					</div>
-				</div>
+				</div> */}
+
+				<MovieContainer
+					data={popular?.data}
+					title="Popular this week"
+					showType="movie"
+				/>
 
 				<MovieContainer
 					data={nowPlaying?.data}

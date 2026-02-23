@@ -36,10 +36,6 @@
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.31) 50%, rgba(0, 0, 0, 0.1) 100%);
 }
 
-.contentContainer h3 {
-  margin-top: -10px;
-}
-
 .slideContainer .movieCard {
   z-index: 10 !important;
   position: absolute;
@@ -102,6 +98,7 @@
   .contentContainer h3 {
     margin: 0;
     font-size: 18px;
+    line-height: 20px;
   }
 }
 
