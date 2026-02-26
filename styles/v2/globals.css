@@ -98,3 +98,13 @@ body::before {
         -webkit-backdrop-filter: blur(20px);
     }
 }
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.348);
+    color: rgba(255, 255, 255, 0.38);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}

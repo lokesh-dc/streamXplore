@@ -16,6 +16,7 @@ import { movieDetails } from "@/constants/typescript";
 import { Button } from "./buttons";
 
 import { FaArrowRight } from "react-icons/fa";
+import Tags from "./tags";
 
 interface props {
 	data: Array<movieDetails> | null | undefined;
@@ -35,21 +36,18 @@ const HeroSection = ({ data }: props) => {
 				}}
 				navigation={true}
 				modules={[Navigation, Pagination, Autoplay]}
-				className="z-0"
-			>
+				className="z-0">
 				{data?.map((item, index) => (
 					<SwiperSlide key={index}>
 						<div className={styles.slideContainer}>
 							<div className={styles.imageContainer}>
 								<Image
 									unoptimized
-									src={
-										getImageBaseLink({
+									src={getImageBaseLink({
 										type: "backdrop",
 										quality: "xl",
 										path: item.backdrop_path,
-										})
-									}
+									})}
 									alt={`${item.title}`}
 									width={2000}
 									height={500}
@@ -60,8 +58,7 @@ const HeroSection = ({ data }: props) => {
 								<div className="flex gap-3">
 									{item.vote_average ? (
 										<p
-											className={`${styles.rating} flex items-baseline justify-center`}
-										>
+											className={`${styles.rating} flex items-baseline justify-center`}>
 											<AiTwotoneStar />
 											<span className="ml-1">
 												{Math.floor(item.vote_average)}
@@ -71,16 +68,19 @@ const HeroSection = ({ data }: props) => {
 									) : null}
 									{item.vote_count ? (
 										<p
-											className={`${styles.rating} flex items-baseline justify-center`}
-										>
+											className={`${styles.rating} flex items-baseline justify-center`}>
 											<IoIosPeople />
 											<span className="ml-1">{item.vote_count}</span>
 										</p>
 									) : null}
 								</div>
-								{item?.genres?.map((gen) => (<div>{ gen?.name}</div>))}
-								<h3>{item.title}</h3>
-								<p className="w-1/2 line-clamp-3">{item?.overview}</p>
+								<div className="flex flex-col gap-2">
+									<Tags variant="glassy" data={item?.genres} />
+									<h3 className="text-3xl">{item.title}</h3>
+								</div>
+								<p className="w-1/2 line-clamp-3 text-gray-300">
+									{item?.overview}
+								</p>
 								<Button rightIcon={<FaArrowRight />}>More Info</Button>
 							</div>
 						</div>

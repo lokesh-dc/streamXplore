@@ -23,6 +23,10 @@ const sideNavData = [
 		text: "Trending TV Series",
 		href: "/tv-series",
 	},
+	{
+		text: "Recommendations",
+		href: "/recommendations",
+	},
 ];
 const SideNav: React.FC<props> = ({ status, toggleStatus }): ReactElement => {
 	return (
