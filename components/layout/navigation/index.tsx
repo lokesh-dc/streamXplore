@@ -37,7 +37,7 @@ const NavigationBar = () => {
 				<h2 className={`${styles.brand}`}>
 					<Link href={"/"}>ON_SCREEN</Link>
 				</h2>
-				<div className="gap-5 hidden md:flex content-center items-center glass glass-lg rounded-md px-3 py-2">
+				<div className="gap-5 hidden md:flex content-center items-center glass glass-card rounded-md px-3 py-2">
 					{menu?.map((item, index) => (
 						<h3 key={index} className="uppercase">
 							<Link href={decorateLink(`/${item}`)}>{item}</Link>

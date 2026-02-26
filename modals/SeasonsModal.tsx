@@ -1,3 +1,4 @@
+"use client";
 import React, { ReactElement, useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 

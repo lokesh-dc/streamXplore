@@ -1,25 +1,24 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: [
+		"./app/**/*.{js,ts,jsx,tsx,mdx}",
 		"./pages/**/*.{js,ts,jsx,tsx,mdx}",
 		"./components/**/*.{js,ts,jsx,tsx,mdx}",
-		"./components/*.{js,ts,jsx,tsx,mdx}",
-		"./components/**/**/*.{js,ts,jsx,tsx,mdx}",
-		"./app/**/*.{js,ts,jsx,tsx,mdx}",
-		"./modal/*.{js,ts,jsx,tsx,mdx}",
+		"./modals/**/*.{js,ts,jsx,tsx,mdx}",
 	],
 	darkMode: ["class", '[data-theme="dark"]'],
-	content: [
-		"./app/**/*.{ts,tsx}",
-		"./pages/**/*.{ts,tsx}",
-		"./components/**/*.{ts,tsx}",
-	],
 	safelist: [
 		{
 			pattern: /glass(-sm|-md|-lg)?/,
 		},
 	],
 	theme: {
+		fontSize: {
+			sm: ["0.8125rem", { lineHeight: "1.2rem" }],
+			base: ["0.9375rem", { lineHeight: "1.5rem" }],
+			lg: ["1.0625rem", { lineHeight: "1.6rem" }],
+			"3xl": ["3rem", { lineHeight: "3.5rem" }],
+		},
 		extend: {
 			colors: {
 				bg: {
@@ -50,6 +49,20 @@ module.exports = {
 			},
 			transitionTimingFunction: {
 				smooth: "var(--ease)",
+			},
+			fontSize: {
+				"ui-xs": ["0.6875rem", { lineHeight: "1rem" }],
+				"ui-sm": ["0.75rem", { lineHeight: "1.1rem" }],
+				"ui-md": ["0.8125rem", { lineHeight: "1.2rem" }],
+
+				"title-sm": ["1.125rem", { lineHeight: "1.5rem" }],
+				"title-md": ["1.25rem", { lineHeight: "1.6rem" }],
+				"title-lg": ["1.5rem", { lineHeight: "1.9rem" }],
+				"title-xl": ["1.875rem", { lineHeight: "2.2rem" }],
+
+				"hero-sm": ["2.25rem", { lineHeight: "2.6rem" }],
+				"hero-md": ["3rem", { lineHeight: "3.4rem" }],
+				"hero-lg": ["3.75rem", { lineHeight: "4rem" }],
 			},
 		},
 	},

@@ -1,7 +1,6 @@
 import getPopularMovies from "@/dataFetchings/popularMovies";
 import getMoviesPlayingInThetres from "@/dataFetchings/nowPlayingIntheatres";
 
-import NavigationBar from "@/components/layout/navigation";
 import HeroSection from "@/components/HeroSection";
 import Image from "next/image";
 import { getImageBaseLink } from "@/constants";
@@ -15,24 +14,27 @@ import trendingMovies from "@/dataFetchings/trendingMovies";
 import trendingSeries from "@/dataFetchings/trendingSeries";
 import MovieContainer from "@/components/containers/SwiperMovieContainer";
 
+export const metadata = {
+	title: "MovieSearch - Your Ultimate Movie & TV Guide",
+	description: "Discover trending movies and TV series, search for your favorites, and get recommendations.",
+};
+
 export default async function HomePage() {
 	const pageData = await getPageDetails();
 	const { popular = {}, nowPlaying = {}, trending, trendingTV } = pageData;
 
 	return (
 		<>
-			<NavigationBar />
 			<div className="flex flex-col gap-4">
 				<HeroSection data={nowPlaying?.data} />
-				<div className="flex flex-col gap-4 px-4 my-4">
+				{/* <div className="flex flex-col gap-4 px-4 my-4">
 					<div className="flex flex-col gap-3">
 						<div className="flex justify-between">
 							<h2>Trending Now</h2>
 							<Button
 								size="sm"
 								variant="secondary"
-								rightIcon={<FaArrowRight />}
-							>
+								rightIcon={<FaArrowRight />}>
 								See More
 							</Button>
 						</div>
@@ -56,7 +58,13 @@ export default async function HomePage() {
 							))}
 						</div>
 					</div>
-				</div>
+				</div> */}
+
+				<MovieContainer
+					data={popular?.data}
+					title="Popular this week"
+					showType="movie"
+				/>
 
 				<MovieContainer
 					data={nowPlaying?.data}

@@ -1,3 +1,4 @@
+"use client";
 import { getImageBaseLink } from "@/constants";
 import SeasonsModal from "@/modals/SeasonsModal";
 import Image from "next/image";

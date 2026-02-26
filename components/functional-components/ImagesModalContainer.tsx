@@ -1,3 +1,4 @@
+"use client";
 import { movieImages } from "@/constants/typescript";
 import Modal from "@/modals/ImagesModal";
 import dynamic from "next/dynamic";
