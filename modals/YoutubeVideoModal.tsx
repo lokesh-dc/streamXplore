@@ -1,3 +1,4 @@
+"use client";
 import YoutubeEmbedComponent from "@/components/functional-components/YoutubeEmbedComponent";
 import { movieVideos } from "@/constants/typescript";
 import React, { ReactElement } from "react";

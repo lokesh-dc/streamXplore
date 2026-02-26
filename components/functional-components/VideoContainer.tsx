@@ -1,3 +1,4 @@
+"use client";
 import { movieVideos } from "@/constants/typescript";
 import YoutubeVideoModal from "@/modals/YoutubeVideoModal";
 import React, { ReactElement, useEffect, useState } from "react";
