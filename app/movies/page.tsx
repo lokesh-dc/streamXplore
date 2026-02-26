@@ -26,14 +26,14 @@ const DiscoverMoviesPage = async ({ searchParams }: PageProps) => {
 		<>
 			<PageTitle title="Discover Movies" />
 			{/* <div className="px-2 md:px-9 flex justify-start gap-10">
-				<SelectTag list={genresList?.genres} />
+				<SelectTag list={genresList?.data} />
 				<SelectTag list={[]} />
 			</div> */}
 			<GridMovieContainer
-				upcoming={data?.results || []}
+				upcoming={data?.data || []}
 				title="Popular Movies"
 				apiPath={"/discover/movie"}
-				total={data?.total_pages || 1}
+				total={data?.totalPages || 1}
 				showType="movie"
 			/>
 		</>

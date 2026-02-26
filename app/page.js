@@ -2,12 +2,7 @@ import getPopularMovies from "@/dataFetchings/popularMovies";
 import getMoviesPlayingInThetres from "@/dataFetchings/nowPlayingIntheatres";
 
 import HeroSection from "@/components/HeroSection";
-import Image from "next/image";
-import { getImageBaseLink } from "@/constants";
-import { Button } from "@/components/buttons";
-
-import { FaArrowRight } from "react-icons/fa";
-import getMoviesGenres from "@/dataFetchings/getGenres";
+import getMoviesGenres from "@/dataFetchings/getMoviesGenres";
 import { normalizeMovie } from "@/utils/genres";
 
 import trendingMovies from "@/dataFetchings/trendingMovies";

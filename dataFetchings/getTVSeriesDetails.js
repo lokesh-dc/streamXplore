@@ -1,12 +1,11 @@
-import { options } from "@/constants/api";
+import getMethod from "@/utils/methods/get";
 
-export default function getTvSeriesDetails(id) {
-	const details = fetch(
-		`https://api.themoviedb.org/3/tv/${id}?append_to_response=videos,credits,images`,
-		options
-	)
-		.then((response) => response.json())
-		.then((response) => response)
-		.catch((err) => err);
-	return details;
+export default async function getTvSeriesDetails(id) {
+	const result = await getMethod({
+		path: `/tv/${id}`,
+		params: {
+			append_to_response: "videos,credits,images",
+		},
+	});
+	return result.data;
 }

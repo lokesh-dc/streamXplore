@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import getMoviesGenres from "@/dataFetchings/getGenres";
+import getMoviesGenres from "@/dataFetchings/getMoviesGenres";
 import discoverMovies from "@/dataFetchings/discoverMovies";
 import getRecommendations from "@/dataFetchings/getRecommendations";
 import { getImageBaseLink } from "@/constants";
@@ -30,7 +30,7 @@ export default function RecommendationsPage() {
 		setSelectedGenre(genre);
 		setLoading(true);
 		const data = await discoverMovies({ genre: genre.id, page: 1 });
-		setMoviesInGenre(data.results || []);
+		setMoviesInGenre(data.data || []);
 		setLoading(false);
 		setStep(2);
 	};

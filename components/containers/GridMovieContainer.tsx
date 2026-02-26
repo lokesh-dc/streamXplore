@@ -26,8 +26,10 @@ const GridMovieContainer: React.FC<props> = ({
 
 	const getMoreUpcomingMovies = async () => {
 		const { data, totalPages } = await getMethod({
-			path: `${apiPath}?language=en-US&page=${page}`,
-			params: "",
+			path: apiPath,
+			params: {
+				page: page,
+			},
 		});
 		setData((prev): Array<movieDetails> => [...prev, ...data]);
 		setPage((page) => page + 1);

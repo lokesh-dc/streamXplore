@@ -1,12 +1,13 @@
-import { options } from "@/constants/api";
+import getMethod from "@/utils/methods/get";
 
-export default function getMovieDetails(id) {
-	const details = fetch(
-		`https://api.themoviedb.org/3/movie/${id}?append_to_response=videos,credits,images,recommendations`,
-		options
-	)
-		.then((response) => response.json())
-		.then((response) => response)
-		.catch((err) => err);
-	return details;
+export default async function getMovieDetails(id) {
+	const result = await getMethod({
+		path: `/movie/${id}`,
+		params: {
+			append_to_response: "videos,credits,images,recommendations",
+		},
+	});
+
+	console.log("result", result);
+	return result.data;
 }

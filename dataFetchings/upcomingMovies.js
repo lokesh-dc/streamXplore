@@ -1,8 +1,8 @@
 import getMethod from "../utils/methods/get";
 
-export default async function getUpcomingMovies() {
-	const movies = await getMethod({
-		path: "/movie/upcoming?language=en-US&page=1",
+export default async function getUpcomingMovies(page = 1) {
+	return await getMethod({
+		path: "/movie/upcoming",
+		params: { page },
 	});
-	return movies;
 }

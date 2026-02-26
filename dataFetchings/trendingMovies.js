@@ -1,8 +1,7 @@
 import getMethod from "@/utils/methods/get";
 
-export default async function getPopularMovies() {
-	const movies = await getMethod({
-		path: `/trending/movie/day?language=en-US`,
+export default async function getTrendingMovies() {
+	return await getMethod({
+		path: "/trending/movie/day",
 	});
-	return movies;
 }
