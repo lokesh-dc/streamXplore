@@ -1,13 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-
-// In App Router, metadata must be in a Server Component.
-// Since this is a Client Component, we can't export metadata from here.
-// I'll wrap this in a Server Component if needed, but for now I'll just leave it as is or add it to a layout if one exists here.
-// Wait, I can move metadata to app/recommendations/layout.js or similar.
-
-import NavigationBar from "@/components/layout/navigation";
 import getMoviesGenres from "@/dataFetchings/getGenres";
 import discoverMovies from "@/dataFetchings/discoverMovies";
 import getRecommendations from "@/dataFetchings/getRecommendations";
@@ -57,8 +50,6 @@ export default function RecommendationsPage() {
 		setRecommendations([]);
 		setStep(1);
 	};
-
-	console.log({ recommendations });
 
 	return (
 		<div
