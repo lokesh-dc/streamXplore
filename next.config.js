@@ -6,6 +6,7 @@ const nextConfig = {
 		remotePatterns: [{ hostname: "image.tmdb.org" }],
 	},
 	staticPageGenerationTimeout: 1000,
+	transpilePackages: ["swiper"],
 };
 
 module.exports = nextConfig;
