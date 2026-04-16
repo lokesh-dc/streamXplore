@@ -1,12 +1,8 @@
-import { options } from "@/constants/api";
+import getMethod from "@/utils/methods/get";
 
-export default function getSeriesSeasonDetails(id, season) {
-	const details = fetch(
-		`https://api.themoviedb.org/3/tv/${id}/season/${season}?language=en-US`,
-		options
-	)
-		.then((response) => response.json())
-		.then((response) => response)
-		.catch((err) => console.error(err));
-	return details;
+export default async function getSeriesSeasonDetails(id, season) {
+	const result = await getMethod({
+		path: `/tv/${id}/season/${season}`,
+	});
+	return result.data;
 }

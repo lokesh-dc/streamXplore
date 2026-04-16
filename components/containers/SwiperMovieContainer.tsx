@@ -3,9 +3,7 @@ import React, { ReactElement } from "react";
 
 import styles from "@/styles/MovieContainer.module.css";
 
-import dynamic from "next/dynamic";
-const MovieCard = dynamic(() => import("../cards/MovieCard"));
-// import MovieCard from "../cards/MovieCard";
+import MovieCard from "../cards/MovieCard";
 
 interface props {
 	data: Array<movieDetails> | null | undefined;

@@ -27,7 +27,8 @@ const HeroSection: React.FC<props> = ({
 				width={1200}
 				alt={`${title}`}
 			/>
-			<p
+
+			<div
 				className="absolute w-screen text-center text-7xl bebas_nueve pb-1 md:pb-10 hidden md:block"
 				style={{
 					bottom: 0,
@@ -38,7 +39,7 @@ const HeroSection: React.FC<props> = ({
 				}}
 			>
 				{title}
-			</p>
+			</div>
 		</div>
 	);
 };

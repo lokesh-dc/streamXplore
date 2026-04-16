@@ -1,12 +1,8 @@
-import { options } from "@/constants/api";
+import getMethod from "@/utils/methods/get";
 
-export default function getMovieDetails(id) {
-	const videos = fetch(
-		`https://api.themoviedb.org/3/movie/${id}/videos`,
-		options
-	)
-		.then((response) => response.json())
-		.then((response) => response)
-		.catch((err) => err);
-	return videos;
+export default async function getVideos(id) {
+	const result = await getMethod({
+		path: `/movie/${id}/videos`,
+	});
+	return result.data;
 }

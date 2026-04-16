@@ -5,6 +5,16 @@
     top: 0;
 }
 
+.navigations {
+    background-color: rgba(0, 0, 0, 0.558);
+    color: white;
+}
+
+.side_navigations {
+    background-color: rgba(0, 0, 0, 0.558);
+    color: white;
+}
+
 .brand {
     font-size: 20px;
 }
