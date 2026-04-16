@@ -13,7 +13,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
@@ -21,7 +21,9 @@
     "paths": {
       "@/*": [
         "./*"
-      ]
+      ],
+      "swiper": ["./node_modules/swiper/swiper.d.ts"],
+      "swiper/react": ["./node_modules/swiper/react/swiper-react.d.ts"]
     },
     "plugins": [
       {
