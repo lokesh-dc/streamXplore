@@ -4,7 +4,7 @@ export default async function getTvSeriesDetails(id) {
 	const result = await getMethod({
 		path: `/tv/${id}`,
 		params: {
-			append_to_response: "videos,credits,images",
+			append_to_response: "videos,credits,images,recommendations",
 		},
 	});
 	return result.data;
