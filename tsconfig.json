@@ -21,9 +21,7 @@
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "swiper": ["./node_modules/swiper/swiper.d.ts"],
-      "swiper/react": ["./node_modules/swiper/react/swiper-react.d.ts"]
+      ]
     },
     "plugins": [
       {
