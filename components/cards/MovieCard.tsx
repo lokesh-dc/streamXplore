@@ -1,6 +1,9 @@
+"use client";
 import { getImageBaseLink } from "@/constants";
 import Image from "next/image";
 import React, { ReactElement } from "react";
+import { motion } from "framer-motion";
+import { scaleHover } from "@/lib/animations";
 
 import styles from "@/styles/MovieContainer.module.css";
 import Link from "next/link";
@@ -23,10 +26,14 @@ const MovieCard: React.FC<props> = ({
 }): ReactElement => {
 	return (
 		<Link href={`${showType}/${decorateLink(title)}/${movieId}`}>
-			<div
+			<motion.div
+				variants={scaleHover}
+				initial="initial"
+				whileHover="hover"
+				whileTap="tap"
 				className={`${
 					type == "scroll_card" ? styles?.scroll_card : styles.card
-				} flex-col gap-1 transform`}
+				} flex-col gap-1 overflow-hidden rounded-xl will-change-transform`}
 			>
 				<div className={`${styles.cardImage}`}>
 					<Image
@@ -39,10 +46,10 @@ const MovieCard: React.FC<props> = ({
 							path: imgSrc,
 						})}
 						alt={`${title}`}
+						className="transition-opacity duration-300"
 					/>
 				</div>
-				
-			</div>
+			</motion.div>
 		</Link>
 	);
 };

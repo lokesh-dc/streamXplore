@@ -2,6 +2,12 @@
     font-size: 30px;
 }
 
+.swiperContainer {
+    overflow: hidden !important; /* Prevent horizontal page scroll */
+    padding: 24px 0; /* Add vertical padding to accommodate scaling cards */
+    margin: -24px 0; /* Offset padding to maintain layout spacing */
+}
+
 .card,
 .scroll_card {
     width: 300px !important;

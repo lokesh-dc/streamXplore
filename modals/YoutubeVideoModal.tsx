@@ -1,7 +1,10 @@
 "use client";
+
+import React, { ReactElement } from "react";
+import { motion } from "framer-motion";
+import { modalVariants } from "@/lib/animations";
 import YoutubeEmbedComponent from "@/components/functional-components/YoutubeEmbedComponent";
 import { movieVideos } from "@/constants/typescript";
-import React, { ReactElement } from "react";
 
 import { IoMdClose } from "react-icons/io";
 import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
@@ -15,6 +18,10 @@ interface props {
 	data: Array<movieVideos>;
 }
 
+/**
+ * Animated Youtube Video Modal.
+ * Uses the centralized motion system for smooth entry/exit.
+ */
 const YoutubeVideoModal: React.FC<props> = ({
 	position,
 	videoId,
@@ -24,64 +31,75 @@ const YoutubeVideoModal: React.FC<props> = ({
 }): ReactElement => {
 	const handleModalImageChange = (event: any, incre: number) => {
 		event.stopPropagation();
-		if (position + incre < data.length && position + incre > 0)
+		if (position + incre < data.length && position + incre >= 0)
 			changeModalVideo(
 				position + incre,
 				data[position + incre]?.key,
-				data[position]?.name
+				data[position + incre]?.name
 			);
 	};
 
 	return (
-		<div
-			className="fixed top-0 w-screen h-screen bg-black/90 flex flex-col justify-center items-center gap-2 default_screen_adjust"
-			style={{ padding: "0 10px", overflowY: "hidden", zIndex: 2055 }}
+		<motion.div
+			variants={modalVariants.backdrop}
+			initial="initial"
+			animate="animate"
+			exit="exit"
+			className="fixed top-0 left-0 w-screen h-screen bg-black/90 flex flex-col justify-center items-center gap-2 z-[2055] default_screen_adjust backdrop-blur-sm"
+			onClick={() => changeModalVideo({})}
 		>
-			<div
-				className="text-white flex w-screen md:w-11/12"
-				style={{ justifyContent: "end" }}
-				onClick={() => changeModalVideo({})}
-			>
-				<IoMdClose style={{ fontSize: "30px" }} />
-			</div>
-			<div className="youtubeModal">
-				<YoutubeEmbedComponent
-					classes={"w-full md:w-80 z-[2]"}
-					videoId={videoId}
-					title={title}
-				/>
-			</div>
-			<div
-				className="w-72 flex justify-between"
-				style={{ margin: "20px auto" }}
+			<motion.div
+				variants={modalVariants.content}
+				className="flex flex-col items-center w-full max-w-4xl px-4"
+				onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside content
 			>
 				<div
-					className="p-3 flex items-center"
-					onClick={(event) => handleModalImageChange(event, -1)}
-					style={{
-						color: position == 0 ? "rgba(255,255,255,0.4)" : "white",
-					}}
+					className="text-white flex w-full justify-end mb-2 cursor-pointer hover:scale-110 transition-transform"
+					onClick={() => changeModalVideo({})}
 				>
-					<RiArrowLeftSLine />
-					previous
+					<IoMdClose style={{ fontSize: "30px" }} />
 				</div>
-				<p className="p-3" style={{ color: "rgba(255,255,255,0.4)" }}>
-					{position + 1} / {data?.length}
-				</p>
+				
+				<div className="youtubeModal w-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-white/10">
+					<YoutubeEmbedComponent
+						classes={"w-full h-full"}
+						videoId={videoId}
+						title={title}
+					/>
+				</div>
 
-				<div
-					className="p-3 flex items-center"
-					style={{
-						color:
-							position == data?.length - 1 ? "rgba(255,255,255,0.4)" : "white",
-					}}
-					onClick={(event) => handleModalImageChange(event, 1)}
-				>
-					next
-					<RiArrowRightSLine style={{ fontSize: "18px" }} />
+				<div className="w-72 flex justify-between mt-6 text-white/80">
+					<div
+						className="p-3 flex items-center cursor-pointer hover:text-white transition-colors"
+						onClick={(event) => handleModalImageChange(event, -1)}
+						style={{
+							opacity: position === 0 ? 0.3 : 1,
+							pointerEvents: position === 0 ? "none" : "auto",
+						}}
+					>
+						<RiArrowLeftSLine />
+						<span className="ml-1">previous</span>
+					</div>
+					
+					<p className="p-3 opacity-40 font-mono">
+						{position + 1} / {data?.length}
+					</p>
+
+					<div
+						className="p-3 flex items-center cursor-pointer hover:text-white transition-colors"
+						onClick={(event) => handleModalImageChange(event, 1)}
+						style={{
+							opacity: position === data?.length - 1 ? 0.3 : 1,
+							pointerEvents: position === data?.length - 1 ? "none" : "auto",
+						}}
+					>
+						<span className="mr-1">next</span>
+						<RiArrowRightSLine style={{ fontSize: "18px" }} />
+					</div>
 				</div>
-			</div>
-		</div>
+			</motion.div>
+		</motion.div>
 	);
 };
+
 export default YoutubeVideoModal;
