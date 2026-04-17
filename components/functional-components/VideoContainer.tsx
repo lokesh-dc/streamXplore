@@ -2,6 +2,7 @@
 import { movieVideos } from "@/constants/typescript";
 import YoutubeVideoModal from "@/modals/YoutubeVideoModal";
 import React, { ReactElement, useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 
 interface props {
 	data: Array<movieVideos>;
@@ -58,9 +59,9 @@ const VideosContainer: React.FC<props> = ({ data, movieId }): ReactElement => {
 							{/* @ts-ignore */}
 							{movieVideos[item]?.map(({ name, type, key }, playlistIndex) => (
 								<div
-									className="movie_video_card flex-col"
+									className="movie_video_card flex-col cursor-pointer transition-colors hover:bg-white/5"
 									key={playlistIndex}
-									onClick={() => changeModalVideo(index, key, name)}
+									onClick={() => changeModalVideo(playlistIndex, key, name)}
 								>
 									<h3>{`${name?.substring(0, 30)}${
 										name.length > 30 ? "..." : ""
@@ -72,15 +73,18 @@ const VideosContainer: React.FC<props> = ({ data, movieId }): ReactElement => {
 					</div>
 				))}
 			</div>
-			{modalVideo?.key ? (
-				<YoutubeVideoModal
-					videoId={modalVideo?.key}
-					title={modalVideo?.title}
-					position={modalVideo?.position}
-					changeModalVideo={changeModalVideo}
-					data={data}
-				/>
-			) : null}
+			
+			<AnimatePresence>
+				{modalVideo?.key && (
+					<YoutubeVideoModal
+						videoId={modalVideo?.key}
+						title={modalVideo?.title}
+						position={modalVideo?.position}
+						changeModalVideo={changeModalVideo}
+						data={data}
+					/>
+				)}
+			</AnimatePresence>
 		</>
 	) : null;
 };

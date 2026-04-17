@@ -22,7 +22,10 @@ interface PageProps {
  * Fetches and transforms TV series details for the server component.
  */
 async function getPageData(id: string) {
-	const details = await getTvSeriesDetails(id);
+	const details = await getTvSeriesDetails(
+		id,
+		"videos,credits,images,recommendations",
+	);
 
 	if (!details || details.success === false) return null;
 
@@ -87,7 +90,9 @@ async function getPageData(id: string) {
 	};
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+	params,
+}: PageProps): Promise<Metadata> {
 	const { title } = await params;
 	return {
 		title: decodeURIComponent(title),

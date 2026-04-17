@@ -21,7 +21,10 @@ interface PageProps {
  * Fetches and transforms movie details for the server component.
  */
 async function getPageData(id: string) {
-	const details = await getMovieDetails(id);
+	const details = await getMovieDetails(
+		id,
+		"videos,credits,images,recommendations",
+	);
 
 	if (!details || details.success === false) return null;
 
@@ -89,7 +92,9 @@ async function getPageData(id: string) {
 	};
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+	params,
+}: PageProps): Promise<Metadata> {
 	const { title } = await params;
 	return {
 		title: decodeURIComponent(title),
