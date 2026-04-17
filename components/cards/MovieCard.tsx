@@ -10,11 +10,12 @@ import Link from "next/link";
 import { decorateLink } from "@/utils";
 
 type props = {
-	imgSrc: string;
+	imgSrc: string | null;
 	title?: string;
 	movieId: number | null;
 	type?: string | null;
 	showType: string;
+	onClick?: (e: React.MouseEvent) => void;
 };
 
 const MovieCard: React.FC<props> = ({
@@ -23,9 +24,21 @@ const MovieCard: React.FC<props> = ({
 	movieId,
 	type,
 	showType,
+	onClick,
 }): ReactElement => {
+	const handleClick = (e: React.MouseEvent) => {
+		if (onClick) {
+			e.preventDefault();
+			e.stopPropagation();
+			onClick(e);
+		}
+	};
+
 	return (
-		<Link href={`${showType}/${decorateLink(title)}/${movieId}`}>
+		<Link
+			href={`${showType}/${decorateLink(title)}/${movieId}`}
+			onClick={handleClick}
+		>
 			<motion.div
 				variants={scaleHover}
 				initial="initial"

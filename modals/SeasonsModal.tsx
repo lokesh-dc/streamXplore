@@ -44,7 +44,6 @@ const SeasonsModal: React.FC<props> = ({
 	const [isLoading, setLoading] = useState(false);
 
 	useEffect(() => {
-		console.log("oooyaaahhhh");
 		setLoading(true);
 		getSeriesSeasonDetails(seriesId, activeSeason)
 			.then((res) => {

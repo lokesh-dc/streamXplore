@@ -7,7 +7,5 @@ export default async function getMovieDetails(id) {
 			append_to_response: "videos,credits,images,recommendations",
 		},
 	});
-
-	console.log("result", result);
 	return result.data;
 }
