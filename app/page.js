@@ -12,7 +12,8 @@ import MotionPage from "@/components/layout/MotionPage";
 
 export const metadata = {
 	title: "MovieSearch - Your Ultimate Movie & TV Guide",
-	description: "Discover trending movies and TV series, search for your favorites, and get recommendations.",
+	description:
+		"Discover trending movies and TV series, search for your favorites, and get recommendations.",
 };
 
 export default async function HomePage() {
@@ -56,8 +57,8 @@ export async function getPageDetails() {
 			getMoviesGenres(),
 			trendingMovies(),
 			trendingSeries(),
-			trendingSeries(), // Note: trendingTV was missing in original logic, assuming trendingSeries is meant for TV? 
-			                  // Actually trendingSeries was imported but trendingTV was used.
+			trendingSeries(), // Note: trendingTV was missing in original logic, assuming trendingSeries is meant for TV?
+			// Actually trendingSeries was imported but trendingTV was used.
 		]);
 
 	return {

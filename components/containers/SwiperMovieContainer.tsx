@@ -22,7 +22,7 @@ const MovieContainer: React.FC<props> = ({
 	title,
 	showType,
 }): ReactElement => {
-	if (!data || data?.length) return <></>;
+	if (!data || !data?.length) return <></>;
 	return (
 		<div className="p-3 py-5 flex flex-col gap-1">
 			{title ? (
