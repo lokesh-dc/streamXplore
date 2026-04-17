@@ -17,32 +17,28 @@ interface props {
 	showType: string;
 }
 
-/**
- * Enhanced Movie Container using Swiper.js.
- * Configured with mousewheel.forceToAxis to prevent vertical scroll hijacking.
- */
 const MovieContainer: React.FC<props> = ({
 	data,
 	title,
 	showType,
 }): ReactElement => {
+	if (!data || data?.length) return <></>;
 	return (
 		<div className="p-3 py-5 flex flex-col gap-1">
 			{title ? (
 				<h2 className={`text-4xl bebas_nueve ${styles.title}`}>{title}</h2>
 			) : null}
-			
+
 			<Swiper
 				slidesPerView="auto"
 				spaceBetween={16}
 				freeMode={true}
 				mousewheel={{
-					forceToAxis: true,      // Allows vertical page scroll while mouse is over slider
-					releaseOnEdges: true,   // Releases wheel control at the start/end of slider
+					forceToAxis: true, // Allows vertical page scroll while mouse is over slider
+					releaseOnEdges: true, // Releases wheel control at the start/end of slider
 				}}
 				modules={[Mousewheel, FreeMode]}
-				className={`w-full ${styles.swiperContainer}`}
-			>
+				className={`w-full ${styles.swiperContainer}`}>
 				{data?.map((item, index) => (
 					<SwiperSlide key={index} className="!w-fit">
 						<MovieCard

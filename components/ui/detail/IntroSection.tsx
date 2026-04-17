@@ -52,7 +52,7 @@ const IntroSection: React.FC<props> = ({
 						<AiTwotoneStar />
 						{Math.floor(vote_average)} / 10
 					</p>
-					<h1 className="text-5xl bebas_nueve">{title}</h1>
+					<h1 className="text-3xl bebas_nueve">{title}</h1>
 				</div>
 				<h3 className="oswald">{tagline}</h3>
 				<div className="flex gap-3">

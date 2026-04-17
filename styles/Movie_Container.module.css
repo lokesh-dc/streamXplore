@@ -1,7 +1,5 @@
 .movieCardWrapper {
     width: 200px;
-    border: 1px solid rgba(81, 81, 81, 0.3);
-    padding: 5px;
 }
 
 .movieCardWrapper img {
