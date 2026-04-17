@@ -1,12 +1,19 @@
 import getMethod from "@/utils/methods/get";
 
+interface DiscoverMoviesProps {
+	page?: number;
+	genre?: string;
+	sort_by?: string;
+	year_gte?: string | null;
+}
+
 export default async function discoverMovies({
 	page = 1,
 	genre,
 	sort_by = "popularity.desc",
-	year_gte,
-}) {
-	const params = {
+	year_gte = null
+}: DiscoverMoviesProps) {
+	const params: any = {
 		page,
 		with_genres: genre,
 		sort_by,
