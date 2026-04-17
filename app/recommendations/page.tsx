@@ -220,7 +220,7 @@ export default function RecommendationsPage() {
 	};
 
 	return (
-		<div className="min-h-screen bg-[#0F0F0F] text-white pt-20 max-w-2xl mx-auto overflow-x-hidden">
+		<div className="min-h-screen bg-[#0F0F0F] text-white max-w-2xl mx-auto overflow-x-hidden">
 			<div className="fixed inset-0 bg-[#0F0F0F] -z-50" />
 
 			<AnimatePresence mode="wait">
@@ -236,7 +236,7 @@ export default function RecommendationsPage() {
 								<Image
 									unoptimized
 									src={getImageBaseLink({
-										path: "/aSmAmNAK2VYfb0rYlleYJ10s3CC.jpg",
+										path: "/72AoFPC5TY4DfJwXXS9rPwPeReD.jpg",
 										type: "poster",
 										quality: "lg",
 									})}
@@ -249,7 +249,7 @@ export default function RecommendationsPage() {
 								<Image
 									unoptimized
 									src={getImageBaseLink({
-										path: "/72AoFPC5TY4DfJwXXS9rPwPeReD.jpg",
+										path: "/7wIBfBl2gejt6xHxNSK0reVIm7E.jpg",
 										type: "poster",
 										quality: "lg",
 									})}
@@ -262,7 +262,7 @@ export default function RecommendationsPage() {
 								<Image
 									unoptimized
 									src={getImageBaseLink({
-										path: "/7wIBfBl2gejt6xHxNSK0reVIm7E.jpg",
+										path: "/aSmAmNAK2VYfb0rYlleYJ10s3CC.jpg",
 										type: "poster",
 										quality: "lg",
 									})}
@@ -348,7 +348,7 @@ export default function RecommendationsPage() {
 																type: "poster",
 																quality: "md",
 															})}
-															alt="Mood Preview"
+															alt=""
 															fill
 															className="object-cover"
 														/>
