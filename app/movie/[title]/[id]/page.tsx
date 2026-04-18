@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import getMovieDetails from "@/dataFetchings/getMovieDetails";
 import DetailV2 from "@/components/ui/detail/DetailV2";
-import MoviesContainer from "@/components/containers/MoviesContainer";
+import RecommendationContainer from "@/components/containers/RecommendationContainer";
 
 interface PageProps {
 	params: Promise<{
@@ -62,7 +62,7 @@ const MoviePage = async ({ params }: PageProps) => {
 				videos={videos?.results} 
 			/>
 			<div className="default_screen_padding mb-4">
-				<MoviesContainer
+				<RecommendationContainer
 					data={recommendations?.results}
 					title="Recommendations"
 				/>

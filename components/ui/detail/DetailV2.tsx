@@ -98,7 +98,7 @@ const DetailV2: React.FC<DetailV2Props> = ({
 	};
 
 	return (
-		<div className="bg-[#121212] text-white min-h-screen p-6 md:p-12 font-sans pt-24">
+		<div className="bg-[#121212] text-white min-h-screen font-sans pt-24 pb-12 default_screen_padding">
 			{/* Title and Rating Header */}
 			<div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
 				<h1 className="text-4xl md:text-5xl font-bold tracking-tight">
@@ -123,7 +123,7 @@ const DetailV2: React.FC<DetailV2Props> = ({
 
 			<div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-12 items-start">
 				{/* Left Column: Poster and Buttons (Sticky on Desktop) */}
-				<div className="flex flex-col gap-6 max-w-[350px] lg:sticky lg:top-28 self-start">
+				<div className="flex flex-col gap-6 lg:sticky lg:top-28 self-start">
 					<div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/5">
 						<Image
 							unoptimized

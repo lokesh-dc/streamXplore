@@ -68,49 +68,35 @@ p {
 }
 
 .default_screen_padding {
-    padding: 0 100px;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 
-.default_screen_adjust {
-    margin: 0 -100px;
-}
-
-
-.bebas_nueve {
-    font-family: var(--bebas-nueve) !important;
-    letter-spacing: 1px;
-}
-
-.text_with-background {
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-.movie_image_card {
-    display: inline-flex;
-    flex: none;
-    width: 200px;
-}
-
-
-.movie_video_card {
-    display: inline-flex;
-    flex: none;
-    width: 200px;
-    border: 1px solid rgba(128, 128, 128, 0.236);
-    border-radius: 5px;
-    padding: 5px;
-}
-
-
-@media screen and (max-width:600px) {
+@media screen and (max-width: 1280px) {
     .default_screen_padding {
-        padding: 0 10px;
+        padding-left: 60px;
+        padding-right: 60px;
     }
+}
 
-    .default_screen_adjust {
-        margin: 0 -10px;
+@media screen and (max-width: 1024px) {
+    .default_screen_padding {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .default_screen_padding {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .default_screen_padding {
+        padding-left: 16px;
+        padding-right: 16px;
     }
 }
 
