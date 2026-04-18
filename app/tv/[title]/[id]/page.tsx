@@ -18,7 +18,7 @@ interface PageProps {
 async function getPageData(id: string) {
 	const details = await getTvSeriesDetails(
 		id,
-		"videos,credits,images,recommendations",
+		"videos,credits,images,recommendations,external_ids",
 	);
 
 	if (!details || details.success === false) return null;
@@ -26,7 +26,6 @@ async function getPageData(id: string) {
 	if (details.adult) {
 		redirect("/popular");
 	}
-
 	return details;
 }
 
@@ -47,18 +46,14 @@ const TVSeriesPage = async ({ params }: PageProps) => {
 		return <div className="p-10 text-center">Series not found</div>;
 	}
 
-	const {
-		credits,
-		videos,
-		recommendations,
-	} = data;
+	const { credits, videos, recommendations } = data;
 
 	return (
 		<div className="flex flex-col gap-3 pb-5 bg-[#121212]">
-			<DetailV2 
-				data={data} 
-				credits={credits} 
-				videos={videos?.results} 
+			<DetailV2
+				data={data}
+				credits={credits}
+				videos={videos?.results}
 				isTv={true}
 			/>
 			<div className="default_screen_padding mb-4">
