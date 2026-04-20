@@ -17,6 +17,15 @@ export const metadata = {
 		template: "%s | MovieSearch",
 	},
 	description: "Discover the latest movies and TV series.",
+	appleWebApp: {
+		capable: true,
+		statusBarStyle: "black-translucent",
+	},
+};
+
+export const viewport = {
+	themeColor: "#000000",
+	colorScheme: "dark",
 };
 
 export default function RootLayout({ children }) {
