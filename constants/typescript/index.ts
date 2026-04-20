@@ -5,10 +5,12 @@ export interface movieDetails {
 	id: number | null;
 	original_language: string | null;
 	original_title: string | null;
+	original_name: string | null;
 	overview: string | null;
 	popularity: number | null;
 	poster_path: string | null;
 	release_date: string | null;
+	first_air_date: string | null;
 	title: string | null;
 	name: string | null;
 	video: boolean | string | null;

@@ -8,6 +8,7 @@ import { movieVideos } from "@/constants/typescript";
 
 import { IoMdClose } from "react-icons/io";
 import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
+import { useBodyLock } from "@/hooks/useBodyLock";
 
 interface props {
 	position: number;
@@ -29,6 +30,9 @@ const YoutubeVideoModal: React.FC<props> = ({
 	changeModalVideo,
 	data,
 }): ReactElement => {
+	// Lock body scroll
+	useBodyLock(true);
+
 	const handleModalImageChange = (event: any, incre: number) => {
 		event.stopPropagation();
 		if (position + incre < data.length && position + incre >= 0)
@@ -46,7 +50,7 @@ const YoutubeVideoModal: React.FC<props> = ({
 			animate="animate"
 			exit="exit"
 			className="fixed top-0 left-0 w-screen h-screen bg-black/90 flex flex-col justify-center items-center gap-2 z-[2055] default_screen_adjust backdrop-blur-sm"
-			onClick={() => changeModalVideo({})}
+			onClick={() => changeModalVideo(0, "", "")}
 		>
 			<motion.div
 				variants={modalVariants.content}
@@ -55,7 +59,7 @@ const YoutubeVideoModal: React.FC<props> = ({
 			>
 				<div
 					className="text-white flex w-full justify-end mb-2 cursor-pointer hover:scale-110 transition-transform"
-					onClick={() => changeModalVideo({})}
+					onClick={() => changeModalVideo(0, "", "")}
 				>
 					<IoMdClose style={{ fontSize: "30px" }} />
 				</div>

@@ -228,7 +228,7 @@ const DetailV2: React.FC<DetailV2Props> = ({
 											href={`https://www.imdb.com/title/${imdbId}`}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="text-[#d946ef] hover:underline font-medium">
+											className="text-primary hover:underline font-medium">
 											View on IMDb
 										</a>
 									</div>

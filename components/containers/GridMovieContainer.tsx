@@ -69,7 +69,7 @@ const GridMovieContainer: React.FC<props> = ({
 										{item?.vote_average?.toFixed(1)}/10
 									</p>
 									<p className="text-gray-400 text-sm">
-										{item?.release_date?.split("-")[0]}
+										{(item?.release_date || item?.first_air_date)?.split("-")[0]}
 									</p>
 								</div>
 							</div>
