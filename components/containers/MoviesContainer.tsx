@@ -26,8 +26,8 @@ const MoviesContainer: React.FC<props> = ({ data, title }): ReactElement => {
 					return (
 						<Link
 							key={index}
-							href={`/${movieItem?.media_type}/${decorateLink(
-								movieItem?.original_title,
+							href={`/${movieItem?.media_type || (movieItem?.title ? "movie" : "tv")}/${decorateLink(
+								movieItem?.original_title || movieItem?.original_name,
 							)}/${movieItem?.id}`}
 							className={`${styles?.movieCardWrapper}`}>
 							<div className={`relative flex flex-col gap-1`}>
@@ -49,13 +49,13 @@ const MoviesContainer: React.FC<props> = ({ data, title }): ReactElement => {
 											<AiTwotoneStar />
 											{movieItem?.vote_average?.toFixed(1)} / 10
 										</p>
-										{movieItem?.release_date ? (
+										{movieItem?.release_date || movieItem?.first_air_date ? (
 											<p className="text-gray-500">
-												{movieItem?.release_date?.split("-")[0]}
+												{(movieItem?.release_date || movieItem?.first_air_date)?.split("-")[0]}
 											</p>
 										) : null}
 									</div>
-									<h3 className="line-clamp-1">{movieItem?.title}</h3>
+									<h3 className="line-clamp-1">{movieItem?.title || movieItem?.name}</h3>
 								</div>
 							</div>
 						</Link>

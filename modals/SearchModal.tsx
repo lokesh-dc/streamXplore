@@ -10,6 +10,7 @@ import { BiSearch, BiLoaderAlt } from "react-icons/bi";
 import Link from "next/link";
 import { decorateLink } from "@/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { useBodyLock } from "@/hooks/useBodyLock";
 
 interface props {
 	toggleModalVisibility: () => void;
@@ -26,16 +27,14 @@ const SearchModal: React.FC<props> = ({
 }): ReactElement => {
 	const inputRef = useRef<HTMLInputElement>(null);
 
+	// Lock body scroll when search is open
+	useBodyLock(true);
+
 	useEffect(() => {
 		// Auto-focus the input on mount
 		if (inputRef.current) {
 			inputRef.current.focus();
 		}
-		// Prevent scrolling on the body when modal is open
-		document.body.style.overflow = "hidden";
-		return () => {
-			document.body.style.overflow = "auto";
-		};
 	}, []);
 
 	return (
@@ -55,7 +54,7 @@ const SearchModal: React.FC<props> = ({
 				{/* Search Header */}
 				<div className="flex items-center justify-between border-b border-white/10 pb-4">
 					<div className="flex items-center gap-4 flex-1">
-						<BiSearch className="text-3xl text-[#d946ef]" />
+						<BiSearch className="text-3xl text-primary" />
 						<input
 							ref={inputRef}
 							type="text"
@@ -67,7 +66,7 @@ const SearchModal: React.FC<props> = ({
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
-								className="animate-spin text-[#d946ef]"
+								className="animate-spin text-primary"
 							>
 								<BiLoaderAlt className="text-2xl" />
 							</motion.div>
@@ -100,10 +99,10 @@ const SearchModal: React.FC<props> = ({
 								>
 									<Link
 										href={`/${item.media_type}/${decorateLink(title)}/${item.id}`}
-										className="group flex gap-5 bg-white/5 hover:bg-white/10 p-3 rounded-xl border border-white/5 hover:border-[#d946ef]/30 transition-all"
+										className="group flex gap-5 bg-white/5 hover:bg-white/10 p-3 rounded-xl border border-white/5 hover:border-primary/30 transition-all"
 										onClick={toggleModalVisibility}
 									>
-										<div className="w-16 h-24 relative rounded-sm overflow-hidden flex-shrink-0 bg-zinc-800">
+										<div className="w-16 h-24 relative rounded-lg overflow-hidden flex-shrink-0 bg-zinc-800">
 											<Image
 												unoptimized
 												src={getImageBaseLink({
@@ -117,7 +116,7 @@ const SearchModal: React.FC<props> = ({
 											/>
 										</div>
 										<div className="flex flex-col justify-center gap-1">
-											<h3 className="text-lg font-bold text-white group-hover:text-[#d946ef] transition-colors line-clamp-1">
+											<h3 className="text-lg font-bold text-white group-hover:text-primary transition-colors line-clamp-1">
 												{title}
 											</h3>
 											<div className="flex items-center gap-3 text-sm text-gray-400">
@@ -125,7 +124,7 @@ const SearchModal: React.FC<props> = ({
 													{item.media_type}
 												</span>
 												{year && <span>{year}</span>}
-												<div className="flex items-center gap-1 text-[#d946ef] font-bold">
+												<div className="flex items-center gap-1 text-primary font-bold">
 													<AiFillStar className="text-sm" />
 													<span>{rating}</span>
 												</div>

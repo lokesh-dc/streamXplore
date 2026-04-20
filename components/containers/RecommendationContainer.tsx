@@ -23,7 +23,7 @@ const RecommendationContainer: React.FC<RecommendationContainerProps> = ({ data,
 	return (
 		<div className="mt-16 mb-12">
 			<div className="flex items-center justify-between mb-8">
-				<h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white border-l-4 border-[#d946ef] pl-4">
+				<h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white border-l-4 border-primary pl-4">
 					{title}
 				</h2>
 				<div className="h-[1px] flex-1 bg-gradient-to-r from-white/10 to-transparent ml-8"></div>
@@ -48,7 +48,7 @@ const RecommendationContainer: React.FC<RecommendationContainerProps> = ({ data,
 								href={`/${mediaType}/${decorateLink(movieTitle)}/${movie.id}`}
 								className="group block relative"
 							>
-								<div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-white/5 border border-white/10 shadow-lg group-hover:shadow-[#d946ef]/10 transition-all duration-300">
+								<div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-white/5 border border-white/10 shadow-lg group-hover:shadow-primary/10 transition-all duration-300">
 									<Image
 										unoptimized
 										src={getImageBaseLink({
@@ -63,7 +63,7 @@ const RecommendationContainer: React.FC<RecommendationContainerProps> = ({ data,
 									
 									{/* Overlay on hover */}
 									<div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-										<div className="flex items-center gap-1 text-[#d946ef] mb-1 font-bold">
+										<div className="flex items-center gap-1 text-primary mb-1 font-bold">
 											<AiFillStar className="text-sm" />
 											<span className="text-xs">{movie.vote_average?.toFixed(1)}</span>
 										</div>
@@ -72,7 +72,7 @@ const RecommendationContainer: React.FC<RecommendationContainerProps> = ({ data,
 								</div>
 
 								<div className="mt-3 px-1">
-									<h3 className="text-sm font-semibold text-gray-100 group-hover:text-[#d946ef] transition-colors line-clamp-1">
+									<h3 className="text-sm font-semibold text-gray-100 group-hover:text-primary transition-colors line-clamp-1">
 										{movieTitle}
 									</h3>
 									<p className="text-xs text-gray-500 font-medium mt-1">

@@ -6,7 +6,8 @@
 :root {
     --bebas-nueve: 'Bebas Neue', sans-serif;
     --oswald: 'Oswald', sans-serif;
-    --primary-color: white
+    --primary-color: #E6501B;
+    --primary-rgb: 230 80 27
 }
 
 p {
@@ -63,8 +64,33 @@ p {
     scrollbar-width: none !important;
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+    display: block !important;
+    height: 6px !important;
+    width: 6px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 10px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(var(--primary-rgb), 0.3) !important;
+    border-radius: 10px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--primary-rgb), 0.6) !important;
+}
+
+.custom-scrollbar {
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(var(--primary-rgb), 0.3) rgba(255, 255, 255, 0.05) !important;
+}
+
 #nprogress .bar {
-    background: rgb(220, 51, 51) !important;
+    background: var(--primary-color) !important;
 }
 
 .default_screen_padding {

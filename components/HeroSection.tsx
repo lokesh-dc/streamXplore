@@ -17,6 +17,8 @@ import { Button } from "./buttons";
 
 import { FaArrowRight } from "react-icons/fa";
 import Tags from "./tags";
+import Link from "next/link";
+import { decorateLink } from "@/utils";
 
 interface props {
 	data: Array<movieDetails> | null | undefined;
@@ -37,55 +39,62 @@ const HeroSection = ({ data }: props) => {
 				navigation={true}
 				modules={[Navigation, Pagination, Autoplay]}
 				className="z-0">
-				{data?.map((item, index) => (
-					<SwiperSlide key={index}>
-						<div className={styles.slideContainer}>
-							<div className={styles.imageContainer}>
-								<Image
-									unoptimized
-									src={getImageBaseLink({
-										type: "backdrop",
-										quality: "xl",
-										path: item.backdrop_path,
-									})}
-									alt={`${item.title}`}
-									width={2000}
-									height={500}
-									priority={index === 0}
-								/>
-							</div>
-							<div className={`${styles.contentContainer}`}>
-								<div className="flex gap-3">
-									{item.vote_average ? (
-										<p
-											className={`${styles.rating} flex items-baseline justify-center`}>
-											<AiTwotoneStar />
-											<span className="ml-1">
-												{Math.floor(item.vote_average)}
-											</span>
-											/ 10
-										</p>
-									) : null}
-									{item.vote_count ? (
-										<p
-											className={`${styles.rating} flex items-baseline justify-center`}>
-											<IoIosPeople />
-											<span className="ml-1">{item.vote_count}</span>
-										</p>
-									) : null}
+				{data?.map((item, index) => {
+					const title = item.title || item.name;
+					const mediaType = item.media_type || (item.title ? "movie" : "tv");
+
+					return (
+						<SwiperSlide key={index}>
+							<div className={styles.slideContainer}>
+								<div className={styles.imageContainer}>
+									<Image
+										unoptimized
+										src={getImageBaseLink({
+											type: "backdrop",
+											quality: "xl",
+											path: item.backdrop_path,
+										})}
+										alt={`${title}`}
+										width={2000}
+										height={500}
+										priority={index === 0}
+									/>
 								</div>
-								<div className="flex flex-col gap-2">
-									<Tags variant="glassy" data={item?.genres} />
-									<h3 className="text-3xl">{item.title}</h3>
+								<div className={`${styles.contentContainer}`}>
+									<div className="flex gap-3">
+										{item.vote_average ? (
+											<p
+												className={`${styles.rating} flex items-baseline justify-center`}>
+												<AiTwotoneStar />
+												<span className="ml-1">
+													{Math.floor(item.vote_average)}
+												</span>
+												/ 10
+											</p>
+										) : null}
+										{item.vote_count ? (
+											<p
+												className={`${styles.rating} flex items-baseline justify-center`}>
+												<IoIosPeople />
+												<span className="ml-1">{item.vote_count}</span>
+											</p>
+										) : null}
+									</div>
+									<div className="flex flex-col gap-2">
+										<Tags variant="glassy" data={item?.genres} />
+										<h3 className="text-3xl">{title}</h3>
+									</div>
+									<p className="w-1/2 line-clamp-3 text-gray-300">
+										{item?.overview}
+									</p>
+									<Link href={`/${mediaType}/${decorateLink(title)}/${item.id}`}>
+										<Button rightIcon={<FaArrowRight />}>More Info</Button>
+									</Link>
 								</div>
-								<p className="w-1/2 line-clamp-3 text-gray-300">
-									{item?.overview}
-								</p>
-								<Button rightIcon={<FaArrowRight />}>More Info</Button>
 							</div>
-						</div>
-					</SwiperSlide>
-				))}
+						</SwiperSlide>
+					);
+				})}
 			</Swiper>
 		</div>
 	);

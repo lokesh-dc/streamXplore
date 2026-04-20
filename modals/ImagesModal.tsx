@@ -6,6 +6,7 @@ import React, { ReactElement } from "react";
 
 import { IoMdClose } from "react-icons/io";
 import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
+import { useBodyLock } from "@/hooks/useBodyLock";
 
 interface props {
 	position: number;
@@ -21,6 +22,9 @@ const Modal: React.FC<props> = ({
 	changeModalImage,
 	data,
 }): ReactElement => {
+	// Lock body scroll
+	useBodyLock(true);
+
 	const handleModalImageChange = (event: any, incre: number) => {
 		event.stopPropagation();
 		if (position + incre < data.length && position + incre >= 0)
@@ -29,62 +33,57 @@ const Modal: React.FC<props> = ({
 
 	return (
 		<div
-			className="fixed top-0 z-[2055] h-screen w-screen bg-black/90 flex flex-col justify-center items-center gap-2 default_screen_adjust"
-			style={{ padding: "0 10px", overflowY: "hidden", zIndex: 2055 }}
+			className="fixed inset-0 z-[2055] bg-black/95 flex flex-col justify-center items-center p-4 backdrop-blur-sm"
 			onClick={(event) => {
 				event.stopPropagation();
 				changeModalImage("");
 			}}
 		>
 			<div
-				className="w-full text-white flex cursor-pointer"
-				style={{ justifyContent: "end" }}
+				className="w-full max-w-5xl text-white flex cursor-pointer justify-end mb-4"
 				onClick={() => changeModalImage("")}
 			>
-				<IoMdClose style={{ fontSize: "30px" }} />
+				<div className="p-2 hover:bg-white/10 rounded-full transition-colors">
+					<IoMdClose style={{ fontSize: "30px" }} />
+				</div>
 			</div>
-			<div className="h-fit">
+			
+			<div className="relative w-full max-w-5xl aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10">
 				<Image
 					unoptimized
+					fill
 					src={getImageBaseLink({
 						path: mediaSource,
 						type: "backdrop",
 						quality: "lg",
 					})}
-					width={900}
-					height={500}
+					className="object-contain bg-black"
 					alt={`image`}
 				/>
 			</div>
-			<div
-				className="w-72 flex justify-between"
-				style={{ margin: "20px auto" }}
-			>
-				<div
-					className="p-3 flex items-center cursor-pointer"
+
+			<div className="flex items-center gap-8 mt-8 text-white">
+				<button
+					className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
 					onClick={(event) => handleModalImageChange(event, -1)}
-					style={{
-						color: position == 0 ? "rgba(255,255,255,0.4)" : "white",
-					}}
+					disabled={position === 0}
 				>
-					<RiArrowLeftSLine />
-					previous
-				</div>
-				<p className="p-3" style={{ color: "rgba(255,255,255,0.4)" }}>
+					<RiArrowLeftSLine className="text-xl" />
+					<span className="font-medium">Previous</span>
+				</button>
+
+				<p className="font-mono text-white/50 bg-white/5 px-4 py-1 rounded-full text-sm">
 					{position + 1} / {data?.length}
 				</p>
 
-				<div
-					className="p-3 flex items-center cursor-pointer"
-					style={{
-						color:
-							position == data?.length - 1 ? "rgba(255,255,255,0.4)" : "white",
-					}}
+				<button
+					className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+					disabled={position === data?.length - 1}
 					onClick={(event) => handleModalImageChange(event, 1)}
 				>
-					next
-					<RiArrowRightSLine style={{ fontSize: "18px" }} />
-				</div>
+					<span className="font-medium">Next</span>
+					<RiArrowRightSLine className="text-xl" />
+				</button>
 			</div>
 		</div>
 	);
