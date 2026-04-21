@@ -1,8 +1,13 @@
 "use client";
 
-import React, { ReactElement, useRef, useEffect } from "react";
+import React, { ReactElement } from "react";
 import MovieImageCard from "@/components/cards/MovieImageCard";
 import { movieImages } from "@/constants/typescript";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Mousewheel, FreeMode } from "swiper";
+
+import "swiper/css";
+import "swiper/css/free-mode";
 
 interface props {
 	data: movieImages[];
@@ -15,47 +20,37 @@ const MovieImages: React.FC<props> = ({
 	title,
 	stateChange,
 }): ReactElement => {
-	const scrollRef = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		const el = scrollRef.current;
-		if (el) {
-			const onWheel = (e: WheelEvent) => {
-				if (e.deltaY === 0) return;
-				const isScrollingLeft = e.deltaY < 0;
-				const canScrollLeft = el.scrollLeft > 0;
-				const canScrollRight = el.scrollLeft < (el.scrollWidth - el.clientWidth);
-
-				if ((isScrollingLeft && canScrollLeft) || (!isScrollingLeft && canScrollRight)) {
-					e.preventDefault();
-					el.scrollLeft += e.deltaY;
-				}
-			};
-			el.addEventListener('wheel', onWheel, { passive: false });
-			return () => el.removeEventListener('wheel', onWheel);
-		}
-	}, []);
-
 	return (
 		<div className="mt-8 mb-4">
 			<h2 className="py-1 text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-3 mb-6">
 				<span className="w-1.5 h-6 bg-primary rounded-full"></span>
 				Images
 			</h2>
-			<div
-				ref={scrollRef}
-				className="flex gap-4 overflow-x-auto overflow-y-hidden pb-4 overscroll-x-contain no-scrollbar scrollbar-hide"
-			>
-				{data.map(({ file_path }, index) => (
-					<MovieImageCard
-						position={index}
-						imgSrc={file_path}
-						key={index}
-						title={title}
-						// @ts-ignore
-						stateChange={stateChange}
-					/>
-				))}
+			<div className="relative group">
+				<Swiper
+					slidesPerView="auto"
+					spaceBetween={16}
+					freeMode={true}
+					mousewheel={{
+						forceToAxis: true,
+						releaseOnEdges: true,
+					}}
+					modules={[Mousewheel, FreeMode]}
+					className="w-full !overflow-visible overscroll-x-contain touch-pan-y"
+				>
+					{data.map(({ file_path }, index) => (
+						<SwiperSlide key={index} className="!w-fit pb-4">
+							<MovieImageCard
+								position={index}
+								imgSrc={file_path}
+								key={index}
+								title={title}
+								// @ts-ignore
+								stateChange={stateChange}
+							/>
+						</SwiperSlide>
+					))}
+				</Swiper>
 			</div>
 		</div>
 	);

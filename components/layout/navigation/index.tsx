@@ -62,7 +62,8 @@ const NavigationBar = () => {
 	return (
 		<>
 			<div
-				className={`flex px-6 py-4 items-center justify-between fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${scrolled || isSearchOpen ? "bg-[#121212]/95 backdrop-blur-md border-b border-white/10" : "bg-transparent"
+				style={{ paddingTop: "calc(1rem + env(safe-area-inset-top))" }}
+				className={`flex px-6 pb-4 items-center justify-between fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${scrolled || isSearchOpen ? "bg-[#121212]/95 backdrop-blur-md border-b border-white/10" : "bg-transparent"
 					}`}>
 				<h2 className="text-2xl font-bold tracking-tight">
 					<Link href={"/"}>
@@ -76,7 +77,7 @@ const NavigationBar = () => {
 						className="w-full bg-white/5 border border-white/10 rounded-lg py-2 px-4 flex items-center justify-between text-gray-400 hover:bg-white/10 hover:border-primary/30 transition-all group"
 					>
 						<div className="flex items-center gap-3">
-							<BiSearch className="text-xl group-hover:text-primary" />
+							<BiSearch size={30} className="group-hover:text-primary" />
 							<span>Search movies, TV shows...</span>
 						</div>
 						<kbd className="hidden lg:inline-flex h-5 select-none items-center gap-1 rounded border border-white/20 bg-white/5 px-1.5 font-mono text-[10px] font-medium opacity-100">
@@ -93,13 +94,13 @@ const NavigationBar = () => {
 
 					<div className="flex items-center gap-4">
 						<button className="md:hidden p-2 text-gray-400 hover:text-white" onClick={() => setIsSearchOpen(true)}>
-							<BiSearch className="text-2xl" />
+							<BiSearch size={30} />
 						</button>
 						<div className="w-[1px] h-6 bg-white/10 mx-2 hidden md:block"></div>
-						<BiUser className="text-2xl text-gray-400 hover:text-primary cursor-pointer transition-colors" />
+						<BiUser size={24} className="text-gray-400 hover:text-primary cursor-pointer transition-colors" />
 						<button
 							onClick={() => toggleSidebar(!sidebarStatus)}>
-							<BiMenuAltRight className="text-3xl text-gray-400 hover:text-white transition-colors" />
+							<BiMenuAltRight size={30} className="text-gray-400 hover:text-white transition-colors" />
 						</button>
 					</div>
 				</div>

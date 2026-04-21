@@ -38,7 +38,7 @@ const MovieContainer: React.FC<props> = ({
 					releaseOnEdges: true, // Releases wheel control at the start/end of slider
 				}}
 				modules={[Mousewheel, FreeMode]}
-				className={`w-full ${styles.swiperContainer}`}>
+				className={`w-full ${styles.swiperContainer} overscroll-x-contain touch-pan-y`}>
 				{data?.map((item, index) => (
 					<SwiperSlide key={index} className="!w-fit">
 						<MovieCard

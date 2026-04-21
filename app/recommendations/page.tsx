@@ -6,6 +6,7 @@ import discoverMovies from "@/dataFetchings/discoverMovies";
 import discoverTV from "@/dataFetchings/discoverTV";
 import getMovieDetails from "@/dataFetchings/getMovieDetails";
 import getTvSeriesDetails from "@/dataFetchings/getTVSeriesDetails";
+import getRecommendations from "@/dataFetchings/getRecommendations";
 import { getImageBaseLink } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +19,7 @@ import {
 	FiCalendar,
 	FiArrowUp,
 	FiArrowDown,
+	FiCheckCircle,
 } from "react-icons/fi";
 
 const MOODS = [
@@ -125,11 +127,13 @@ export default function RecommendationsPage() {
 	const [selectedMoods, setSelectedMoods] = useState<string[]>([]);
 	const [selectedYear, setSelectedYear] = useState("");
 	const [selectedSort, setSelectedSort] = useState("popularity.desc");
+	const [selectedMovies, setSelectedMovies] = useState<any[]>([]);
+	const [movieChoices, setMovieChoices] = useState<any[]>([]);
 	const [discoveryPool, setDiscoveryPool] = useState<any[]>([]);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [currentDetails, setCurrentDetails] = useState<any>(null);
 	const [loading, setLoading] = useState(false);
-	const [step, setStep] = useState(0); // 0: Start, 1: Moods, 2: Filters, 3: Recommendation
+	const [step, setStep] = useState(0); // 0: Start, 1: Moods, 2: Filters, 3: Movie Selection, 4: Recommendation
 
 	const toggleMood = (id: string) => {
 		setSelectedMoods((prev) =>
@@ -137,9 +141,43 @@ export default function RecommendationsPage() {
 		);
 	};
 
-	const startDiscovery = async () => {
+	const toggleMovie = (movie: any) => {
+		setSelectedMovies((prev) =>
+			prev.find((m) => m.id === movie.id)
+				? prev.filter((m) => m.id !== movie.id)
+				: [...prev, movie],
+		);
+	};
+
+	const fetchMovieChoices = async () => {
 		setLoading(true);
 		setStep(3);
+		try {
+			const genreIds =
+				selectedMoods.length > 0
+					? MOODS.filter((m) => selectedMoods.includes(m.id))
+							.flatMap((m) => m.genres)
+							.join(",")
+					: undefined;
+
+			// Fetch popular movies with filters to give relevant choices
+			const res = await discoverMovies({
+				genre: genreIds,
+				page: 1,
+				sort_by: "popularity.desc",
+				year_gte: selectedYear || "2010", // Prefer newer for choices
+			});
+
+			setMovieChoices((res.data || []).slice(0, 12));
+		} catch (error) {
+			console.error("Error fetching movie choices:", error);
+		}
+		setLoading(false);
+	};
+
+	const startDiscovery = async () => {
+		setLoading(true);
+		setStep(4);
 
 		const genreIds =
 			selectedMoods.length > 0
@@ -148,6 +186,25 @@ export default function RecommendationsPage() {
 						.join("|")
 				: undefined;
 
+		let finalPool: any[] = [];
+
+		// If user selected movies, get recommendations for each and mix them
+		if (selectedMovies.length > 0) {
+			try {
+				const recPromises = selectedMovies.slice(0, 3).map((m) => getRecommendations(m.id));
+				const recsResults = await Promise.all(recPromises);
+				
+				recsResults.forEach((res) => {
+					if (res.data) {
+						finalPool.push(...res.data.map((item: any) => ({ ...item, type: "movie" })));
+					}
+				});
+			} catch (error) {
+				console.error("Error fetching refined recommendations:", error);
+			}
+		}
+
+		// Also get general discovery results to fill the pool or if no movies selected
 		const [movieRes, tvRes] = await Promise.all([
 			discoverMovies({
 				genre: genreIds,
@@ -163,16 +220,21 @@ export default function RecommendationsPage() {
 			}),
 		]);
 
-		const combinedPool = [
+		const discoveryResults = [
 			...(movieRes.data || []).map((m: any) => ({ ...m, type: "movie" })),
 			...(tvRes.data || []).map((t: any) => ({ ...t, type: "tv" })),
-		]
-			.filter((item) => item.poster_path || item.backdrop_path)
+		];
+
+		finalPool = [...finalPool, ...discoveryResults]
+			.filter((item, index, self) => 
+				(item.poster_path || item.backdrop_path) && 
+				self.findIndex(t => t.id === item.id) === index
+			)
 			.sort(() => Math.random() - 0.5);
 
-		setDiscoveryPool(combinedPool.slice(0, 10));
+		setDiscoveryPool(finalPool.slice(0, 15));
 		setCurrentIndex(0);
-		await fetchCurrentDetails(combinedPool[0]);
+		await fetchCurrentDetails(finalPool[0]);
 		setLoading(false);
 	};
 
@@ -206,6 +268,7 @@ export default function RecommendationsPage() {
 		setSelectedMoods([]);
 		setSelectedYear("");
 		setSelectedSort("popularity.desc");
+		setSelectedMovies([]);
 		setDiscoveryPool([]);
 		setCurrentIndex(0);
 		setCurrentDetails(null);
@@ -220,7 +283,7 @@ export default function RecommendationsPage() {
 	};
 
 	return (
-		<div className="min-h-screen bg-[#0F0F0F] text-white max-w-2xl mx-auto overflow-x-hidden">
+		<div className="min-h-screen bg-[#0F0F0F] text-white max-w-2xl mx-auto overflow-x-hidden pt-20">
 			<div className="fixed inset-0 bg-[#0F0F0F] -z-50" />
 
 			<AnimatePresence mode="wait">
@@ -280,10 +343,12 @@ export default function RecommendationsPage() {
 							Rate a few movies, tell us your vibe — we'll do the rest
 						</p>
 
-						<div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/90 to-transparent backdrop-blur-md z-50">
+						<div 
+							style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+							className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/90 to-transparent backdrop-blur-md z-50">
 							<button
 								onClick={() => setStep(1)}
-								className="w-full max-w-lg mx-auto block py-5 bg-[#EAEAEA] text-black rounded-full font-bold text-lg hover:bg-white transition-all shadow-xl uppercase tracking-widest">
+								className="w-full max-w-lg mx-auto flex items-center justify-center bg-[#EAEAEA] text-black rounded-full font-bold text-lg hover:bg-white transition-all shadow-xl uppercase tracking-widest h-12">
 								Start matching
 							</button>
 						</div>
@@ -304,7 +369,7 @@ export default function RecommendationsPage() {
 								✕
 							</button>
 							<span className="text-sm font-medium uppercase tracking-widest text-gray-500">
-								Step 1 of 2
+								Step 1 of 3
 							</span>
 							<span className="text-gray-400 text-xs font-mono font-bold">
 								{selectedMoods.length} Selected
@@ -370,10 +435,12 @@ export default function RecommendationsPage() {
 							})}
 						</div>
 
-						<div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/90 to-transparent backdrop-blur-md z-50">
+						<div 
+							style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+							className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/90 to-transparent backdrop-blur-md z-50">
 							<button
 								onClick={() => setStep(2)}
-								className="w-full max-w-lg mx-auto block py-5 bg-[#EAEAEA] text-black rounded-full font-bold text-lg hover:bg-white transition-all shadow-xl uppercase tracking-widest">
+								className="w-full max-w-lg mx-auto flex items-center justify-center bg-[#EAEAEA] text-black rounded-full font-bold text-lg hover:bg-white transition-all shadow-xl uppercase tracking-widest h-12 px-4 text-center">
 								{selectedMoods.length > 0
 									? `Continue with ${selectedMoods.length}`
 									: "I'm open to anything"}
@@ -396,7 +463,7 @@ export default function RecommendationsPage() {
 								<FiChevronLeft /> Back
 							</button>
 							<span className="text-sm font-medium uppercase tracking-widest text-gray-500">
-								Step 2 of 2
+								Step 2 of 3
 							</span>
 							<span className="text-gray-400 text-xs font-mono font-bold">
 								Refine
@@ -418,7 +485,7 @@ export default function RecommendationsPage() {
 										<button
 											key={y.label}
 											onClick={() => setSelectedYear(y.value)}
-											className={`px-6 py-3 rounded-full border-2 transition-all font-bold text-sm ${
+											className={`px-6 h-10 rounded-full border-2 transition-all font-bold text-sm flex items-center justify-center ${
 												selectedYear === y.value
 													? "bg-white text-black border-white"
 													: "bg-transparent text-gray-500 border-gray-800 hover:border-gray-600"
@@ -457,17 +524,100 @@ export default function RecommendationsPage() {
 							</div>
 						</div>
 
-						<div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/90 to-transparent backdrop-blur-md z-50">
+						<div 
+							style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+							className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/90 to-transparent backdrop-blur-md z-50">
 							<button
-								onClick={startDiscovery}
-								className="w-full max-w-lg mx-auto block py-5 bg-white text-black rounded-full font-bold text-lg hover:bg-gray-200 transition-all shadow-xl uppercase tracking-widest">
-								Find Recommendations
+								onClick={fetchMovieChoices}
+								className="w-full max-w-lg mx-auto flex items-center justify-center bg-white text-black rounded-full font-bold text-lg hover:bg-gray-200 transition-all shadow-xl uppercase tracking-widest h-12">
+								Continue
 							</button>
 						</div>
 					</motion.div>
 				)}
 
 				{step === 3 && (
+					<motion.div
+						key="movie-choices"
+						initial={{ opacity: 0, x: 50 }}
+						animate={{ opacity: 1, x: 0 }}
+						exit={{ opacity: 0, x: -50 }}
+						className="flex flex-col pb-10 relative px-4 md:px-8">
+						<div className="flex justify-between items-center mb-8">
+							<button
+								onClick={() => setStep(2)}
+								className="text-gray-400 hover:text-white transition-colors flex items-center gap-1">
+								<FiChevronLeft /> Back
+							</button>
+							<span className="text-sm font-medium uppercase tracking-widest text-gray-500">
+								Step 3 of 3
+							</span>
+							<span className="text-gray-400 text-xs font-mono font-bold">
+								Optional
+							</span>
+						</div>
+
+						<h1 className="text-3xl font-bold text-center mb-4 max-w-xs mx-auto uppercase bebas_nueve">
+							Any favorites here?
+						</h1>
+						<p className="text-gray-500 text-center mb-10 text-sm">
+							Select movies you've watched and liked for better recommendations
+						</p>
+
+						{loading ? (
+							<div className="flex flex-col items-center justify-center py-20">
+								<div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin mb-4" />
+								<p className="text-gray-500 font-bold uppercase tracking-widest text-xs">Curating Choices...</p>
+							</div>
+						) : (
+							<div className="grid grid-cols-3 gap-3 mb-32">
+								{movieChoices.map((movie) => {
+									const isSelected = selectedMovies.find((m) => m.id === movie.id);
+									return (
+										<button
+											key={movie.id}
+											onClick={() => toggleMovie(movie)}
+											className="relative aspect-[2/3] rounded-lg overflow-hidden group">
+											<Image
+												unoptimized
+												src={getImageBaseLink({
+													path: movie.poster_path,
+													type: "poster",
+													quality: "md",
+												})}
+												alt={movie.title}
+												fill
+												className={`object-cover transition-all duration-300 ${
+													isSelected ? "scale-105" : "opacity-60 grayscale-[0.5]"
+												}`}
+											/>
+											<div className={`absolute inset-0 bg-black/40 transition-opacity ${isSelected ? "opacity-100" : "opacity-0"}`} />
+											{isSelected && (
+												<div className="absolute inset-0 flex items-center justify-center">
+													<FiCheckCircle className="text-white text-3xl drop-shadow-lg" />
+												</div>
+											)}
+										</button>
+									);
+								})}
+							</div>
+						)}
+
+						<div 
+							style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+							className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/90 to-transparent backdrop-blur-md z-50">
+							<button
+								onClick={startDiscovery}
+								className="w-full max-w-lg mx-auto flex items-center justify-center bg-white text-black rounded-full font-bold text-lg hover:bg-gray-200 transition-all shadow-xl uppercase tracking-widest h-12 px-4 text-center">
+								{selectedMovies.length > 0
+									? `Refine with ${selectedMovies.length} movies`
+									: "Get Recommendations"}
+							</button>
+						</div>
+					</motion.div>
+				)}
+
+				{step === 4 && (
 					<motion.div
 						key="recommendation"
 						initial={{ opacity: 0 }}
@@ -493,14 +643,14 @@ export default function RecommendationsPage() {
 									<div className="absolute inset-0 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/60 to-transparent" />
 								</div>
 
-								<div className="relative z-10 p-6 flex justify-between items-center pt-12">
+								<div className="relative z-10 p-6 flex justify-between items-center pt-24">
 									<button
 										onClick={reset}
-										className="px-4 py-2 rounded-full bg-black/40 backdrop-blur-md flex items-center gap-2 text-white border border-white/10 text-sm font-bold">
+										className="px-4 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center gap-2 text-white border border-white/10 text-sm font-bold">
 										<FiChevronLeft size={20} />
 										Back
 									</button>
-									<span className="text-sm font-bold text-white/80 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+									<span className="text-sm font-bold text-white/80 bg-black/20 backdrop-blur-md px-4 h-10 flex items-center justify-center rounded-full border border-white/10">
 										{currentIndex + 1} of {discoveryPool.length}
 									</span>
 								</div>
@@ -559,16 +709,18 @@ export default function RecommendationsPage() {
 									</div>
 								</div>
 
-								<div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/95 to-transparent backdrop-blur-md z-50">
+								<div 
+									style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+									className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/95 to-transparent backdrop-blur-md z-50">
 									<div className="max-w-lg mx-auto flex flex-col gap-4">
 										<div className="flex gap-4">
 											<button
 												onClick={nextRecommendation}
-												className="flex-1 py-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all hover:bg-white/20 text-white">
+												className="flex-1 h-12 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all hover:bg-white/20 text-white">
 												<FiRotateCcw size={20} />
 												Rematch
 											</button>
-											<button className="flex-1 py-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all hover:bg-white/20 text-white">
+											<button className="flex-1 h-12 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all hover:bg-white/20 text-white">
 												<FiBookmark size={20} />
 												Save
 											</button>
@@ -576,7 +728,7 @@ export default function RecommendationsPage() {
 										<Link
 											prefetch={false}
 											href={`/${discoveryPool[currentIndex].type}/${decorateLink(currentDetails.title || currentDetails.name)}/${currentDetails.id}`}
-											className="block w-full py-5 bg-white text-black text-center font-bold rounded-2xl hover:bg-gray-200 transition-all shadow-2xl uppercase tracking-widest font-black">
+											className="w-full flex items-center justify-center bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all shadow-2xl uppercase tracking-widest font-black h-12">
 											Watch Details
 										</Link>
 									</div>

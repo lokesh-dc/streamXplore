@@ -1,5 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import { ReactElement } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+	FiFilm,
+	FiTrendingUp,
+	FiCalendar,
+	FiTv,
+	FiHeart,
+	FiX,
+	FiInstagram,
+	FiTwitter,
+	FiGithub,
+} from "react-icons/fi";
 
 type props = {
 	status: boolean | undefined;
@@ -10,67 +24,110 @@ const sideNavData = [
 	{
 		text: "Discover Movies",
 		href: "/movies",
+		icon: <FiFilm />,
 	},
 	{
 		text: "Popular Movies",
 		href: "/popular",
+		icon: <FiTrendingUp />,
 	},
 	{
 		text: "Upcoming Movies",
 		href: "/upcoming",
+		icon: <FiCalendar />,
 	},
 	{
 		text: "Trending TV Series",
 		href: "/tv-series",
+		icon: <FiTv />,
 	},
 	{
 		text: "Recommendations",
 		href: "/recommendations",
+		icon: <FiHeart />,
 	},
 ];
+
 const SideNav: React.FC<props> = ({ status, toggleStatus }): ReactElement => {
 	return (
-		<div
-			id="sidenav"
-			className="fixed left-0 top-0 z-[1035] h-screen w-screen -translate-x-full  shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] data-[te-sidenav-hidden='false']:translate-x-0"
-			data-te-sidenav-init
-			data-te-sidenav-hidden={`${status}`}
-			data-te-sidenav-mode="side"
-			data-te-sidenav-content="#content"
-			onClick={() => toggleStatus(!status)}
-			style={{ transition: "all 150ms ease-in" }}
-		>
-			<nav className="bg-black/90 h-screen w-72">
-				<ul
-					className="relative m-0 list-none px-[0.2rem] text-white"
-					data-te-sidenav-menu-ref
-				>
-					<div className="flex justify-between items-center py-5 px-3">
-						<h2 className="text-3xl">
-							<Link href={"/"}>ON_SCREEN</Link>
-						</h2>
-						<p onClick={() => toggleStatus(!status)} className="text-3xl">
-							&#10005;
-						</p>
-					</div>
-					{sideNavData.map((item, index) => (
-						<li
-							key={index}
-							className="relative"
-							onClick={() => toggleStatus(!status)}
-						>
-							<Link
-								href={item.href}
-								className="flex h-12 cursor-pointer items-center truncate rounded-[5px] px-6 py-4 text-xl text-gray-600 outline-none transition duration-300 ease-linear hover:bg-slate-50 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
-								data-te-sidenav-link-ref
+		<AnimatePresence>
+			{status && (
+				<>
+					{/* Backdrop */}
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						onClick={() => toggleStatus(false)}
+						className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[1034]"
+					/>
+
+					{/* Sidebar */}
+					<motion.div
+						initial={{ x: "-100%" }}
+						animate={{ x: 0 }}
+						exit={{ x: "-100%" }}
+						transition={{ type: "spring", damping: 25, stiffness: 200 }}
+						className="fixed left-0 top-0 z-[1035] h-screen w-80 bg-[#0B0B0B] border-r border-white/10 shadow-2xl flex flex-col"
+					>
+						<div className="p-8 flex justify-between items-center">
+							<h2 className="text-2xl font-bold tracking-tighter uppercase bebas_nueve">
+								ON_SCREEN
+							</h2>
+							<button
+								onClick={() => toggleStatus(false)}
+								className="p-2 hover:bg-white/10 rounded-full transition-colors"
 							>
-								<span>{item.text}</span>
-							</Link>
-						</li>
-					))}
-				</ul>
-			</nav>
-		</div>
+								<FiX size={24} className="text-gray-400" />
+							</button>
+						</div>
+
+						<nav className="flex-1 px-4 py-4">
+							<ul className="space-y-2">
+								{sideNavData.map((item, index) => (
+									<motion.li
+										key={index}
+										initial={{ opacity: 0, x: -20 }}
+										animate={{ opacity: 1, x: 0 }}
+										transition={{ delay: index * 0.1 }}
+									>
+										<Link
+											href={item.href}
+											onClick={() => toggleStatus(false)}
+											className="flex items-center gap-4 px-4 py-4 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all group"
+										>
+											<span className="text-xl group-hover:text-primary transition-colors">
+												{item.icon}
+											</span>
+											<span className="text-lg font-medium tracking-wide">
+												{item.text}
+											</span>
+										</Link>
+									</motion.li>
+								))}
+							</ul>
+						</nav>
+
+						<div className="p-8 border-t border-white/5">
+							<div className="flex gap-6 mb-8">
+								<a href="#" className="text-gray-500 hover:text-white transition-colors">
+									<FiInstagram size={20} />
+								</a>
+								<a href="#" className="text-gray-500 hover:text-white transition-colors">
+									<FiTwitter size={20} />
+								</a>
+								<a href="#" className="text-gray-500 hover:text-white transition-colors">
+									<FiGithub size={20} />
+								</a>
+							</div>
+							<p className="text-xs text-gray-600 uppercase tracking-widest font-bold">
+								© 2026 ON_SCREEN
+							</p>
+						</div>
+					</motion.div>
+				</>
+			)}
+		</AnimatePresence>
 	);
 };
 
