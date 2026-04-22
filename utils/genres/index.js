@@ -15,16 +15,33 @@ export const mapGenres = ({ ids = [], type, genreMaps }) => {
 		.filter(Boolean);
 };
 
-export const normalizeMovie = (movies, genreMaps) => {
-	let map = buildGenreMap(genreMaps);
+export const normalizeMovie = (movies, movieGenres) => {
+	let movieMap = buildGenreMap(movieGenres);
 	return movies?.map((movie) => {
 		return {
 			...movie,
+			media_type: "movie",
 			genres: mapGenres({
 				ids: movie.genre_ids || movie.genres,
 				type: "movie",
-				genreMaps: { movie: map },
+				genreMaps: { movie: movieMap },
 			}),
 		};
 	});
 };
+
+export const normalizeTV = (series, tvGenres) => {
+	let tvMap = buildGenreMap(tvGenres);
+	return series?.map((item) => {
+		return {
+			...item,
+			media_type: "tv",
+			genres: mapGenres({
+				ids: item.genre_ids || item.genres,
+				type: "tv",
+				genreMaps: { tv: tvMap },
+			}),
+		};
+	});
+};
+

@@ -26,15 +26,8 @@ const SeasonsContainer: React.FC<SeasonsContainerProps> = ({ data, seriesId }) =
 	const filteredSeasons = data.filter(item => item.name !== "Specials");
 
 	return (
-		<div className="mt-8 mb-4">
-			<div className="flex items-center justify-between mb-6">
-				<h2 className="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-3">
-					<span className="w-1.5 h-6 bg-primary rounded-full"></span>
-					Seasons
-				</h2>
-			</div>
-
-			<div className="relative group">
+		<div className="mt-4 mb-4 w-full">
+			<div className="relative group overflow-hidden">
 				<Swiper
 					slidesPerView="auto"
 					spaceBetween={16}
@@ -44,14 +37,14 @@ const SeasonsContainer: React.FC<SeasonsContainerProps> = ({ data, seriesId }) =
 						releaseOnEdges: true,
 					}}
 					modules={[Mousewheel, FreeMode]}
-					className="w-full !overflow-visible overscroll-x-contain touch-pan-y"
+					className="w-full !overflow-x-clip !overflow-y-visible overscroll-x-contain touch-pan-y"
 				>
 					{filteredSeasons.map((item, index) => (
-						<SwiperSlide key={index} className="!w-fit pb-6">
+						<SwiperSlide key={index} className="!w-fit pb-8 px-1">
 							<motion.div
 								whileHover={{ y: -5 }}
 								whileTap={{ scale: 0.98 }}
-								className="flex-none w-[160px] cursor-pointer"
+								className="flex-none w-[140px] md:w-[160px] cursor-pointer"
 								onClick={() => setActiveSeason(item.season_number)}
 							>
 								<div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-white/5 border border-white/10 group/card shadow-lg hover:shadow-primary/10 transition-all">

@@ -49,7 +49,7 @@ const YoutubeVideoModal: React.FC<props> = ({
 			initial="initial"
 			animate="animate"
 			exit="exit"
-			className="fixed top-0 left-0 w-screen h-screen bg-black/90 flex flex-col justify-center items-center gap-2 z-[2055] default_screen_adjust backdrop-blur-sm"
+			className="fixed top-0 left-0 w-screen h-screen bg-black/60 flex flex-col justify-center items-center gap-2 z-[2055] default_screen_adjust backdrop-blur-xl"
 			onClick={() => changeModalVideo(0, "", "")}
 		>
 			<motion.div

@@ -84,21 +84,30 @@
   }
 
   .contentContainer {
-    bottom: 20px;
+    bottom: 0;
+    padding: 20px;
+    justify-content: flex-end;
+    padding-bottom: 60px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.1) 100%);
   }
 
   .slideContainer {
-    height: 28vh;
+    height: 60vh;
   }
 
   .contentContainer p {
-    font-size: 5px;
+    font-size: 14px;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .contentContainer h3 {
     margin: 0;
-    font-size: 18px;
-    line-height: 20px;
+    font-size: 28px;
+    line-height: 32px;
   }
 }
 

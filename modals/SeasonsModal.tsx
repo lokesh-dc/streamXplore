@@ -66,7 +66,7 @@ const SeasonsModal: React.FC<props> = ({
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
-			className="fixed inset-0 z-[2055] bg-black/90 backdrop-blur-md flex flex-col items-center justify-end md:justify-center p-4"
+			className="fixed inset-0 z-[2055] bg-black/60 backdrop-blur-xl flex flex-col items-center justify-end md:justify-center p-4"
 			onClick={() => setActiveSeason(null)}
 		>
 			<motion.div

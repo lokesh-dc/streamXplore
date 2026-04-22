@@ -33,7 +33,7 @@ const Modal: React.FC<props> = ({
 
 	return (
 		<div
-			className="fixed inset-0 z-[2055] bg-black/95 flex flex-col justify-center items-center p-4 backdrop-blur-sm"
+			className="fixed inset-0 z-[2055] bg-black/60 flex flex-col justify-center items-center p-4 backdrop-blur-xl"
 			onClick={(event) => {
 				event.stopPropagation();
 				changeModalImage("");

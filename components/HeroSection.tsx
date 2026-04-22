@@ -17,7 +17,7 @@ import { Button } from "./buttons";
 
 import { FaArrowRight } from "react-icons/fa";
 import Tags from "./tags";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { decorateLink } from "@/utils";
 
 interface props {
@@ -25,6 +25,7 @@ interface props {
 }
 
 const HeroSection = ({ data }: props) => {
+	const router = useRouter();
 	if (!data) return;
 	return (
 		<div>
@@ -84,12 +85,16 @@ const HeroSection = ({ data }: props) => {
 										<Tags variant="glassy" data={item?.genres} />
 										<h3 className="text-3xl">{title}</h3>
 									</div>
-									<p className="w-1/2 line-clamp-3 text-gray-300">
+									<p className="w-full md:w-1/2 line-clamp-3 text-gray-300">
 										{item?.overview}
 									</p>
-									<Link href={`/${mediaType}/${decorateLink(title)}/${item.id}`}>
-										<Button rightIcon={<FaArrowRight />}>More Info</Button>
-									</Link>
+									<Button
+										rightIcon={<FaArrowRight />}
+										onClick={() =>
+											router.push(`/${mediaType}/${decorateLink(title)}/${item.id}`)
+										}>
+										More Info
+									</Button>
 								</div>
 							</div>
 						</SwiperSlide>

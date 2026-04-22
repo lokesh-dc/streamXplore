@@ -3,7 +3,8 @@ import getMoviesPlayingInThetres from "@/dataFetchings/nowPlayingIntheatres";
 
 import HeroSection from "@/components/HeroSection";
 import getMoviesGenres from "@/dataFetchings/getMoviesGenres";
-import { normalizeMovie } from "@/utils/genres";
+import getTVGenres from "@/dataFetchings/getTVGenres";
+import { normalizeMovie, normalizeTV } from "@/utils/genres";
 
 import trendingMovies from "@/dataFetchings/trendingMovies";
 import trendingSeries from "@/dataFetchings/trendingSeries";
@@ -20,6 +21,12 @@ export default async function HomePage() {
 	const pageData = await getPageDetails();
 	const { popular = {}, nowPlaying = {}, trending, trendingTV } = pageData;
 
+	// Combine trending movies and TV for hero section
+	const heroData = [
+		...(trending?.data?.slice(0, 5) || []),
+		...(trendingTV?.data?.slice(0, 5) || []),
+	].sort(() => Math.random() - 0.5);
+
 	const jsonLd = {
 		"@context": "https://schema.org",
 		"@type": "WebSite",
@@ -29,53 +36,57 @@ export default async function HomePage() {
 			"@type": "SearchAction",
 			target: {
 				"@type": "EntryPoint",
-				urlTemplate: "https://hookedonmovies-app.vercel.app/search?q={search_term_string}",
+				urlTemplate:
+					"https://hookedonmovies-app.vercel.app/search?q={search_term_string}",
 			},
 			"query-input": "required name=search_term_string",
 		},
 	};
 
 	return (
-		<MotionPage className="flex flex-col gap-4">
+		<>
 			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-			<HeroSection data={nowPlaying?.data} />
+			<MotionPage className="flex flex-col gap-4">
+				<HeroSection data={heroData} />
 
-			<MovieContainer
-				data={popular?.data}
-				title="Popular this week"
-				showType="movie"
-			/>
+				<MovieContainer
+					data={popular?.data}
+					title="Popular this week"
+					showType="movie"
+				/>
 
-			<MovieContainer
-				data={nowPlaying?.data}
-				title="Now Playing in Thatres"
-				showType="movie"
-			/>
-			<MovieContainer
-				data={trending?.data}
-				title="Trending Movies"
-				showType="movie"
-			/>
-			<MovieContainer
-				data={trendingTV?.data}
-				title="Trending TV Series"
-				showType="tv"
-			/>
-		</MotionPage>
+				<MovieContainer
+					data={nowPlaying?.data}
+					title="Now Playing in Thatres"
+					showType="movie"
+				/>
+				<MovieContainer
+					data={trending?.data}
+					title="Trending Movies"
+					showType="movie"
+				/>
+				<MovieContainer
+					data={trendingTV?.data}
+					title="Trending TV Series"
+					showType="tv"
+				/>
+			</MotionPage>
+		</>
 	);
 }
 
 export async function getPageDetails() {
-	const [popular, nowPlaying, movieGenres, trending, trendingTV] =
+	const [popular, nowPlaying, movieGenres, trending, trendingTV, tvGenres] =
 		await Promise.all([
 			getPopularMovies(1),
 			getMoviesPlayingInThetres(1),
 			getMoviesGenres(),
 			trendingMovies(),
 			trendingSeries(),
+			getTVGenres(),
 		]);
 
 	return {
@@ -91,6 +102,9 @@ export async function getPageDetails() {
 			...trending,
 			data: normalizeMovie(trending?.data, movieGenres?.data),
 		},
-		trendingTV: trendingTV || null,
+		trendingTV: {
+			...trendingTV,
+			data: normalizeTV(trendingTV?.data, tvGenres?.data),
+		},
 	};
 }

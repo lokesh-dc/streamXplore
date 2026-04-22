@@ -11,6 +11,7 @@ export const useBodyLock = (isLocked: boolean = true) => {
 		if (!isLocked) return;
 
 		lockedCount++;
+		document.body.classList.add("body-locked");
 		const originalStyle = window.getComputedStyle(document.body).overflow;
 		document.body.style.overflow = "hidden";
 		
@@ -20,6 +21,7 @@ export const useBodyLock = (isLocked: boolean = true) => {
 		return () => {
 			lockedCount--;
 			if (lockedCount <= 0) {
+				document.body.classList.remove("body-locked");
 				document.body.style.overflow = "auto";
 				document.body.style.overscrollBehavior = "auto";
 			}

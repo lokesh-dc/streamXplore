@@ -195,12 +195,22 @@ p {
 
 }
 
+/* ... other styles ... */
+
+.body-locked .fixed.top-0.left-0.w-full.z-\[100\] {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
 .scrollableSection {
     overflow-x: auto;
     padding-right: 10px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
 }
+/* ... rest of the file ... */
+
 
 .scrollableSection>div {
     min-width: 24%;

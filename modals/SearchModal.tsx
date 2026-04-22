@@ -42,7 +42,7 @@ const SearchModal: React.FC<props> = ({
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
-			className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-md flex flex-col items-center pt-24 px-4 sm:px-10"
+			className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-xl flex flex-col items-center pt-24 px-4 sm:px-10"
 			onClick={toggleModalVisibility}
 		>
 			<motion.div 

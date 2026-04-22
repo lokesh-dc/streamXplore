@@ -188,7 +188,7 @@ const DetailV2: React.FC<DetailV2Props> = ({
 					</div>
 
 					{/* Right Column: Info, Cast, Overview and Video */}
-					<div className="flex flex-col gap-10">
+					<div className="flex flex-col gap-10 min-w-0">
 						{/* Info and Cast Row */}
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 							{/* Movie/TV Info */}
