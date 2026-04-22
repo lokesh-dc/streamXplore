@@ -67,7 +67,7 @@ const NavigationBar = () => {
 					}`}>
 				<h2 className="text-2xl font-bold tracking-tight">
 					<Link href={"/"}>
-						ON_SCREEN
+						HookedOnMovies
 					</Link>
 				</h2>
 

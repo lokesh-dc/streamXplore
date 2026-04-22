@@ -1,6 +1,7 @@
 import getMethod from "@/utils/methods/get";
+import { cache } from "react";
 
-export default async function getMovieDetails(id: string | number, appendToResponse: string | null = null) {
+const getMovieDetails = cache(async (id: string | number, appendToResponse: string | null = null) => {
 	const params: any = {};
 	if (appendToResponse) {
 		params.append_to_response = appendToResponse;
@@ -11,4 +12,6 @@ export default async function getMovieDetails(id: string | number, appendToRespo
 		params,
 	});
 	return result.data;
-}
+});
+
+export default getMovieDetails;

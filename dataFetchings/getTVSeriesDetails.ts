@@ -1,6 +1,7 @@
 import getMethod from "@/utils/methods/get";
+import { cache } from "react";
 
-export default async function getTvSeriesDetails(id: string | number, appendToResponse: string | null = null) {
+const getTvSeriesDetails = cache(async (id: string | number, appendToResponse: string | null = null) => {
 	const params: any = {};
 	if (appendToResponse) {
 		params.append_to_response = appendToResponse;
@@ -11,4 +12,6 @@ export default async function getTvSeriesDetails(id: string | number, appendToRe
 		params,
 	});
 	return result.data;
-}
+});
+
+export default getTvSeriesDetails;

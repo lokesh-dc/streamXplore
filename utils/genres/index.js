@@ -1,5 +1,5 @@
 export const buildGenreMap = (genres = []) => {
-	return genres.reduce((acc, genre) => {
+	return genres?.reduce((acc, genre) => {
 		acc[genre.id] = genre.name;
 		return acc;
 	}, {});

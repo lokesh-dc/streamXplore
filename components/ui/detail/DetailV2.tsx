@@ -114,7 +114,7 @@ const DetailV2: React.FC<DetailV2Props> = ({
 				<Image
 					unoptimized
 					src={backdrop_url}
-					alt={displayTitle}
+					alt={`${displayTitle} Background Backdrop`}
 					fill
 					priority
 					className="object-cover object-top opacity-40"
@@ -124,7 +124,7 @@ const DetailV2: React.FC<DetailV2Props> = ({
 
 			<div className="relative z-10 pt-32 default_screen_padding">
 				{/* Title and Rating Header */}
-				<div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+				<header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
 					<div className="flex flex-col gap-2">
 						<h1 className="text-3xl md:text-5xl font-bold tracking-tight drop-shadow-lg">
 							{displayTitle}
@@ -153,7 +153,7 @@ const DetailV2: React.FC<DetailV2Props> = ({
 							))}
 						</div>
 					</div>
-				</div>
+				</header>
 
 				<div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-12 items-start">
 					{/* Left Column: Poster and Buttons (Sticky on Desktop) */}
@@ -166,7 +166,7 @@ const DetailV2: React.FC<DetailV2Props> = ({
 									quality: "xl",
 									path: poster_path,
 								})}
-								alt={displayTitle}
+								alt={`${displayTitle} Official Poster`}
 								width={350}
 								height={525}
 								className="w-full h-auto object-cover"
@@ -193,6 +193,7 @@ const DetailV2: React.FC<DetailV2Props> = ({
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 							{/* Movie/TV Info */}
 							<div className="space-y-4">
+								<h2 className="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">Information</h2>
 								<div className="grid grid-cols-[120px_1fr] gap-2">
 									<span className="text-gray-500 font-medium">
 										{isTv ? "Creator" : "Producer"}:
@@ -245,46 +246,49 @@ const DetailV2: React.FC<DetailV2Props> = ({
 
 							{/* Cast List */}
 							<div className="space-y-4">
-								<div className="grid grid-cols-[80px_1fr] gap-2">
-									<span className="text-gray-500 font-medium">Cast:</span>
-									<div className="flex flex-col gap-1">
-										{cast.map((person: any, idx: number) => (
-											<span key={idx} className="text-gray-200">
-												{person.name}
-											</span>
-										))}
-									</div>
+								<h2 className="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">Cast</h2>
+								<div className="flex flex-col gap-2">
+									{cast.map((person: any, idx: number) => (
+										<span key={idx} className="text-gray-200">
+											{person.name}
+										</span>
+									))}
 								</div>
 							</div>
 						</div>
 
 						{/* Overview */}
 						<div className="max-w-4xl">
+							<h2 className="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">Overview</h2>
 							<p className="text-gray-300 leading-relaxed text-lg">{overview}</p>
 						</div>
 
 						{/* Seasons Section for TV */}
 						{isTv && seasons && (
 							<div className="mt-4">
+								<h2 className="text-xl font-bold text-white mb-6">Seasons</h2>
 								<SeasonsContainer data={seasons} seriesId={data.id} />
 							</div>
 						)}
 
 						{/* Video Thumbnail Section */}
 						{mainTrailer && (
-							<div
-								onClick={handlePlayTrailer}
-								className="relative group max-w-2xl rounded-2xl overflow-hidden cursor-pointer border border-white/10 aspect-video bg-black">
-								<Image
-									unoptimized
-									src={`https://img.youtube.com/vi/${mainTrailer.key}/maxresdefault.jpg`}
-									alt="Trailer thumbnail"
-									fill
-									className="object-cover brightness-50 group-hover:brightness-75 transition-all"
-								/>
-								<div className="absolute inset-0 flex items-center justify-center">
-									<div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform">
-										<FaPlay className="text-white text-xl ml-1" />
+							<div className="max-w-2xl">
+								<h2 className="text-xl font-bold text-white mb-6">Featured Trailer</h2>
+								<div
+									onClick={handlePlayTrailer}
+									className="relative group rounded-2xl overflow-hidden cursor-pointer border border-white/10 aspect-video bg-black">
+									<Image
+										unoptimized
+										src={`https://img.youtube.com/vi/${mainTrailer.key}/maxresdefault.jpg`}
+										alt={`${displayTitle} Trailer Thumbnail`}
+										fill
+										className="object-cover brightness-50 group-hover:brightness-75 transition-all"
+									/>
+									<div className="absolute inset-0 flex items-center justify-center">
+										<div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform">
+											<FaPlay className="text-white text-xl ml-1" />
+										</div>
 									</div>
 								</div>
 							</div>

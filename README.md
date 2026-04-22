@@ -18,7 +18,7 @@ A movie and TV show database, inspired by IMDb. Built with Next.js and styled wi
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/lokesh-dc/moviesearch.git
+   git clone https://github.com/lokesh-dc/hookedonmovies.git
 
 2. Install the dependencies
    ```bash

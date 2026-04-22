@@ -1,5 +1,5 @@
 /**
- * Centralized motion tokens for the MovieSearch design system.
+ * Centralized motion tokens for the HookedOnMovies design system.
  * These values ensure consistency in timing and feel across the application.
  */
 

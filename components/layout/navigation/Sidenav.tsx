@@ -72,7 +72,7 @@ const SideNav: React.FC<props> = ({ status, toggleStatus }): ReactElement => {
 					>
 						<div className="p-8 flex justify-between items-center">
 							<h2 className="text-2xl font-bold tracking-tighter uppercase bebas_nueve">
-								ON_SCREEN
+								HookedOnMovies
 							</h2>
 							<button
 								onClick={() => toggleStatus(false)}
@@ -121,7 +121,7 @@ const SideNav: React.FC<props> = ({ status, toggleStatus }): ReactElement => {
 								</a>
 							</div>
 							<p className="text-xs text-gray-600 uppercase tracking-widest font-bold">
-								© 2026 ON_SCREEN
+								© 2026 HookedOnMovies
 							</p>
 						</div>
 					</motion.div>

@@ -11,7 +11,7 @@ import MovieContainer from "@/components/containers/SwiperMovieContainer";
 import MotionPage from "@/components/layout/MotionPage";
 
 export const metadata = {
-	title: "MovieSearch - Your Ultimate Movie & TV Guide",
+	title: "HookedOnMovies - Your Ultimate Movie & TV Guide",
 	description:
 		"Discover trending movies and TV series, search for your favorites, and get recommendations.",
 };
@@ -20,8 +20,27 @@ export default async function HomePage() {
 	const pageData = await getPageDetails();
 	const { popular = {}, nowPlaying = {}, trending, trendingTV } = pageData;
 
+	const jsonLd = {
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		name: "HookedOnMovies",
+		url: "https://hookedonmovies-app.vercel.app",
+		potentialAction: {
+			"@type": "SearchAction",
+			target: {
+				"@type": "EntryPoint",
+				urlTemplate: "https://hookedonmovies-app.vercel.app/search?q={search_term_string}",
+			},
+			"query-input": "required name=search_term_string",
+		},
+	};
+
 	return (
 		<MotionPage className="flex flex-col gap-4">
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
 			<HeroSection data={nowPlaying?.data} />
 
 			<MovieContainer
@@ -57,8 +76,6 @@ export async function getPageDetails() {
 			getMoviesGenres(),
 			trendingMovies(),
 			trendingSeries(),
-			trendingSeries(), // Note: trendingTV was missing in original logic, assuming trendingSeries is meant for TV?
-			// Actually trendingSeries was imported but trendingTV was used.
 		]);
 
 	return {
