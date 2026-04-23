@@ -2,7 +2,13 @@
 import React from "react";
 import { IoShareSocialOutline } from "react-icons/io5";
 
-export default function ShareIntentComponent({ title, posterUrl, className }) {
+interface ShareIntentProps {
+	title?: string;
+	posterUrl?: string;
+	className?: string;
+}
+
+export default function ShareIntentComponent({ title, posterUrl, className }: ShareIntentProps) {
 	const shareIntent = async () => {
 		const shareData = {
 			title: title || "HookedOnMovies",
@@ -13,7 +19,7 @@ export default function ShareIntentComponent({ title, posterUrl, className }) {
 		if (navigator?.share) {
 			try {
 				await navigator?.share(shareData);
-			} catch (error) {
+			} catch (error: any) {
 				if (error.name !== "AbortError") {
 					console.error(`Error: ${error.message}`);
 				}
