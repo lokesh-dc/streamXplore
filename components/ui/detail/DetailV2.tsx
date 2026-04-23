@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { AiFillStar, AiOutlineShareAlt, AiOutlineCheck } from "react-icons/ai";
+import { AiFillStar } from "react-icons/ai";
 import { BsBookmark } from "react-icons/bs";
 import { FaPlay } from "react-icons/fa";
 import { getImageBaseLink } from "@/constants";
@@ -10,7 +10,7 @@ import { genresType, movieVideos } from "@/constants/typescript";
 import YoutubeVideoModal from "@/modals/YoutubeVideoModal";
 import { AnimatePresence } from "framer-motion";
 import SeasonsContainer from "@/components/containers/SeasonsContianer";
-import { usePathname } from "next/navigation";
+import ShareIntentComponent from "@/components/functional-components/ShareIntentComponent";
 
 interface DetailV2Props {
 	data: any;
@@ -30,8 +30,6 @@ const DetailV2: React.FC<DetailV2Props> = ({
 		key: string;
 		title: string;
 	} | null>(null);
-	const [isCopied, setIsCopied] = useState(false);
-	const pathname = usePathname();
 
 	const {
 		title,
@@ -104,62 +102,16 @@ const DetailV2: React.FC<DetailV2Props> = ({
 		}
 	};
 
-	const handleShare = async () => {
-		const posterUrl = getImageBaseLink({
-			type: "poster",
-			quality: "lg",
-			path: poster_path,
-		});
-
-		const shareData: any = {
-			title: displayTitle,
-			text: `Check out ${displayTitle} on HookedOnMovies!\n\n${overview?.slice(0, 100)}...`,
-			url: window.location.href,
-		};
-
-		try {
-			// Check if we can share files
-			if (navigator.share && navigator.canShare) {
-				const response = await fetch(posterUrl);
-				const blob = await response.blob();
-				const file = new File([blob], "poster.jpg", { type: "image/jpeg" });
-
-				if (navigator.canShare({ files: [file] })) {
-					await navigator.share({
-						...shareData,
-						files: [file],
-					});
-					return;
-				}
-			}
-
-			// Fallback to basic share (with poster URL in text)
-			if (navigator.share) {
-				await navigator.share({
-					...shareData,
-					text: `${shareData.text}\n\nPoster: ${posterUrl}`,
-				});
-			} else {
-				throw new Error("Navigator share not supported");
-			}
-		} catch (err) {
-			if ((err as Error).name !== "AbortError") {
-				// Fallback: Copy to clipboard
-				try {
-					await navigator.clipboard.writeText(`${displayTitle}\n${window.location.href}`);
-					setIsCopied(true);
-					setTimeout(() => setIsCopied(false), 2000);
-				} catch (clipboardErr) {
-					console.error("Error copying to clipboard:", clipboardErr);
-				}
-			}
-		}
-	};
-
 	const backdrop_url = getImageBaseLink({
 		type: "backdrop",
 		quality: "lg",
 		path: data.backdrop_path || data.poster_path,
+	});
+
+	const poster_url = getImageBaseLink({
+		type: "poster",
+		quality: "lg",
+		path: poster_path,
 	});
 
 	return (
@@ -236,21 +188,10 @@ const DetailV2: React.FC<DetailV2Props> = ({
 							<button className="p-3 bg-white/10 hover:bg-white/20 transition-colors rounded-xl border border-white/10">
 								<BsBookmark className="text-xl" />
 							</button>
-							<button 
-								onClick={handleShare}
-								className="p-3 bg-white/10 hover:bg-white/20 transition-colors rounded-xl border border-white/10 relative group"
-								title={isCopied ? "Copied!" : "Share"}>
-								{isCopied ? (
-									<AiOutlineCheck className="text-xl text-green-500" />
-								) : (
-									<AiOutlineShareAlt className="text-xl" />
-								)}
-								{isCopied && (
-									<span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-bold py-1 px-2 rounded shadow-xl whitespace-nowrap">
-										Link Copied!
-									</span>
-								)}
-							</button>
+							<ShareIntentComponent
+								title={displayTitle}
+								posterUrl={poster_url}
+							/>
 						</div>
 					</div>
 
