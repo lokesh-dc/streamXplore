@@ -49,9 +49,9 @@ export async function generateMetadata({
 	const title = data.title || data.original_title;
 	const description = data.overview?.slice(0, 160);
 	const image = getImageBaseLink({
-		type: "backdrop",
-		quality: "lg",
-		path: data.backdrop_path || data.poster_path,
+		type: "poster",
+		quality: "xl",
+		path: data.poster_path,
 	});
 
 	return {
@@ -68,8 +68,8 @@ export async function generateMetadata({
 			images: [
 				{
 					url: image,
-					width: 1200,
-					height: 630,
+					width: 780,
+					height: 1170,
 					alt: title,
 				},
 			],

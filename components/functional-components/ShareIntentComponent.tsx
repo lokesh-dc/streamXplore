@@ -12,7 +12,7 @@ export default function ShareIntentComponent({ title, posterUrl, className }: Sh
 	const shareIntent = async () => {
 		const shareData = {
 			title: title || "HookedOnMovies",
-			text: `Check out ${title || "this"} on HookedOnMovies!${posterUrl ? `\n\nPoster: ${posterUrl}` : ""}`,
+			text: `Check out ${title || "this"} on HookedOnMovies!`,
 			url: window.location.href,
 		};
 
