@@ -4,6 +4,7 @@ import "@/styles/responsive.css";
 import "@/styles/youtube-embed.css";
 import { Poppins } from "next/font/google";
 import NavigationBar from "@/components/layout/navigation";
+import ChatShell from "@/components/ai/ChatShell";
 
 const poppins = Poppins({
 	weight: ["400", "500", "600"],
@@ -84,7 +85,7 @@ export default function RootLayout({ children }) {
 		>
 			<body className={poppins.className}>
 				<NavigationBar />
-				<main>{children}</main>
+				<ChatShell>{children}</ChatShell>
 			</body>
 		</html>
 	);

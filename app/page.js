@@ -1,6 +1,4 @@
 import getPopularMovies from "@/dataFetchings/popularMovies";
-import getMoviesPlayingInThetres from "@/dataFetchings/nowPlayingIntheatres";
-
 import HeroSection from "@/components/HeroSection";
 import getMoviesGenres from "@/dataFetchings/getMoviesGenres";
 import getTVGenres from "@/dataFetchings/getTVGenres";
@@ -19,7 +17,7 @@ export const metadata = {
 
 export default async function HomePage() {
 	const pageData = await getPageDetails();
-	const { popular = {}, nowPlaying = {}, trending, trendingTV } = pageData;
+	const { popular = {}, trending, trendingTV } = pageData;
 
 	// Combine trending movies and TV for hero section
 	const heroData = [
@@ -59,11 +57,6 @@ export default async function HomePage() {
 				/>
 
 				<MovieContainer
-					data={nowPlaying?.data}
-					title="Now Playing in Thatres"
-					showType="movie"
-				/>
-				<MovieContainer
 					data={trending?.data}
 					title="Trending Movies"
 					showType="movie"
@@ -79,10 +72,9 @@ export default async function HomePage() {
 }
 
 export async function getPageDetails() {
-	const [popular, nowPlaying, movieGenres, trending, trendingTV, tvGenres] =
+	const [popular, movieGenres, trending, trendingTV, tvGenres] =
 		await Promise.all([
 			getPopularMovies(1),
-			getMoviesPlayingInThetres(1),
 			getMoviesGenres(),
 			trendingMovies(),
 			trendingSeries(),
@@ -93,10 +85,6 @@ export async function getPageDetails() {
 		popular: {
 			...popular,
 			data: normalizeMovie(popular?.data, movieGenres?.data),
-		},
-		nowPlaying: {
-			...nowPlaying,
-			data: normalizeMovie(nowPlaying?.data, movieGenres?.data),
 		},
 		trending: {
 			...trending,

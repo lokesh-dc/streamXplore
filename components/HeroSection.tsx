@@ -47,7 +47,11 @@ const HeroSection = ({ data }: props) => {
 					return (
 						<SwiperSlide key={index}>
 							<div className={styles.slideContainer}>
-								<div className={styles.imageContainer}>
+								<div
+									className={styles.imageContainer}
+									onClick={() =>
+										router.push(`/${mediaType}/${decorateLink(title)}/${item.id}`)
+									}>
 									<Image
 										unoptimized
 										src={getImageBaseLink({
@@ -55,10 +59,23 @@ const HeroSection = ({ data }: props) => {
 											quality: "xl",
 											path: item.backdrop_path,
 										})}
+										className={styles.backdropImage}
 										alt={`${title}`}
 										width={2000}
 										height={500}
 										priority={index === 0}
+									/>
+									<Image
+										unoptimized
+										src={getImageBaseLink({
+											type: "poster",
+											quality: "lg",
+											path: item.poster_path || item.backdrop_path,
+										})}
+										className={styles.posterImage}
+										alt={`${title} poster`}
+										width={500}
+										height={750}
 									/>
 								</div>
 								<div className={`${styles.contentContainer}`}>
