@@ -2,15 +2,27 @@ import React, { ReactElement } from "react";
 
 type props = {
 	title: string;
+	eyebrow?: string;
+	description?: string;
 };
 
-const PageTitle: React.FC<props> = ({ title }): ReactElement => {
+const PageTitle: React.FC<props> = ({
+	title,
+	eyebrow = "Browse",
+	description,
+}): ReactElement => {
 	return (
-		<div>
-			<h1 className="px-2 md:px-9 py-1 md:py-5 md:pb-2 my-0 md:mt-12 p-5 text-xl md:text-3xl uppercase bebas-nueve">
+		<header className="shell flex flex-col gap-3 pb-6 pt-28">
+			<span className="eyebrow">{eyebrow}</span>
+			<h1 className="font-display text-balance text-5xl leading-none text-text-primary md:text-6xl">
 				{title}
 			</h1>
-		</div>
+			{description ? (
+				<p className="max-w-xl text-sm leading-relaxed text-text-secondary">
+					{description}
+				</p>
+			) : null}
+		</header>
 	);
 };
 

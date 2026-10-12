@@ -17,9 +17,11 @@ const PopularMoviesPage = async () => {
 
 	return (
 		<>
-			<div className="flex flex-col justify-between">
-				<PageTitle title="Popular Movies" />
-			</div>
+			<PageTitle
+				title="Popular Movies"
+				eyebrow="Most watched"
+				description="The titles audiences can't stop watching right now."
+			/>
 			<GridMovieContainer
 				upcoming={data}
 				title="Popular Movies"

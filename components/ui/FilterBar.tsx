@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { FiFilter, FiX } from "react-icons/fi";
+import { FiFilter, FiX, FiChevronDown } from "react-icons/fi";
 
 const YEAR_OPTIONS = [
 	{ label: "Any Year", value: "" },
@@ -17,7 +17,32 @@ interface FilterBarProps {
 	initialGenre?: string;
 	initialYear?: string;
 	initialSort?: string;
+	resultCount?: number | null;
 }
+
+interface SelectProps {
+	label: string;
+	value: string;
+	onChange: (value: string) => void;
+	options: Array<{ label: string; value: string }>;
+}
+
+const Select = ({ label, value, onChange, options }: SelectProps) => (
+	<div className="relative inline-flex items-center">
+		<select
+			aria-label={label}
+			value={value}
+			onChange={(e) => onChange(e.target.value)}
+			className="cursor-pointer appearance-none rounded-full border border-white/10 bg-white/[0.04] py-2 pl-4 pr-9 text-xs font-medium text-text-primary transition-colors hover:border-white/25 focus:border-primary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 [&>option]:bg-[#151515] [&>option]:text-text-primary">
+			{options.map((option) => (
+				<option key={option.value} value={option.value}>
+					{option.label}
+				</option>
+			))}
+		</select>
+		<FiChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-text-secondary" />
+	</div>
+);
 
 const FilterBar = ({
 	mediaType,
@@ -25,6 +50,7 @@ const FilterBar = ({
 	initialGenre = "",
 	initialYear = "",
 	initialSort = "",
+	resultCount,
 }: FilterBarProps) => {
 	const router = useRouter();
 	const pathname = usePathname();
@@ -41,6 +67,11 @@ const FilterBar = ({
 		},
 	];
 
+	const genreOptions = [
+		{ label: "All Genres", value: "" },
+		...genres.map((genre) => ({ label: genre.name, value: String(genre.id) })),
+	];
+
 	const apply = (next: { genre?: string; year?: string; sort?: string }) => {
 		const params = new URLSearchParams();
 		const genre = next.genre ?? initialGenre;
@@ -55,62 +86,52 @@ const FilterBar = ({
 
 	const hasFilters = Boolean(initialGenre || initialYear || initialSort);
 
-	const selectClass =
-		"bg-[#151515] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#E6501B]/60 cursor-pointer appearance-none [&>option]:bg-[#151515]";
-
 	return (
-		<div className="flex flex-wrap items-center gap-3 px-2 md:px-9 my-4">
-			<span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-gray-400">
-				<FiFilter className="text-[#E6501B]" />
-				Filters
-			</span>
+		<div className="shell sticky top-[calc(var(--nav-h,72px)_+_10px)] z-40">
+			<div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/10 bg-[#121110]/80 px-3 py-2.5 backdrop-blur-xl">
+					<span className="eyebrow hidden items-center gap-1.5 sm:inline-flex">
+						<FiFilter className="text-primary" />
+						Filters
+					</span>
+					<span className="hidden h-5 w-px bg-white/10 sm:block" />
 
-			<select
-				aria-label="Filter by genre"
-				value={initialGenre}
-				onChange={(e) => apply({ genre: e.target.value })}
-				className={selectClass}>
-				<option value="">All Genres</option>
-				{genres.map((genre) => (
-					<option key={genre.id} value={genre.id}>
-						{genre.name}
-					</option>
-				))}
-			</select>
+					<Select
+						label="Filter by genre"
+						value={initialGenre}
+						onChange={(value) => apply({ genre: value })}
+						options={genreOptions}
+					/>
+					<Select
+						label="Filter by era"
+						value={initialYear}
+						onChange={(value) => apply({ year: value })}
+						options={YEAR_OPTIONS}
+					/>
+					<Select
+						label="Sort results"
+						value={initialSort || "popularity.desc"}
+						onChange={(value) => apply({ sort: value })}
+						options={sortOptions}
+					/>
 
-			<select
-				aria-label="Filter by era"
-				value={initialYear}
-				onChange={(e) => apply({ year: e.target.value })}
-				className={selectClass}>
-				{YEAR_OPTIONS.map((year) => (
-					<option key={year.value} value={year.value}>
-						{year.label}
-					</option>
-				))}
-			</select>
+					<div className="ml-auto flex items-center gap-3 pl-2">
+						{resultCount ? (
+							<span className="tabular hidden text-xs text-text-secondary md:inline">
+								{resultCount.toLocaleString()} titles
+							</span>
+						) : null}
 
-			<select
-				aria-label="Sort results"
-				value={initialSort}
-				onChange={(e) => apply({ sort: e.target.value })}
-				className={selectClass}>
-				{sortOptions.map((sort) => (
-					<option key={sort.value} value={sort.value}>
-						{sort.label}
-					</option>
-				))}
-			</select>
-
-			{hasFilters && (
-				<button
-					onClick={() => apply({ genre: "", year: "", sort: "" })}
-					className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors">
-					<FiX />
-					Clear
-				</button>
-			)}
-		</div>
+						{hasFilters && (
+							<button
+								onClick={() => apply({ genre: "", year: "", sort: "" })}
+								className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold uppercase tracking-widest text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40">
+								<FiX />
+								Clear
+							</button>
+						)}
+					</div>
+				</div>
+			</div>
 	);
 };
 

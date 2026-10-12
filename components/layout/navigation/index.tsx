@@ -5,18 +5,42 @@ import { BiMenuAltRight } from "react-icons/bi";
 import { BiUser, BiSearch } from "react-icons/bi";
 
 import SideNav from "./Sidenav";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import SearchModal from "@/modals/SearchModal";
 import searchMulti from "@/dataFetchings/searchMulti";
 import { searchedDataEntry } from "@/constants/typescript";
 
+const navLinks = [
+	{ href: "/movies", label: "Movies" },
+	{ href: "/tv-series", label: "TV Series" },
+];
+
 const NavigationBar = () => {
+	const pathname = usePathname();
+	const navRef = useRef<HTMLDivElement>(null);
 	const [sidebarStatus, toggleSidebar] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchResults, setSearchResults] = useState<searchedDataEntry[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
+
+	// Publish the real nav height so sticky elements (e.g. the filter bar)
+	// can stick flush beneath it on every breakpoint.
+	useEffect(() => {
+		const el = navRef.current;
+		if (!el) return;
+		const setVar = () =>
+			document.documentElement.style.setProperty(
+				"--nav-h",
+				`${el.offsetHeight}px`,
+			);
+		setVar();
+		const observer = new ResizeObserver(setVar);
+		observer.observe(el);
+		return () => observer.disconnect();
+	}, []);
 
 	useEffect(() => {
 		const onScroll = () => {
@@ -62,6 +86,7 @@ const NavigationBar = () => {
 	return (
 		<>
 			<div
+				ref={navRef}
 				style={{ paddingTop: "calc(1rem + env(safe-area-inset-top))" }}
 				className={`flex px-6 pb-4 items-center justify-between fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${scrolled || isSearchOpen ? "bg-[#121212]/95 backdrop-blur-md border-b border-white/10" : "bg-transparent"
 					}`}>
@@ -87,9 +112,23 @@ const NavigationBar = () => {
 				</div>
 
 				<div className="flex items-center gap-6">
-					<div className="hidden md:flex items-center gap-6 text-xs font-bold uppercase tracking-[0.2em] text-gray-400">
-						<Link href="/movies" className="hover:text-white transition-colors">Movies</Link>
-						<Link href="/tv-series" className="hover:text-white transition-colors">TV Series</Link>
+					<div className="hidden md:flex items-center gap-6 text-xs font-bold uppercase tracking-[0.2em]">
+						{navLinks.map((link) => {
+							const active = pathname === link.href;
+							return (
+								<Link
+									key={link.href}
+									href={link.href}
+									aria-current={active ? "page" : undefined}
+									className={`transition-colors ${
+										active
+											? "text-white"
+											: "text-gray-400 hover:text-white"
+									}`}>
+									{link.label}
+								</Link>
+							);
+						})}
 					</div>
 
 					<div className="flex items-center gap-4">

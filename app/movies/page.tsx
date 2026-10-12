@@ -34,13 +34,18 @@ const DiscoverMoviesPage = async ({ searchParams }: PageProps) => {
 
 	return (
 		<>
-			<PageTitle title="Discover Movies" />
+			<PageTitle
+				title="Discover Movies"
+				eyebrow="Browse films"
+				description="Filter by genre and era, then sort to find exactly what you're in the mood for."
+			/>
 			<FilterBar
 				mediaType="movie"
 				genres={genresList?.data || []}
 				initialGenre={genre}
 				initialYear={year}
 				initialSort={sort}
+				resultCount={data?.raw?.total_results ?? null}
 			/>
 			<GridMovieContainer
 				key={filterKey}

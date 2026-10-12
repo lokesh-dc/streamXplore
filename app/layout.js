@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import "@/styles/v2/globals.css";
 import "@/styles/responsive.css";
 import "@/styles/youtube-embed.css";
-import { Poppins } from "next/font/google";
+import { Poppins, Bebas_Neue } from "next/font/google";
 import NavigationBar from "@/components/layout/navigation";
 import ChatShell from "@/components/ai/ChatShell";
 
@@ -10,6 +10,12 @@ const poppins = Poppins({
 	weight: ["400", "500", "600"],
 	subsets: ["latin"],
 	variable: "--font-poppins",
+});
+
+const bebas = Bebas_Neue({
+	weight: "400",
+	subsets: ["latin"],
+	variable: "--font-bebas",
 });
 
 export const metadata = {
@@ -81,7 +87,7 @@ export default function RootLayout({ children }) {
 		<html
 			lang="en"
 			data-theme="dark"
-			className={`${poppins.variable} font-sans`}
+			className={`${poppins.variable} ${bebas.variable} font-sans`}
 		>
 			<body className={poppins.className}>
 				<NavigationBar />
