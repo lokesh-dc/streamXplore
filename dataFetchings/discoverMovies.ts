@@ -1,4 +1,5 @@
 import getMethod from "@/utils/methods/get";
+import { newestDateLte } from "@/utils";
 
 interface DiscoverMoviesProps {
 	page?: number;
@@ -17,6 +18,7 @@ export default async function discoverMovies({
 		page,
 		with_genres: genre,
 		sort_by,
+		...newestDateLte(sort_by),
 	};
 
 	if (year_gte) {

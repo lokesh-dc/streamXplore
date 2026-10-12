@@ -164,15 +164,16 @@ const MoviePage = async ({ params }: PageProps) => {
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
 			/>
-			<DetailV2 
-				data={data} 
-				credits={credits} 
-				videos={videos?.results} 
+			<DetailV2
+				data={data}
+				credits={credits}
+				videos={videos?.results}
 			/>
 			<div className="default_screen_padding mb-4">
 				<RecommendationContainer
 					data={recommendations?.results}
-					title="Recommendations"
+					title="People also Liked"
+					aiSeed={{ type: "movie", id: data.id, title }}
 				/>
 			</div>
 		</div>

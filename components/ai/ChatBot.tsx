@@ -8,6 +8,7 @@ import { DefaultChatTransport } from "ai";
 
 import ChatMessage from "./ChatMessage";
 import { BiSolidBot, BiSend, BiX, BiLoaderAlt } from "react-icons/bi";
+import Image from "next/image";
 
 const SUGGESTIONS = [
 	"What should I watch tonight?",
@@ -72,6 +73,19 @@ const ChatBot = ({ open, onOpenChange }: ChatBotProps) => {
 		}
 	}, [messages, open]);
 
+	/* Open the panel and auto-send a message when something dispatches it (e.g. "similar" buttons on detail pages). */
+	useEffect(() => {
+		const openWithMessage = (e: Event) => {
+			const text = (e as CustomEvent)?.detail?.text;
+			const value = typeof text === "string" ? text.trim() : "";
+			if (!value) return;
+			onOpenChange(true);
+			sendMessage({ text: value });
+		};
+		window.addEventListener("hooked:chat", openWithMessage);
+		return () => window.removeEventListener("hooked:chat", openWithMessage);
+	}, [onOpenChange, sendMessage]);
+
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 		const value = input.trim();
@@ -95,7 +109,7 @@ const ChatBot = ({ open, onOpenChange }: ChatBotProps) => {
 					onClick={() => onOpenChange(true)}
 					aria-label="Open AI assistant"
 					className="fixed bottom-5 right-5 z-[150] w-14 h-14 rounded-full bg-primary text-white shadow-[0_8px_30px_rgba(230,80,27,0.45)] flex items-center justify-center">
-					<BiSolidBot className="text-3xl" />
+					<Image src={"/bot.png"} height={20} width={20} alt="" />
 				</motion.button>
 			)}
 
@@ -126,7 +140,9 @@ const ChatBot = ({ open, onOpenChange }: ChatBotProps) => {
 							<div className="flex items-center justify-between px-4 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-3 pb-3 border-b border-white/10 bg-white/5">
 								<div className="flex items-center gap-3">
 									<div className="w-9 h-9 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary">
-										<BiSolidBot className="text-xl" />
+										{/* <BiSolidBot className="text-xl" /> */}
+										<Image src={"/bot.png"} height={20} width={20} alt="" />
+
 									</div>
 									<div>
 										<p className="text-sm font-bold text-white">Hooked AI</p>
@@ -148,7 +164,6 @@ const ChatBot = ({ open, onOpenChange }: ChatBotProps) => {
 								{messages.length === 0 ? (
 									<div className="flex flex-col gap-4 my-auto">
 										<div className="text-center flex flex-col items-center gap-2">
-											<BiSolidBot className="text-5xl text-primary/40" />
 											<p className="text-sm text-gray-400">
 												Ask me anything about movies & TV —
 												I can search the whole catalog in real time.

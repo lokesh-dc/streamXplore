@@ -1,4 +1,5 @@
 import getMethod from "@/utils/methods/get";
+import { newestDateLte } from "@/utils";
 
 interface DiscoverTVProps {
 	genre?: string;
@@ -17,6 +18,7 @@ export default async function discoverTV({
 		with_genres: genre,
 		page: page,
 		sort_by,
+		...newestDateLte(sort_by),
 	};
 
 	if (year_gte) {

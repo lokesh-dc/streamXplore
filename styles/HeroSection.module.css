@@ -1,3 +1,7 @@
+.heroSwiper {
+  position: relative;
+}
+
 .slideContainer {
   position: relative;
   width: 100vw;
@@ -79,6 +83,10 @@
 }
 
 @media screen and (max-width: 600px) {
+  .heroSwiper :global(.swiper-slide) {
+    width: 100% !important;
+  }
+
   .slideContainer {
     height: auto;
     display: flex;
@@ -123,7 +131,7 @@
     display: none;
   }
 
-  :global(.swiper-pagination) {
+  .heroSwiper :global(.swiper-pagination) {
     bottom: 10px !important;
     left: 0 !important;
     right: 0 !important;
@@ -132,14 +140,58 @@
     justify-content: center;
   }
 
-  :global(.swiper-button-prev),
-  :global(.swiper-button-next) {
+  .heroSwiper :global(.swiper-button-prev),
+  .heroSwiper :global(.swiper-button-next) {
     display: none !important;
   }
 }
 
 
+@media screen and (min-width: 1001px) {
+  .heroSwiper :global(.swiper-slide) {
+    width: 70vw !important;
+  }
+
+  .slideContainer {
+    width: 70vw;
+    margin-top: 100px;
+    height: 75vh;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  }
+
+  .imageContainer {
+    border-radius: var(--radius-lg);
+  }
+
+  .imageContainer>.backdropImage {
+    filter: brightness(62%);
+    transition: filter 0.45s ease;
+  }
+
+  .contentContainer {
+    transition: opacity 0.3s ease;
+  }
+
+  
+  .heroSwiper :global(.swiper-slide:not(.swiper-slide-active)) .contentContainer {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  
+  .heroSwiper :global(.swiper-slide:not(.swiper-slide-active)) .backdropImage {
+    filter: blur(3px) brightness(48%);
+  }
+}
+
 @media screen and (min-width: 601px) and (max-width: 1000px) {
+  .heroSwiper :global(.swiper-slide) {
+    width: 100% !important;
+  }
+
   .slideContainer {
     height: 40vh;
   }

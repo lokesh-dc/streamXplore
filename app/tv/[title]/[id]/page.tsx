@@ -174,7 +174,8 @@ const TVSeriesPage = async ({ params }: PageProps) => {
 			<div className="default_screen_padding mb-4">
 				<RecommendationContainer
 					data={recommendations?.results}
-					title="Recommendations"
+					title="People also Liked"
+					aiSeed={{ type: "tv", id: data.id, title: name }}
 				/>
 			</div>
 		</div>

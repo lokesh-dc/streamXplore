@@ -39,7 +39,11 @@ const HeroSection = ({ data }: props) => {
 				}}
 				navigation={true}
 				modules={[Navigation, Pagination, Autoplay]}
-				className="z-0">
+				slidesPerView="auto"
+				centeredSlides
+				loop
+				spaceBetween={24}
+				className={`z-0 ${styles.heroSwiper}`}>
 				{data?.map((item, index) => {
 					const title = item.title || item.name;
 					const mediaType = item.media_type || (item.title ? "movie" : "tv");

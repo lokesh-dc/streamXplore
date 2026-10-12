@@ -9,6 +9,10 @@ AI_ROADMAP.md
 
 # testing
 /coverage
+.agents
+agent
+.claude
+skills-lock.json
 
 # next.js
 /.next/
