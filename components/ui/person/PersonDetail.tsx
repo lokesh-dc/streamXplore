@@ -71,6 +71,73 @@ const getAge = (birthday?: string | null, at?: string | null) => {
 const genderLabel = (gender: number) =>
 	gender === 1 ? "Female" : gender === 2 ? "Male" : gender === 3 ? "Non-binary" : "—";
 
+const JOB_PRIORITY = [
+	"Director",
+	"Creator",
+	"Writer",
+	"Screenplay",
+	"Story",
+	"Producer",
+	"Executive Producer",
+	"Director of Photography",
+	"Original Music Composer",
+	"Editor",
+	"Casting",
+];
+
+const jobRank = (job: string | null) => {
+	if (!job) return JOB_PRIORITY.length;
+	const index = JOB_PRIORITY.indexOf(job);
+	return index === -1 ? JOB_PRIORITY.length : index;
+};
+
+const dedupeCredits = (items: CreditItem[]): CreditItem[] => {
+	const groups = new Map<string, CreditItem[]>();
+
+	for (const item of items) {
+		const key = `${item.mediaType}-${item.id}`;
+		const group = groups.get(key);
+		if (group) group.push(item);
+		else groups.set(key, [item]);
+	}
+
+	const merged: CreditItem[] = [];
+
+	for (const group of Array.from(groups.values())) {
+		if (group.length === 1) {
+			merged.push(group[0]);
+			continue;
+		}
+
+		const cast = group.find((c) => c.role === "cast");
+		const crew = group
+			.filter((c) => c.role === "crew" && c.job)
+			.sort((a, b) => jobRank(a.job) - jobRank(b.job))[0];
+
+		const base = cast || crew || group[0];
+		const pick = <T,>(selector: (c: CreditItem) => T | null | undefined) =>
+			group.map(selector).find((value) => value != null) ?? selector(base);
+
+		merged.push({
+			...base,
+			role: cast ? "cast" : "crew",
+			character: pick((c) => c.character) ?? null,
+			job: pick((c) => c.job) ?? null,
+			department: pick((c) => c.department) ?? null,
+			posterPath: pick((c) => c.posterPath) ?? null,
+			backdropPath: pick((c) => c.backdropPath) ?? null,
+			overview: pick((c) => c.overview) ?? null,
+			date: pick((c) => c.date) ?? null,
+			year: pick((c) => c.year) ?? null,
+			rating: Math.max(...group.map((c) => c.rating)),
+			voteCount: Math.max(...group.map((c) => c.voteCount)),
+			episodeCount: Math.max(...group.map((c) => c.episodeCount || 0)) || null,
+		});
+	}
+
+	return merged;
+};
+
 const normalizeCredits = (data: personDetails) => {
 	const films: CreditItem[] = [];
 	const series: CreditItem[] = [];
@@ -125,8 +192,8 @@ const normalizeCredits = (data: personDetails) => {
 	};
 
 	return {
-		films: films.sort(sortDesc),
-		series: series.sort(sortDesc),
+		films: dedupeCredits(films).sort(sortDesc),
+		series: dedupeCredits(series).sort(sortDesc),
 	};
 };
 
