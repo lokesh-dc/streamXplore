@@ -13,6 +13,7 @@ import { genresType, movieVideos } from "@/constants/typescript";
 import YoutubeVideoModal from "@/modals/YoutubeVideoModal";
 import SeasonsContainer from "@/components/containers/SeasonsContianer";
 import CastSection from "@/components/ui/detail/CastSection";
+import CrewSection from "@/components/ui/detail/CrewSection";
 import ShareIntentComponent from "@/components/functional-components/ShareIntentComponent";
 import WatchlistButton from "@/components/functional-components/WatchlistButton";
 import { Button } from "@/components/buttons";
@@ -384,6 +385,8 @@ const DetailV2: React.FC<DetailV2Props> = ({
 					{cast.length ? (
 						<CastSection cast={cast} />
 					) : null}
+
+					<CrewSection crew={credits?.crew} createdBy={created_by} />
 
 					{featuredVideo ? (
 						<section className="flex flex-col gap-5">

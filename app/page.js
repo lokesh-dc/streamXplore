@@ -11,6 +11,7 @@ import trendingMovies from "@/dataFetchings/trendingMovies";
 import trendingSeries from "@/dataFetchings/trendingSeries";
 import MovieContainer from "@/components/containers/SwiperMovieContainer";
 import MotionPage from "@/components/layout/MotionPage";
+import AiBanner from "@/components/ui/home/AiBanner";
 
 export const metadata = {
 	title: "HookedOnMovies - Your Ultimate Movie & TV Guide",
@@ -52,6 +53,13 @@ export default async function HomePage() {
 			/>
 			<MotionPage className="flex flex-col">
 				<HeroSection data={heroData} />
+
+				<AiBanner
+					posters={[...(trending?.data || []), ...(trendingTV?.data || [])]
+						.map((item) => item?.poster_path)
+						.filter(Boolean)
+						.slice(0, 3)}
+				/>
 
 				<div className="flex flex-col pb-16 pt-6">
 					<MovieContainer
