@@ -97,6 +97,82 @@ const HERO_POSTERS = [
 
 const safePadding = { paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" };
 
+/* ── Shared wizard chrome ────────────────────────────────────────────────── */
+
+const CtaBar = ({ children }: { children: ReactNode }) => (
+	<div
+		style={safePadding}
+		className="fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-bg-main via-bg-main to-transparent px-6 pt-16">
+		<div className="mx-auto w-full max-w-lg">{children}</div>
+	</div>
+);
+
+const CtaButton = ({
+	children,
+	onClick,
+}: {
+	children: ReactNode;
+	onClick: () => void;
+}) => (
+	<button
+		onClick={onClick}
+		className="flex h-14 w-full items-center justify-center gap-2 rounded-full bg-text-primary px-6 text-sm font-bold uppercase tracking-[0.16em] text-bg-main shadow-xl transition-all hover:opacity-90 active:scale-[0.99]">
+		{children}
+	</button>
+);
+
+const StepHeader = ({
+	onBack,
+	step,
+	right,
+}: {
+	onBack: () => void;
+	step?: number;
+	right?: ReactNode;
+}) => (
+	<div className="pt-8">
+		<div className="flex items-center justify-between gap-4">
+			<button
+				onClick={onBack}
+				aria-label="Go back"
+				className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-text-secondary transition-colors hover:bg-white/10 hover:text-text-primary">
+				<FiChevronLeft size={20} />
+			</button>
+			{step ? (
+				<span className="eyebrow">Step {step} of 3</span>
+			) : (
+				<span aria-hidden />
+			)}
+			<div className="flex min-w-[2.5rem] items-center justify-end text-xs font-semibold tabular text-text-secondary">
+				{right}
+			</div>
+		</div>
+		{step ? (
+			<div className="mt-6 flex gap-1.5">
+				{[1, 2, 3].map((n) => (
+					<span
+						key={n}
+						className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
+							n <= step ? "bg-primary" : "bg-white/10"
+						}`}
+					/>
+				))}
+			</div>
+		) : null}
+	</div>
+);
+
+const StepTitle = ({ title, hint }: { title: ReactNode; hint: string }) => (
+	<div className="mx-auto mt-10 max-w-md text-center">
+		<h1 className="font-display text-5xl uppercase tracking-wide sm:text-6xl">
+			{title}
+		</h1>
+		<p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-text-secondary">
+			{hint}
+		</p>
+	</div>
+);
+
 /* ── Page ────────────────────────────────────────────────────────────────── */
 
 function RecommendationsWizard() {
@@ -302,19 +378,8 @@ function RecommendationsWizard() {
 		[selectedMoods]
 	);
 
-	const stepLabel = useMemo(() => {
-		const map: Record<number, string> = {
-			1: "STEP 1 OF 3",
-			2: "STEP 2 OF 3",
-			3: "STEP 3 OF 3",
-		};
-		return map[step] || "";
-	}, [step]);
-
 	return (
-		<div className="min-h-screen bg-[#0a0a0a] text-white max-w-2xl mx-auto overflow-x-hidden pt-20">
-			<div className="fixed inset-0 bg-[#0a0a0a] -z-50" />
-
+		<div className="relative min-h-screen pt-[var(--nav-h)] text-text-primary">
 			<AnimatePresence mode="wait">
 				{step === 0 && (
 					<motion.div
@@ -322,20 +387,20 @@ function RecommendationsWizard() {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						className="flex flex-col items-center justify-center min-h-[72vh] text-center relative px-4 md:px-8">
-						<span className="inline-flex items-center gap-2 bg-[#E6501B]/10 border border-[#E6501B]/30 text-[#ff8a5c] text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-10">
+						className="shell flex min-h-[calc(100vh-var(--nav-h))] flex-col items-center justify-center pb-28 text-center">
+						<span className="glass-card inline-flex items-center gap-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] text-primary">
 							<GiSparkles className="text-[15px]" />
 							AI-Powered Picks
 						</span>
 
-						<div className="relative w-full aspect-square max-w-sm mb-12 flex items-center justify-center">
-							<div className="absolute w-[70%] aspect-square rounded-full bg-[#E6501B]/20 blur-3xl animate-pulse" />
+						<div className="relative mt-14 mb-12 flex aspect-square w-full max-w-sm items-center justify-center">
+							<div className="absolute h-[70%] w-[70%] rounded-full bg-primary/20 blur-3xl" />
 							{HERO_POSTERS.slice(1).map((path, idx) => (
 								<div
 									key={idx}
-									className="absolute w-[45%] aspect-[2/3] bg-[#141414] rounded-xl shadow-2xl overflow-hidden border border-white/10"
+									className="absolute left-1/2 top-1/2 aspect-[2/3] w-[45%] overflow-hidden rounded-2xl border border-white/10 bg-bg-secondary shadow-2xl"
 									style={{
-										transform: `rotate(${idx === 0 ? -15 : 15}deg) translateX(${idx === 0 ? -64 : 64}px) translateY(16px)`,
+										transform: `translate(-50%, -50%) rotate(${idx === 0 ? -15 : 15}deg) translateX(${idx === 0 ? -72 : 72}px) translateY(18px)`,
 										filter: "grayscale(0.5) opacity(0.45)",
 									}}>
 									<Image
@@ -351,7 +416,7 @@ function RecommendationsWizard() {
 									/>
 								</div>
 							))}
-							<div className="relative w-[52%] aspect-[2/3] bg-[#141414] rounded-2xl shadow-2xl overflow-hidden border border-white/10 scale-110 z-10">
+							<div className="absolute left-1/2 top-1/2 z-10 aspect-[2/3] w-[52%] -translate-x-1/2 -translate-y-1/2 scale-110 overflow-hidden rounded-3xl border border-white/15 bg-bg-secondary shadow-2xl">
 								<Image
 									unoptimized
 									src={getImageBaseLink({
@@ -363,30 +428,26 @@ function RecommendationsWizard() {
 									fill
 									className="object-cover"
 								/>
-								<div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
+								<div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
 							</div>
 						</div>
 
-						<h1 className="text-4xl md:text-5xl font-bold uppercase bebas_nueve tracking-wider leading-none">
+						<h1 className="font-display text-6xl uppercase leading-[0.88] tracking-wide sm:text-7xl md:text-8xl">
 							Find your next
 							<br />
-							obsession
+							<span className="text-primary">obsession</span>
 						</h1>
-						<p className="text-gray-400 text-base max-w-xs mx-auto mt-5">
+						<p className="mt-6 max-w-md text-balance text-sm leading-relaxed text-text-secondary sm:text-base">
 							Tell Hooked AI your vibe, hand over a few favorites, and get a
 							curated shortlist — with a reason for every pick.
 						</p>
 
-						<div
-							style={safePadding}
-							className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent backdrop-blur-md z-50">
-							<button
-								onClick={() => setStep(1)}
-								className="w-full max-w-lg mx-auto flex items-center justify-center gap-2 bg-white text-black rounded-full font-bold text-base hover:bg-gray-200 transition-all shadow-xl uppercase tracking-widest h-12">
+						<CtaBar>
+							<CtaButton onClick={() => setStep(1)}>
 								Start matching
 								<FiArrowRight size={18} />
-							</button>
-						</div>
+							</CtaButton>
+						</CtaBar>
 					</motion.div>
 				)}
 
@@ -396,138 +457,122 @@ function RecommendationsWizard() {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						className="flex flex-col pb-10 relative px-4 md:px-8">
-						<div className="flex justify-between items-center mb-10">
-							<button
-								onClick={() => setStep(0)}
-								className="text-gray-400 hover:text-white transition-colors">
-								✕
-							</button>
-							<span className="text-sm font-medium uppercase tracking-widest text-gray-500">
-								{stepLabel}
-							</span>
-							<span className="text-gray-400 text-xs font-mono font-bold">
-								{selectedMoods.length} selected
-							</span>
-						</div>
+						className="shell pb-40">
+						<div className="mx-auto w-full max-w-3xl">
+							<StepHeader
+								step={1}
+								onBack={() => setStep(0)}
+								right={`${selectedMoods.length} selected`}
+							/>
 
-						<h1 className="text-3xl font-bold text-center mb-3 max-w-xs mx-auto uppercase bebas_nueve tracking-wide">
-							Pick your vibe
-						</h1>
-						<p className="text-gray-500 text-center text-sm max-w-[17rem] mx-auto mb-10">
-							Tap every mood you feel — the more you pick, the sharper the
-							AI gets.
-						</p>
+							<StepTitle
+								title="Pick your vibe"
+								hint="Tap every mood you feel — the more you pick, the sharper the AI gets."
+							/>
 
-						<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full mb-40 px-1">
-							{MOODS.map((mood) => {
-								const meta = MOOD_CARDS[mood.id] || {
-									icon: <FiZap />,
-									accent: "#E6501B",
-									blurb: "Mood",
-								};
-								const isSelected = selectedMoods.includes(mood.id);
-								return (
-									<motion.button
-										key={mood.id}
-										layout
-										transition={{ type: "spring", stiffness: 500, damping: 35 }}
-										onClick={() => toggleMood(mood.id)}
-										className={`relative flex items-center gap-3 p-3 rounded-2xl border-2 text-left transition-colors duration-200 active:scale-[0.98] ${
-											isSelected
-												? "bg-white/[0.06]"
-												: "border-white/[0.07] bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]"
-										}`}
-										style={
-											isSelected
-												? {
-														borderColor: meta.accent,
-														boxShadow: `0 0 22px ${meta.accent}26`,
-													}
-												: undefined
-										}>
-										<span
-											className="w-11 h-11 rounded-xl flex items-center justify-center text-[22px] flex-shrink-0 border transition-colors"
-											style={
+							<div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
+								{MOODS.map((mood) => {
+									const meta = MOOD_CARDS[mood.id] || {
+										icon: <FiZap />,
+										accent: "#E6501B",
+										blurb: "Mood",
+									};
+									const isSelected = selectedMoods.includes(mood.id);
+									return (
+										<motion.button
+											key={mood.id}
+											layout
+											transition={{ type: "spring", stiffness: 500, damping: 35 }}
+											onClick={() => toggleMood(mood.id)}
+											className={`relative flex flex-col gap-3 rounded-2xl border p-4 text-left transition-colors duration-200 active:scale-[0.98] ${
 												isSelected
-													? {
-															background: meta.accent,
-															color: "#0a0a0a",
-															borderColor: meta.accent,
-														}
-													: {
-															color: meta.accent,
-															background: `${meta.accent}1a`,
-															borderColor: `${meta.accent}38`,
-														}
-											}>
-											{meta.icon}
-										</span>
-										<span className="flex-1 min-w-0">
-											<span
-												className={`block text-[13px] font-bold leading-tight tracking-wide transition-colors ${
-													isSelected ? "text-white" : "text-gray-100"
-												}`}>
-												{mood.name}
-											</span>
-											<span className="block text-[11px] text-gray-500 mt-0.5">
-												{meta.blurb}
-											</span>
-										</span>
-										<span
-											className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 border transition-all duration-200 ${
-												isSelected
-													? "text-[#0a0a0a]"
-													: "border-white/15 text-transparent"
+													? "bg-white/[0.06]"
+													: "border-white/10 bg-white/[0.02] hover:border-white/25 hover:bg-white/[0.04]"
 											}`}
 											style={
 												isSelected
 													? {
-															background: meta.accent,
 															borderColor: meta.accent,
+															boxShadow: `0 0 24px ${meta.accent}26`,
 														}
 													: undefined
 											}>
-											<FiCheck size={14} />
-										</span>
-									</motion.button>
-								);
-							})}
-						</div>
-
-						<div
-							style={safePadding}
-							className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent backdrop-blur-md z-50">
-							<div className="max-w-lg mx-auto">
-								{selectedMoods.length > 0 && (
-									<div className="flex flex-wrap justify-center gap-2 mb-3 px-4">
-										{selectedMoods.map((id) => {
-											const meta = MOOD_CARDS[id] || {
-												icon: <FiZap />,
-												accent: "#E6501B",
-											};
-											return (
+											<span className="flex items-center justify-between">
 												<span
-													key={id}
-													className="inline-flex items-center gap-1.5 text-[11px] font-bold text-white bg-white/10 border border-white/15 px-3 py-1.5 rounded-full">
-													<span className="text-[13px]" style={{ color: meta.accent }}>
-														{meta.icon}
-													</span>
-													{moodName(id)}
+													className="flex h-11 w-11 items-center justify-center rounded-xl border text-[22px] transition-colors"
+													style={
+														isSelected
+															? {
+																	background: meta.accent,
+																	color: "#0a0908",
+																	borderColor: meta.accent,
+																}
+															: {
+																	color: meta.accent,
+																	background: `${meta.accent}1a`,
+																	borderColor: `${meta.accent}38`,
+																}
+													}>
+													{meta.icon}
 												</span>
-											);
-										})}
-									</div>
-								)}
-								<button
-									onClick={() => setStep(2)}
-									className="w-full flex items-center justify-center bg-white text-black rounded-full font-bold text-base hover:bg-gray-200 transition-all shadow-xl uppercase tracking-widest h-12 px-4 text-center">
-									{selectedMoods.length > 0
-										? `Continue with ${selectedMoods.length} mood${selectedMoods.length > 1 ? "s" : ""}`
-										: "I'm open to anything"}
-								</button>
+												<span
+													className={`flex h-6 w-6 items-center justify-center rounded-full border transition-all duration-200 ${
+														isSelected
+															? "text-[#0a0908]"
+															: "border-white/15 text-transparent"
+													}`}
+													style={
+														isSelected
+															? {
+																	background: meta.accent,
+																	borderColor: meta.accent,
+																}
+															: undefined
+													}>
+													<FiCheck size={14} />
+												</span>
+											</span>
+											<span>
+												<span className="block text-sm font-bold leading-tight">
+													{mood.name}
+												</span>
+												<span className="mt-0.5 block text-xs text-text-secondary">
+													{meta.blurb}
+												</span>
+											</span>
+										</motion.button>
+									);
+								})}
 							</div>
 						</div>
+
+						<CtaBar>
+							{selectedMoods.length > 0 && (
+								<div className="mb-3 flex flex-wrap justify-center gap-2 px-4">
+									{selectedMoods.map((id) => {
+										const meta = MOOD_CARDS[id] || {
+											icon: <FiZap />,
+											accent: "#E6501B",
+										};
+										return (
+											<span
+												key={id}
+												className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold text-white">
+												<span className="text-[13px]" style={{ color: meta.accent }}>
+													{meta.icon}
+												</span>
+												{moodName(id)}
+											</span>
+										);
+									})}
+								</div>
+							)}
+							<CtaButton onClick={() => setStep(2)}>
+								{selectedMoods.length > 0
+									? `Continue with ${selectedMoods.length} mood${selectedMoods.length > 1 ? "s" : ""}`
+									: "I'm open to anything"}
+							</CtaButton>
+						</CtaBar>
 					</motion.div>
 				)}
 
@@ -537,86 +582,70 @@ function RecommendationsWizard() {
 						initial={{ opacity: 0, x: 50 }}
 						animate={{ opacity: 1, x: 0 }}
 						exit={{ opacity: 0, x: -50 }}
-						className="flex flex-col pb-10 relative px-4 md:px-8">
-						<div className="flex justify-between items-center mb-10">
-							<button
-								onClick={() => setStep(1)}
-								className="text-gray-400 hover:text-white transition-colors flex items-center gap-1">
-								<FiChevronLeft /> Back
-							</button>
-							<span className="text-sm font-medium uppercase tracking-widest text-gray-500">
-								{stepLabel}
-							</span>
-							<span className="text-gray-400 text-xs font-mono font-bold">
-								Refine
-							</span>
-						</div>
+						className="shell pb-40">
+						<div className="mx-auto w-full max-w-xl">
+							<StepHeader step={2} onBack={() => setStep(1)} right="Refine" />
 
-						<h1 className="text-3xl font-bold text-center mb-3 max-w-xs mx-auto uppercase bebas_nueve tracking-wide">
-							Fine-tune the shortlist
-						</h1>
-						<p className="text-gray-500 text-center text-sm mb-10">
-							Lock your eras and ordering — Hooked AI will work the rest out.
-						</p>
+							<StepTitle
+								title="Fine-tune the shortlist"
+								hint="Lock your eras and ordering — Hooked AI will work the rest out."
+							/>
 
-						<div className="space-y-10 mb-32">
-							<div className="space-y-4">
-								<div className="flex items-center gap-2 text-gray-400 uppercase text-xs font-bold tracking-widest">
-									<FiCalendar /> Release Era
+							<div className="mt-10 space-y-10">
+								<div className="space-y-4">
+									<div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-text-secondary">
+										<FiCalendar /> Release Era
+									</div>
+									<div className="flex flex-wrap gap-3">
+										{YEARS.map((y) => (
+											<button
+												key={y.label}
+												onClick={() => setSelectedYear(y.value)}
+												className={`flex h-10 items-center justify-center rounded-full border px-5 text-sm font-bold transition-colors ${
+													selectedYear === y.value
+														? "border-transparent bg-text-primary text-bg-main"
+														: "border-white/10 text-text-secondary hover:border-white/30 hover:text-text-primary"
+												}`}>
+												{y.label}
+											</button>
+										))}
+									</div>
 								</div>
-								<div className="flex flex-wrap gap-3">
-									{YEARS.map((y) => (
-										<button
-											key={y.label}
-											onClick={() => setSelectedYear(y.value)}
-											className={`px-6 h-10 rounded-full border-2 transition-all font-bold text-sm flex items-center justify-center ${
-												selectedYear === y.value
-													? "bg-white text-black border-white"
-													: "bg-transparent text-gray-500 border-gray-800 hover:border-gray-600"
-											}`}>
-											{y.label}
-										</button>
-									))}
-								</div>
-							</div>
 
-							<div className="space-y-4">
-								<div className="flex items-center gap-2 text-gray-400 uppercase text-xs font-bold tracking-widest">
-									<FiSliders /> Sort By
-								</div>
-								<div className="grid grid-cols-1 gap-3">
-									{SORT_OPTIONS.map((s) => (
-										<button
-											key={s.value}
-											onClick={() => setSelectedSort(s.value)}
-											className={`p-5 rounded-2xl border-2 transition-all flex items-center justify-between font-bold ${
-												selectedSort === s.value
-													? "bg-white/10 text-white border-[#E6501B] shadow-[0_0_20px_rgba(230,80,27,0.15)]"
-													: "bg-gray-900/50 text-gray-500 border-gray-800 hover:border-gray-700"
-											}`}>
-											<span className="flex items-center gap-3">
-												{s.icon}
-												{s.label}
-											</span>
-											{selectedSort === s.value && (
-												<div className="w-2 h-2 rounded-full bg-[#E6501B]" />
-											)}
-										</button>
-									))}
+								<div className="space-y-4">
+									<div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-text-secondary">
+										<FiSliders /> Sort By
+									</div>
+									<div className="grid grid-cols-1 gap-3">
+										{SORT_OPTIONS.map((s) => (
+											<button
+												key={s.value}
+												onClick={() => setSelectedSort(s.value)}
+												className={`flex items-center justify-between rounded-2xl border p-5 text-sm font-bold transition-all ${
+													selectedSort === s.value
+														? "border-primary bg-primary/10 text-text-primary"
+														: "border-white/10 bg-white/[0.02] text-text-secondary hover:border-white/25"
+												}`}>
+												<span className="flex items-center gap-3">
+													{s.icon}
+													{s.label}
+												</span>
+												{selectedSort === s.value && (
+													<span className="h-2 w-2 rounded-full bg-primary" />
+												)}
+											</button>
+										))}
+									</div>
 								</div>
 							</div>
 						</div>
 
-						<div
-							style={safePadding}
-							className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent backdrop-blur-md z-50">
-							<button
-								onClick={fetchMovieChoices}
-								className="w-full max-w-lg mx-auto flex items-center justify-center gap-2 bg-white text-black rounded-full font-bold text-base hover:bg-gray-200 transition-all shadow-xl uppercase tracking-widest h-12">
+						<CtaBar>
+							<CtaButton onClick={fetchMovieChoices}>
 								Find favorites to feed the AI
 								<FiArrowRight size={18} />
-							</button>
-						</div>
+							</CtaButton>
+						</CtaBar>
 					</motion.div>
 				)}
 
@@ -626,102 +655,88 @@ function RecommendationsWizard() {
 						initial={{ opacity: 0, x: 50 }}
 						animate={{ opacity: 1, x: 0 }}
 						exit={{ opacity: 0, x: -50 }}
-						className="flex flex-col pb-10 relative px-4 md:px-8">
-						<div className="flex justify-between items-center mb-10">
-							<button
-								onClick={() => setStep(2)}
-								className="text-gray-400 hover:text-white transition-colors flex items-center gap-1">
-								<FiChevronLeft /> Back
-							</button>
-							<span className="text-sm font-medium uppercase tracking-widest text-gray-500">
-								{stepLabel}
-							</span>
-							<span className="text-gray-400 text-xs font-mono font-bold">
-								Optional
-							</span>
+						className="shell pb-40">
+						<div className="mx-auto w-full max-w-3xl">
+							<StepHeader step={3} onBack={() => setStep(2)} right="Optional" />
+
+							<StepTitle
+								title="Any favorites here?"
+								hint="Tap up to 3 you've loved — Hooked AI studies their DNA for better picks."
+							/>
+
+							{loadingChoices ? (
+								<div className="mt-10 grid grid-cols-3 gap-3 sm:grid-cols-4">
+									{Array.from({ length: 12 }).map((_, i) => (
+										<div
+											key={i}
+											className="aspect-[2/3] animate-pulse rounded-xl bg-white/5"
+										/>
+									))}
+								</div>
+							) : movieChoices.length === 0 ? (
+								<div className="mt-10 flex flex-col items-center justify-center gap-3 py-16">
+									<span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-text-secondary">
+										<FiFilm size={24} />
+									</span>
+									<p className="max-w-[16rem] text-center text-sm text-text-secondary">
+										Couldn&apos;t find candidates for that mix — you can skip
+										straight to the AI picks.
+									</p>
+								</div>
+							) : (
+								<div className="mt-10 grid grid-cols-3 gap-3 sm:grid-cols-4">
+									{movieChoices.map((movie) => {
+										const isSelected = selectedMovies.find(
+											(m) => m.id === movie.id
+										);
+										return (
+											<button
+												key={movie.id}
+												onClick={() => toggleMovie(movie)}
+												className="group relative aspect-[2/3] overflow-hidden rounded-xl border border-white/10">
+												<Image
+													unoptimized
+													src={getImageBaseLink({
+														path: movie.poster_path,
+														type: "poster",
+														quality: "md",
+													})}
+													alt={movie.title}
+													fill
+													className={`object-cover transition-all duration-300 ${
+														isSelected
+															? "scale-105"
+															: "opacity-70 grayscale-[0.4] group-hover:opacity-100"
+													}`}
+												/>
+												<div
+													className={`absolute inset-0 bg-black/40 transition-opacity ${
+														isSelected ? "opacity-100" : "opacity-0"
+													}`}
+												/>
+												{isSelected && (
+													<div className="absolute inset-0 flex items-center justify-center">
+														<FiCheckCircle
+															size={36}
+															className="text-primary drop-shadow-lg"
+														/>
+													</div>
+												)}
+											</button>
+										);
+									})}
+								</div>
+							)}
 						</div>
 
-						<h1 className="text-3xl font-bold text-center mb-3 max-w-xs mx-auto uppercase bebas_nueve tracking-wide">
-							Any favorites here?
-						</h1>
-						<p className="text-gray-500 text-center mb-10 text-sm max-w-xs mx-auto">
-							Tap up to 3 you&apos;ve loved — Hooked AI studies their DNA for
-							better picks.
-						</p>
-
-						{loadingChoices ? (
-							<div className="grid grid-cols-3 gap-3 mb-32">
-								{Array.from({ length: 9 }).map((_, i) => (
-									<div
-										key={i}
-										className="aspect-[2/3] rounded-lg bg-white/5 animate-pulse"
-									/>
-								))}
-							</div>
-						) : movieChoices.length === 0 ? (
-							<div className="flex flex-col items-center justify-center gap-3 py-16 mb-28">
-								<span className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-500">
-									<FiFilm size={24} />
-								</span>
-								<p className="text-gray-500 text-sm text-center max-w-[16rem]">
-									Couldn&apos;t find candidates for that mix — you can skip
-									straight to the AI picks.
-								</p>
-							</div>
-						) : (
-							<div className="grid grid-cols-3 gap-3 mb-32">
-								{movieChoices.map((movie) => {
-									const isSelected = selectedMovies.find(
-										(m) => m.id === movie.id
-									);
-									return (
-										<button
-											key={movie.id}
-											onClick={() => toggleMovie(movie)}
-											className="relative aspect-[2/3] rounded-lg overflow-hidden group">
-											<Image
-												unoptimized
-												src={getImageBaseLink({
-													path: movie.poster_path,
-													type: "poster",
-													quality: "md",
-												})}
-												alt={movie.title}
-												fill
-												className={`object-cover transition-all duration-300 ${
-													isSelected
-														? "scale-105"
-														: "opacity-60 grayscale-[0.5]"
-												}`}
-											/>
-											<div
-												className={`absolute inset-0 bg-black/40 transition-opacity ${
-													isSelected ? "opacity-100" : "opacity-0"
-												}`}
-											/>
-											{isSelected && (
-												<div className="absolute inset-0 flex items-center justify-center">
-													<FiCheckCircle className="text-[#E6501B] text-4xl drop-shadow-lg" />
-												</div>
-											)}
-										</button>
-									);
-								})}
-							</div>
-						)}
-
-						<div
-							style={safePadding}
-							className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent backdrop-blur-md z-50">
-							<button
-								onClick={() => runAiCuration()}
-								className="w-full max-w-lg mx-auto flex items-center justify-center gap-2 bg-white text-black rounded-full font-bold text-base hover:bg-gray-200 transition-all shadow-xl uppercase tracking-widest h-12 px-4 text-center">
-								<GiSparkles className="text-[#E6501B] text-lg" />
+						<CtaBar>
+							<CtaButton onClick={() => runAiCuration()}>
+								<GiSparkles className="text-lg text-primary" />
 								{selectedMovies.length > 0
 									? `Curate with ${selectedMovies.length} favorites`
 									: "Generate AI picks"}
-							</button>
-						</div>
+							</CtaButton>
+						</CtaBar>
 					</motion.div>
 				)}
 
@@ -731,22 +746,22 @@ function RecommendationsWizard() {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						className="flex flex-col items-center justify-center min-h-[70vh] text-center px-6 relative">
+						className="shell flex min-h-[calc(100vh-var(--nav-h))] flex-col items-center justify-center py-16 text-center">
 						<div className="relative mb-12 flex items-center justify-center">
-							<div className="absolute w-36 h-36 rounded-full border border-[#E6501B]/30 animate-ping" />
-							<div className="absolute w-36 h-36 rounded-full border border-[#E6501B]/40" />
-							<div className="absolute w-36 h-36 rounded-full border-t-2 border-[#E6501B] animate-spin" />
-							<div className="w-20 h-20 rounded-full bg-[#E6501B]/10 border border-[#E6501B]/40 flex items-center justify-center">
-								<BiSolidBot className="text-[#ff8a5c] text-4xl" />
+							<div className="absolute h-36 w-36 animate-ping rounded-full border border-primary/30" />
+							<div className="absolute h-36 w-36 rounded-full border border-primary/40" />
+							<div className="absolute h-36 w-36 animate-spin rounded-full border-t-2 border-primary" />
+							<div className="flex h-20 w-20 items-center justify-center rounded-full border border-primary/40 bg-primary/10">
+								<BiSolidBot className="text-4xl text-primary" />
 							</div>
 						</div>
 
-						<h2 className="text-3xl font-bold uppercase bebas_nueve tracking-wide mb-2">
+						<h2 className="font-display text-5xl uppercase tracking-wide">
 							Hooked AI is cooking
 						</h2>
-						<p className="text-gray-500 text-sm mb-8">{moodSummary}</p>
+						<p className="mt-3 text-sm text-text-secondary">{moodSummary}</p>
 
-						<div className="w-full max-w-sm space-y-3 text-left">
+						<div className="mt-8 w-full max-w-sm space-y-3 text-left">
 							{CURATING_STAGES.map((stage, i) => {
 								const done = i < curateStage;
 								const active = i === curateStage;
@@ -754,32 +769,26 @@ function RecommendationsWizard() {
 									<motion.div
 										key={stage.label}
 										animate={{ opacity: active || done ? 1 : 0.35 }}
-										className="flex items-center gap-3 px-4 py-3 rounded-xl border transition-colors"
-										style={{
-											borderColor: active
-												? "rgba(230,80,27,0.35)"
-												: "rgba(255,255,255,0.08)",
-											background: active
-												? "rgba(230,80,27,0.06)"
-												: "rgba(255,255,255,0.03)",
-										}}>
+										className={`flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors ${
+											active
+												? "border-primary/30 bg-primary/[0.06]"
+												: "border-white/10 bg-white/[0.02]"
+										}`}>
 										<span
-											className={`flex items-center justify-center w-8 h-8 rounded-full text-sm ${
+											className={`flex h-8 w-8 items-center justify-center rounded-full text-sm ${
 												done
-													? "bg-[#E6501B] text-white"
+													? "bg-primary text-white"
 													: active
-														? "bg-white/10 text-[#ff8a5c]"
-														: "bg-white/5 text-gray-500"
+														? "bg-white/10 text-primary"
+														: "bg-white/5 text-text-secondary"
 											}`}>
 											{done ? <FiCheck /> : active ? <FiLoader className="animate-spin" /> : stage.icon}
 										</span>
 										<div className="flex-1">
 											<p className="text-sm font-bold">{stage.label}</p>
-											<p className="text-xs text-gray-500">{stage.detail}</p>
+											<p className="text-xs text-text-secondary">{stage.detail}</p>
 										</div>
-										{active && (
-											<BiLoaderAlt className="text-[#E6501B] animate-spin" />
-										)}
+										{active && <BiLoaderAlt className="animate-spin text-primary" />}
 									</motion.div>
 								);
 							})}
@@ -799,67 +808,55 @@ function RecommendationsWizard() {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						className="fixed inset-0 z-50 bg-black overflow-hidden">
+						className="fixed inset-0 z-50 overflow-hidden bg-bg-main">
 						{currentPick ? (
-							<div className="relative w-full h-full flex flex-col">
-								{(currentPick.backdropPath || currentPick.posterPath) && (
-									<div className="absolute inset-0 z-0">
-										<Image
-											unoptimized
-											src={getImageBaseLink({
-												path: currentPick.backdropPath || currentPick.posterPath,
-												type: currentPick.backdropPath
-													? "backdrop"
-													: "poster",
-												quality: "lg",
-											})}
-											alt={currentPick.title}
-											fill
-											className="object-cover"
-										/>
-										<div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30" />
-										<div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
-									</div>
-								)}
+							<div className="flex h-full w-full flex-col">
+								{/* Hero banner — the current pick's artwork, never covered */}
+								<div className="relative shrink-0 basis-[40%] overflow-hidden sm:basis-[36%]">
+									{(currentPick.backdropPath || currentPick.posterPath) && (
+										<>
+											<Image
+												unoptimized
+												src={getImageBaseLink({
+													path: currentPick.backdropPath || currentPick.posterPath,
+													type: currentPick.backdropPath ? "backdrop" : "poster",
+													quality: "lg",
+												})}
+												alt={currentPick.title}
+												fill
+												className="object-cover"
+											/>
+											<div className="absolute inset-0 bg-gradient-to-t from-bg-main via-transparent to-black/30" />
+										</>
+									)}
 
-								{/* Top bar */}
-								<div className="relative z-10 p-6 flex justify-between items-center pt-[calc(5.5rem+env(safe-area-inset-top))]">
-									<button
-										onClick={() => setStep(3)}
-										className="px-4 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center gap-2 text-white border border-white/10 text-sm font-bold">
-										<FiChevronLeft size={20} />
-										Back
-									</button>
-									<div className="flex items-center gap-2">
-										{aiGenerated && (
-											<span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 h-10 rounded-full border border-[#E6501B]/40 text-[#ffc9ad] text-xs font-bold uppercase tracking-wider">
-												<GiSparkles className="text-[#E6501B]" />
-												AI Pick
+									{/* Top bar */}
+									<div className="absolute inset-x-0 top-0 flex items-center justify-between p-5 pt-[calc(5rem+env(safe-area-inset-top))]">
+										<button
+											onClick={() => setStep(3)}
+											className="flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/40 px-4 text-sm font-bold text-white backdrop-blur-md">
+											<FiChevronLeft size={20} />
+											Back
+										</button>
+										<div className="flex items-center gap-2">
+											{aiGenerated && (
+												<span className="flex h-10 items-center gap-1.5 rounded-full border border-primary/40 bg-black/40 px-3 text-xs font-bold uppercase tracking-wider text-primary backdrop-blur-md">
+													<GiSparkles className="text-primary" />
+													AI Pick
+												</span>
+											)}
+											<span className="flex h-10 items-center justify-center rounded-full border border-white/15 bg-black/40 px-4 text-sm font-bold text-white/80 backdrop-blur-md">
+												{currentIndex + 1} / {aiPicks.length}
 											</span>
-										)}
-										<span className="text-sm font-bold text-white/80 bg-black/40 backdrop-blur-md px-4 h-10 flex items-center justify-center rounded-full border border-white/10">
-											{currentIndex + 1} / {aiPicks.length}
-										</span>
+										</div>
 									</div>
 								</div>
 
-								{/* Filmstrip */}
-								<div className="relative z-10 px-4 mt-4 flex items-center gap-3 overflow-x-auto custom-scrollbar pb-2 flex-nowrap">
-									{aiPicks.map((pick, i) => (
-										<ReasonCard
-											key={`${pick.mediaType}-${pick.id}`}
-											pick={pick}
-											active={i === currentIndex}
-											onSelect={() => setCurrentIndex(i)}
-										/>
-									))}
-								</div>
-
-								{/* Main content */}
-								<div className="relative z-10 flex-1 flex flex-col justify-end p-6 pb-44">
-									<div className="space-y-4 max-w-md">
+								{/* Details panel */}
+								<div className="min-h-0 flex-1 overflow-y-auto px-6 pt-5 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+									<div className="mx-auto w-full max-w-xl space-y-4">
 										{aiSummary && aiGenerated && (
-											<div className="flex items-start gap-2 text-[#ff8a5c] bg-black/40 backdrop-blur-md border border-[#E6501B]/25 rounded-xl px-4 py-2.5 w-fit max-w-full">
+											<div className="flex w-fit max-w-full items-start gap-2 rounded-xl border border-primary/25 bg-black/40 px-4 py-2.5 text-primary backdrop-blur-md">
 												<GiSparkles className="mt-0.5 flex-shrink-0" />
 												<p className="text-xs font-semibold leading-relaxed">
 													{aiSummary}
@@ -868,18 +865,18 @@ function RecommendationsWizard() {
 										)}
 
 										{!aiGenerated && (
-											<p className="text-[11px] text-gray-400">
+											<p className="text-[11px] text-text-secondary">
 												AI was offline — showing a popularity-curated
 												backup instead.
 											</p>
 										)}
 
-										<h2 className="text-4xl md:text-5xl font-bold leading-tight drop-shadow-2xl uppercase bebas_nueve tracking-wider">
+										<h2 className="font-display text-5xl uppercase leading-[0.92] tracking-wide drop-shadow-2xl sm:text-6xl">
 											{currentPick.title}
 										</h2>
 
-										<div className="flex flex-wrap items-center gap-3 text-gray-200 font-semibold drop-shadow-md text-sm">
-											<span className="uppercase text-[10px] font-black tracking-widest bg-white/90 text-black px-2 py-1 rounded-md">
+										<div className="flex flex-wrap items-center gap-3 text-sm font-semibold text-white/90 drop-shadow-md">
+											<span className="rounded-md bg-white/90 px-2 py-1 text-[10px] font-black uppercase tracking-widest text-black">
 												{currentPick.mediaType === "tv" ? "Series" : "Film"}
 											</span>
 											<span>{currentPick.year || "—"}</span>
@@ -892,27 +889,27 @@ function RecommendationsWizard() {
 											{currentPick.genres.slice(0, 3).map((g) => (
 												<span
 													key={g}
-													className="px-2.5 py-1 rounded-full bg-white/10 backdrop-blur border border-white/15 text-[11px] font-bold text-gray-200">
+													className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-bold text-white/90 backdrop-blur">
 													{g}
 												</span>
 											))}
 										</div>
 
 										{currentPick.overview && (
-											<p className="text-gray-100 text-sm leading-relaxed line-clamp-2 drop-shadow-md font-medium">
+											<p className="line-clamp-2 text-sm font-medium leading-relaxed text-white/90 drop-shadow-md">
 												{currentPick.overview}
 											</p>
 										)}
 
-										<div className="flex items-start gap-3 bg-black/50 backdrop-blur-md border border-white/15 rounded-2xl px-4 py-3.5">
-											<div className="w-8 h-8 rounded-full bg-[#E6501B]/15 border border-[#E6501B]/40 flex items-center justify-center flex-shrink-0">
-												<GiSparkles className="text-[#ff8a5c] text-base" />
+										<div className="flex items-start gap-3 rounded-2xl border border-white/15 bg-black/50 px-4 py-3.5 backdrop-blur-md">
+											<div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-primary/40 bg-primary/15">
+												<GiSparkles className="text-base text-primary" />
 											</div>
 											<div>
-												<p className="text-[10px] font-black uppercase tracking-widest text-[#ff8a5c] mb-1">
+												<p className="mb-1 text-[10px] font-black uppercase tracking-widest text-primary">
 													Why you&apos;ll like it
 												</p>
-												<p className="text-sm font-medium text-gray-100 leading-relaxed">
+												<p className="text-sm font-medium leading-relaxed text-white/90">
 													{currentPick.reason ||
 														"Hand-picked to fit your vibe."}
 												</p>
@@ -921,30 +918,48 @@ function RecommendationsWizard() {
 									</div>
 								</div>
 
+								{/* Shortlist rail */}
+								<div className="shrink-0 px-6 pb-2 pt-3">
+									<p className="eyebrow mb-3 text-text-secondary">
+										More like this
+									</p>
+									<div className="-mx-6 flex gap-3 overflow-x-auto px-6 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+										{aiPicks.map((pick, i) => (
+											<ReasonCard
+												key={`${pick.mediaType}-${pick.id}`}
+												pick={pick}
+												active={i === currentIndex}
+												onSelect={() => setCurrentIndex(i)}
+												size="sm"
+											/>
+										))}
+									</div>
+								</div>
+
 								{/* Action bar */}
 								<div
 									style={safePadding}
-									className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/95 to-transparent backdrop-blur-md z-50">
-									<div className="max-w-lg mx-auto flex flex-col gap-4">
+									className="relative z-10 shrink-0 border-t border-white/10 bg-bg-main px-6 pt-4">
+									<div className="mx-auto flex max-w-lg flex-col gap-4">
 										<div className="flex gap-4">
 											<button
 												onClick={prevPick}
 												aria-label="Previous pick"
-												className="w-12 h-12 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center text-white transition-all hover:bg-white/20">
+												className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-xl transition-all hover:bg-white/20">
 												<FiChevronLeft size={20} />
 											</button>
 											<button
 												onClick={nextPick}
-												className="flex-1 h-12 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all hover:bg-white/20 text-white">
+												className="flex h-12 flex-1 items-center justify-center gap-3 rounded-2xl border border-white/20 bg-white/10 font-bold text-white backdrop-blur-xl transition-all hover:bg-white/20">
 												<FiRotateCcw size={20} />
 												Rematch
 											</button>
 											<button
 												onClick={handleSave}
-												className={`w-12 h-12 rounded-full flex items-center justify-center border transition-all ${
+												className={`flex h-12 w-12 items-center justify-center rounded-full border transition-all ${
 													saved
-														? "bg-[#E6501B] border-[#E6501B] text-white"
-														: "bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20"
+														? "border-primary bg-primary text-white"
+														: "border-white/20 bg-white/10 text-white backdrop-blur-xl hover:bg-white/20"
 												}`}
 												aria-label="Save to watchlist">
 												<FiBookmark
@@ -955,22 +970,22 @@ function RecommendationsWizard() {
 											<button
 												onClick={nextPick}
 												aria-label="Next pick"
-												className="w-12 h-12 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center text-white transition-all hover:bg-white/20">
+												className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-xl transition-all hover:bg-white/20">
 												<FiChevronRight size={20} />
 											</button>
 										</div>
 										<Link
 											prefetch={false}
 											href={`/${currentPick.mediaType}/${decorateLink(currentPick.title)}/${currentPick.id}`}
-											className="w-full flex items-center justify-center bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all shadow-2xl uppercase tracking-widest h-12">
+											className="flex h-12 w-full items-center justify-center rounded-2xl bg-text-primary font-bold uppercase tracking-widest text-bg-main shadow-2xl transition-all hover:opacity-90">
 											Watch details
 										</Link>
 									</div>
 								</div>
 							</div>
 						) : (
-							<div className="flex items-center justify-center h-screen bg-black">
-								<div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+							<div className="flex h-screen items-center justify-center bg-black">
+								<div className="h-12 w-12 animate-spin rounded-full border-4 border-white/20 border-t-white" />
 							</div>
 						)}
 					</motion.div>
@@ -982,7 +997,7 @@ function RecommendationsWizard() {
 
 export default function RecommendationsPage() {
 	return (
-		<Suspense fallback={<div className="min-h-screen bg-[#0a0a0a]" />}>
+		<Suspense fallback={<div className="min-h-screen pt-[var(--nav-h)]" />}>
 			<RecommendationsWizard />
 		</Suspense>
 	);

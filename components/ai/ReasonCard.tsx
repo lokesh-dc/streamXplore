@@ -11,14 +11,21 @@ interface ReasonCardProps {
 	pick: AiPick;
 	active?: boolean;
 	onSelect?: () => void;
+	size?: "md" | "sm";
 }
 
 /** Compact poster + match-reason card for the curated shortlist. */
-const ReasonCard = ({ pick, active = false, onSelect }: ReasonCardProps) => {
+const ReasonCard = ({
+	pick,
+	active = false,
+	onSelect,
+	size = "md",
+}: ReasonCardProps) => {
 	const link = `/${pick.mediaType}/${decorateLink(pick.title)}/${pick.id}`;
+	const widthCls = size === "sm" ? "w-20 sm:w-24" : "w-28 sm:w-36";
 
 	const body = (
-		<div className="group w-28 sm:w-36 flex-shrink-0 text-left">
+		<div className={`group ${widthCls} flex-shrink-0 text-left`}>
 			<div
 				className={`relative aspect-[2/3] rounded-xl overflow-hidden bg-zinc-900 border transition-all duration-300 ${
 					active
