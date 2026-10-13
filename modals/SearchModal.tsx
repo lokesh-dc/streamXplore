@@ -84,6 +84,68 @@ const SearchModal: React.FC<props> = ({
 				<div className="flex flex-col gap-4 overflow-y-auto max-h-[65vh] pr-2 custom-scrollbar pb-10">
 					{resultData?.length > 0 ? (
 						resultData.map((item, index) => {
+							if (item.media_type === "person") {
+								const knownFor: any = (item as any)?.known_for;
+								const knownTitle =
+									knownFor?.[0]?.title || knownFor?.[0]?.name || null;
+								const personName = item.name || item.title;
+								return (
+									<motion.div
+										key={item.id}
+										initial={{ x: -10, opacity: 0 }}
+										animate={{ x: 0, opacity: 1 }}
+										transition={{ delay: index * 0.03 }}
+									>
+										<Link
+											href={`/person/${decorateLink(personName)}/${item.id}`}
+											className="group flex gap-5 bg-white/5 hover:bg-white/10 p-3 rounded-xl border border-white/5 hover:border-primary/30 transition-all"
+											onClick={toggleModalVisibility}
+										>
+											<div className="h-16 w-16 relative rounded-full overflow-hidden flex-shrink-0 bg-zinc-800">
+												{item.profile_path ? (
+													<Image
+														unoptimized
+														src={getImageBaseLink({
+															path: item.profile_path,
+															type: "profile",
+															quality: "md",
+														})}
+fill
+													alt={personName || "Person"}
+													className="object-cover group-hover:scale-110 transition-transform duration-500"
+													/>
+												) : (
+													<span className="flex h-full w-full items-center justify-center text-lg font-bold text-gray-500 group-hover:text-white transition-colors">
+														{personName?.slice(0, 1).toUpperCase()}
+													</span>
+												)}
+											</div>
+											<div className="flex flex-col justify-center gap-1 min-w-0">
+												<h3 className="text-lg font-bold text-white group-hover:text-primary transition-colors line-clamp-1">
+													{personName}
+												</h3>
+												<div className="flex items-center gap-3 text-sm text-gray-400">
+													<span className="bg-white/10 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
+														Person
+													</span>
+													{item.known_for_department && (
+														<span>{item.known_for_department}</span>
+													)}
+												</div>
+												{knownTitle && (
+													<p className="text-xs text-gray-400 line-clamp-1">
+														Known for{" "}
+														<span className="text-gray-200">
+															{knownTitle}
+														</span>
+													</p>
+												)}
+											</div>
+										</Link>
+									</motion.div>
+								);
+							}
+
 							if (!["tv", "movie"].includes(item.media_type)) return null;
 							
 							const title = item.name || item.title;

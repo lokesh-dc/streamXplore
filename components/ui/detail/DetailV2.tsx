@@ -12,6 +12,7 @@ import { getImageBaseLink } from "@/constants";
 import { genresType, movieVideos } from "@/constants/typescript";
 import YoutubeVideoModal from "@/modals/YoutubeVideoModal";
 import SeasonsContainer from "@/components/containers/SeasonsContianer";
+import CastSection from "@/components/ui/detail/CastSection";
 import ShareIntentComponent from "@/components/functional-components/ShareIntentComponent";
 import WatchlistButton from "@/components/functional-components/WatchlistButton";
 import { Button } from "@/components/buttons";
@@ -37,15 +38,6 @@ const formatRuntime = (minutes?: number) => {
 	if (hours) return `${hours}h`;
 	return `${mins}m`;
 };
-
-const getInitials = (name: string) =>
-	name
-		.split(" ")
-		.filter(Boolean)
-		.slice(0, 2)
-		.map((word) => word[0])
-		.join("")
-		.toUpperCase();
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
 	<h2 className="font-display text-2xl leading-none text-text-primary md:text-3xl">
@@ -104,7 +96,7 @@ const DetailV2: React.FC<DetailV2Props> = ({
 	} = data;
 
 	const displayTitle = title || name || "Untitled";
-	const cast = credits?.cast?.slice(0, 10) || [];
+	const cast = credits?.cast?.slice(0, 15) || [];
 	const isReleasedYear = release_date?.split("-")[0];
 
 	// Producer / Creator logic
@@ -390,47 +382,7 @@ const DetailV2: React.FC<DetailV2Props> = ({
 					) : null}
 
 					{cast.length ? (
-						<section className="flex flex-col gap-5">
-							<SectionTitle>Cast</SectionTitle>
-							<div className="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-3 xl:grid-cols-4">
-								{cast.map((person: any, idx: number) => (
-									<div
-										key={person.id ?? `${person.name}-${idx}`}
-										className="flex items-center gap-3">
-										<div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md border border-white/10 bg-white/5">
-											{person.profile_path ? (
-												<Image
-													unoptimized
-													src={getImageBaseLink({
-														type: "profile",
-														quality: "md",
-														path: person.profile_path,
-													})}
-													alt={person.name}
-													fill
-													sizes="56px"
-													className="object-cover"
-												/>
-											) : (
-												<span className="flex h-full w-full items-center justify-center font-display text-xl text-text-secondary">
-													{getInitials(person.name)}
-												</span>
-											)}
-										</div>
-										<div className="min-w-0">
-											<p className="truncate text-sm font-medium text-text-primary">
-												{person.name}
-											</p>
-											{person.character ? (
-												<p className="truncate text-xs text-text-secondary">
-													{person.character}
-												</p>
-											) : null}
-										</div>
-									</div>
-								))}
-							</div>
-						</section>
+						<CastSection cast={cast} />
 					) : null}
 
 					{featuredVideo ? (
