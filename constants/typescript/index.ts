@@ -24,7 +24,8 @@ export interface searchedDataEntry extends movieDetails {
 	name: string;
 	media_type: string;
 	profile_path: string | null;
-	first_air_date: string
+	first_air_date: string;
+	known_for_department?: string;
 }
 
 export interface genresType {
@@ -156,4 +157,35 @@ export interface episodeDetails {
 	still_path: string;
 	vote_average: number;
 	vote_count: number;
+}
+
+export interface personCreditsResponse {
+	cast: Array<any>;
+	crew: Array<any>;
+}
+
+export interface personDetails {
+	id: number;
+	name: string;
+	original_name: string;
+	adult: boolean;
+	gender: number;
+	known_for_department: string;
+	also_known_as: Array<string>;
+	biography: string;
+	birthday: string | null;
+	deathday: string | null;
+	homepage: string | null;
+	place_of_birth: string | null;
+	popularity: number;
+	profile_path: string | null;
+	external_ids: {
+		imdb_id: string | null;
+		facebook_id: string | null;
+		instagram_id: string | null;
+		tiktok_id: string | null;
+		twitter_id: string | null;
+	};
+	movie_credits: personCreditsResponse;
+	tv_credits: personCreditsResponse;
 }

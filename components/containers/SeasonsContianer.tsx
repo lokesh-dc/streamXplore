@@ -73,10 +73,10 @@ const SeasonsContainer: React.FC<SeasonsContainerProps> = ({ data, seriesId }) =
 								</div>
 								
 								<div className="mt-3">
-									<h3 className="text-sm font-bold text-gray-100 group-hover:text-primary transition-colors truncate">
+									<h3 className="text-sm font-bold text-text-primary group-hover:text-primary transition-colors truncate">
 										{item.name}
 									</h3>
-									<p className="text-xs text-gray-500 mt-0.5 font-medium">
+									<p className="text-xs text-text-secondary mt-0.5 font-medium">
 										{item.air_date ? item.air_date.split("-")[0] : "Coming Soon"}
 									</p>
 								</div>

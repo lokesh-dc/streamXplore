@@ -10,49 +10,74 @@ import "swiper/css/free-mode";
 
 import styles from "@/styles/MovieContainer.module.css";
 import MovieCard from "../cards/MovieCard";
+import SectionHeader from "../ui/SectionHeader";
 
 interface props {
 	data: Array<movieDetails> | null | undefined;
 	title?: string;
 	showType: string;
+	index?: number;
+	subtitle?: string;
+	href?: string;
 }
 
 const MovieContainer: React.FC<props> = ({
 	data,
 	title,
 	showType,
+	index,
+	subtitle,
+	href,
 }): ReactElement => {
 	if (!data || !data?.length) return <></>;
+
+	const isTV = showType === "tv";
+	const allHref = href ?? (isTV ? "/tv-series" : "/movies");
+
 	return (
-		<div className="p-3 py-5 flex flex-col gap-1">
+		<section className={`shell ${styles.row}`}>
 			{title ? (
-				<h2 className={`text-4xl bebas_nueve ${styles.title}`}>{title}</h2>
+				<SectionHeader
+					index={index}
+					eyebrow={isTV ? "Series" : "Films"}
+					title={title}
+					subtitle={subtitle}
+					href={allHref}
+					linkLabel={`All ${isTV ? "series" : "movies"}`}
+				/>
 			) : null}
 
-			<Swiper
-				slidesPerView="auto"
-				spaceBetween={16}
-				freeMode={true}
-				mousewheel={{
-					forceToAxis: true, // Allows vertical page scroll while mouse is over slider
-					releaseOnEdges: true, // Releases wheel control at the start/end of slider
-				}}
-				modules={[Mousewheel, FreeMode]}
-				className={`w-full ${styles.swiperContainer} overscroll-x-contain touch-pan-y`}>
-				{data?.map((item, index) => (
-					<SwiperSlide key={index} className="!w-fit">
-						<MovieCard
-							// @ts-ignore
-							imgSrc={`${item.poster_path || item.file_path}`}
-							title={`${item?.title || item?.name}`}
-							movieId={item.id}
-							type={"scroll_card"}
-							showType={showType}
-						/>
-					</SwiperSlide>
-				))}
-			</Swiper>
-		</div>
+			<div className={styles.rowMaskWrap}>
+				<Swiper
+					slidesPerView="auto"
+					spaceBetween={18}
+					freeMode={true}
+					mousewheel={{
+						forceToAxis: true,
+						releaseOnEdges: true,
+					}}
+					modules={[Mousewheel, FreeMode]}
+					className={`w-full ${styles.swiperContainer} overscroll-x-contain touch-pan-y`}>
+					{data?.map((item, i) => (
+						<SwiperSlide key={`${item.id ?? i}-${i}`} className="!w-fit">
+							<MovieCard
+								imgSrc={item.poster_path}
+								title={`${item?.title || item?.name}`}
+								movieId={item.id}
+								type={"scroll_card"}
+								showType={showType}
+								overlay
+								mediaType={showType}
+								rating={item?.vote_average}
+								year={
+									(item?.release_date || item?.first_air_date)?.split("-")[0] ?? null
+								}
+							/>
+						</SwiperSlide>
+					))}
+				</Swiper>
+			</div>
+		</section>
 	);
 };
 

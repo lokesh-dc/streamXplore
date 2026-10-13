@@ -156,7 +156,7 @@ const TVSeriesPage = async ({ params }: PageProps) => {
 	};
 
 	return (
-		<div className="flex flex-col gap-3 pb-5 bg-[#121212]">
+		<div className="flex flex-col pb-5">
 			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -171,7 +171,7 @@ const TVSeriesPage = async ({ params }: PageProps) => {
 				videos={videos?.results}
 				isTv={true}
 			/>
-			<div className="default_screen_padding mb-4">
+			<div className="shell">
 				<RecommendationContainer
 					data={recommendations?.results}
 					title="People also Liked"

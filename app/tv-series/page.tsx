@@ -34,13 +34,18 @@ const TVSeriesPage = async ({ searchParams }: PageProps) => {
 
 	return (
 		<>
-			<PageTitle title="TRENDING TV SERIES" />
+			<PageTitle
+				title="TV Series"
+				eyebrow="Browse series"
+				description="Find your next binge by genre and era, or sort to the most talked-about shows."
+			/>
 			<FilterBar
 				mediaType="tv"
 				genres={genresList?.data || []}
 				initialGenre={genre}
 				initialYear={year}
 				initialSort={sort}
+				resultCount={data?.raw?.total_results ?? null}
 			/>
 			<GridMovieContainer
 				key={filterKey}

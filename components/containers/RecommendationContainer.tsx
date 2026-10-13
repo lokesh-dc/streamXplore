@@ -3,9 +3,16 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AiFillStar } from "react-icons/ai";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Mousewheel, FreeMode } from "swiper";
+
+import "swiper/css";
+import "swiper/css/free-mode";
+
+import { AiTwotoneStar } from "react-icons/ai";
 import { GiSparkles } from "react-icons/gi";
-import { motion } from "framer-motion";
+
+import styles from "@/styles/MovieContainer.module.css";
 import { movieDetails } from "@/constants/typescript";
 import { getImageBaseLink } from "@/constants";
 import { decorateLink, isReleased } from "@/utils";
@@ -21,10 +28,11 @@ const RecommendationContainer: React.FC<RecommendationContainerProps> = ({
 	title,
 	aiSeed,
 }) => {
-	if (!Array.isArray(data) || data.length === 0) return null;
+	const recommendations = Array.isArray(data)
+		? data.filter((item) => item.poster_path).slice(0, 12)
+		: [];
 
-	// Limit to a reasonable number of recommendations
-	const recommendations = data.slice(0, 12);
+	if (!recommendations.length) return null;
 
 	const openSimilarInChat = () => {
 		if (!aiSeed) return;
@@ -34,97 +42,120 @@ const RecommendationContainer: React.FC<RecommendationContainerProps> = ({
 				detail: {
 					text: `I'm watching ${aiSeed.title}. Find me ${kind.toLowerCase()} similar to it — pick a few and give a one-line reason for each.`,
 				},
-			})
+			}),
 		);
 	};
 
 	return (
-		<div className="mt-16 mb-12">
-			<div className="flex items-center justify-between mb-8">
-				<h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white border-l-4 border-primary pl-4">
-					{title}
-				</h2>
+		<section className="py-16">
+			<header className="mb-7 flex flex-wrap items-end justify-between gap-4">
+				<div className="flex min-w-0 flex-col gap-2">
+					<span className="eyebrow">Recommended for you</span>
+					<h2 className="font-display text-4xl leading-none text-text-primary md:text-5xl">
+						{title}
+					</h2>
+				</div>
+
 				{aiSeed && (
 					<button
 						onClick={openSimilarInChat}
-						className="shrink-0 ml-4 inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-white bg-primary hover:bg-primary/80 px-3 py-2 rounded-full transition-all shadow-lg shadow-primary/20"
-					>
-						<GiSparkles className="text-sm" />
+						className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#ff8a5c] transition-colors hover:bg-primary/25 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60">
+						<GiSparkles className="text-sm transition-transform duration-300 ease-smooth group-hover:rotate-12" />
 						Ask AI for picks
 					</button>
 				)}
-				<div className="h-[1px] flex-1 bg-gradient-to-r from-white/10 to-transparent ml-8"></div>
-			</div>
+			</header>
 
-			<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-				{recommendations.map((movie, index) => {
-					if (!movie.poster_path) return null;
+			<div className="hairline mb-3" />
 
-					const movieTitle = movie.title || movie.name;
-					const releaseYear = (movie.release_date || movie.first_air_date)?.split("-")[0];
-					const mediaType = movie.media_type || (movie.title ? "movie" : "tv");
+			<div className={styles.rowMaskWrap}>
+				<Swiper
+					slidesPerView="auto"
+					spaceBetween={18}
+					freeMode={true}
+					mousewheel={{
+						forceToAxis: true,
+						releaseOnEdges: true,
+					}}
+					modules={[Mousewheel, FreeMode]}
+					className={`w-full ${styles.swiperContainer} overscroll-x-contain touch-pan-y`}>
+					{recommendations.map((item, index) => {
+						const movieTitle = item.title || item.name || "Untitled";
+						const year = (
+							item.release_date || item.first_air_date
+						)?.split("-")[0];
+						const mediaType =
+							item.media_type || (item.title ? "movie" : "tv");
+						const mediaLabel = mediaType === "tv" ? "Series" : "Film";
+						const released = isReleased(item);
+						const rating = item.vote_average;
+						const hasRating =
+							released && typeof rating === "number" && rating > 0;
 
-					return (
-						<motion.div
-							key={movie.id}
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.3, delay: index * 0.05 }}
-						>
-							<Link
-								href={`/${mediaType}/${decorateLink(movieTitle)}/${movie.id}`}
-								className="group block relative"
-							>
-								<div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-white/5 border border-white/10 shadow-lg group-hover:shadow-primary/10 transition-all duration-300">
-<Image
-									unoptimized
-									src={getImageBaseLink({
-										path: movie.poster_path,
-										type: "poster",
-										quality: "lg",
-									})}
-									alt={movieTitle || "Movie Poster"}
-									fill
-									className="object-cover group-hover:scale-110 transition-transform duration-500 brightness-90 group-hover:brightness-100"
-								/>
-
-{isReleased(movie) ? (
-									typeof movie.vote_average === "number" && (
-										<span className="absolute top-2 right-2 flex items-center gap-1 bg-black/75 backdrop-blur px-1.5 py-0.5 rounded-md text-[11px] font-bold text-white shadow-lg">
-											<AiFillStar className="text-[#F5C518] text-xs" />
-											{movie.vote_average.toFixed(1)}
-										</span>
-									)
-								) : (
-									<span className="absolute top-2 right-2 text-[9px] uppercase tracking-widest font-black px-1.5 py-0.5 rounded-md bg-[#E6501B] text-white shadow-lg">
-										Coming Soon
-									</span>
-								)}
-
-								{/* Overlay on hover */}
-									<div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-										<div className="flex items-center gap-1 text-primary mb-1 font-bold">
-											<AiFillStar className="text-sm" />
-											<span className="text-xs">{movie.vote_average?.toFixed(1)}</span>
+						return (
+							<SwiperSlide
+								key={`${item.id ?? index}-${index}`}
+								className="!w-fit pb-2">
+								<Link
+									href={`/${mediaType}/${decorateLink(movieTitle)}/${item.id}`}
+									className="group inline-block align-top">
+									<div className={`${styles.scroll_card} relative`}>
+										<div className={styles.cardImage}>
+											<Image
+												unoptimized
+												width={500}
+												height={750}
+												src={getImageBaseLink({
+													path: item.poster_path,
+													type: "poster",
+													quality: "lg",
+												})}
+												alt={`${movieTitle} poster`}
+												className={styles.cardImg}
+											/>
 										</div>
-										<p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">{mediaType}</p>
-									</div>
-								</div>
 
-								<div className="mt-3 px-1">
-									<h3 className="text-sm font-semibold text-gray-100 group-hover:text-primary transition-colors line-clamp-1">
-										{movieTitle}
-									</h3>
-									<p className="text-xs text-gray-500 font-medium mt-1">
-										{releaseYear}
-									</p>
-								</div>
-							</Link>
-						</motion.div>
-					);
-				})}
+										{/* Editorial index */}
+										<span
+											aria-hidden
+											className="pointer-events-none absolute left-3 top-1.5 z-[2] font-display text-4xl leading-none tabular text-white/30 transition-colors duration-300 ease-smooth group-hover:text-primary">
+											{String(index + 1).padStart(2, "0")}
+										</span>
+
+										{hasRating ? (
+											<span className={styles.ratingChip}>
+												<AiTwotoneStar />
+												{rating.toFixed(1)}
+											</span>
+										) : !released ? (
+											<span className="absolute right-2.5 top-2.5 z-[2] rounded-full border border-primary/40 bg-primary/15 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-[#ff8a5c] backdrop-blur">
+												Coming soon
+											</span>
+										) : null}
+
+										<div className={styles.cardMeta}>
+											<span className={styles.cardMetaTop}>
+												<span>{mediaLabel}</span>
+												{year ? <span>{year}</span> : null}
+											</span>
+										</div>
+									</div>
+
+									<div className="mt-3 flex flex-col gap-0.5 px-0.5">
+										<h3 className="truncate text-sm font-medium text-text-primary transition-colors group-hover:text-primary">
+											{movieTitle}
+										</h3>
+										<p className="text-xs text-text-secondary">
+											{year || "TBA"} · {mediaLabel}
+										</p>
+									</div>
+								</Link>
+							</SwiperSlide>
+						);
+					})}
+				</Swiper>
 			</div>
-		</div>
+		</section>
 	);
 };
 

@@ -6,7 +6,7 @@ export const getImageBaseLink = ({ type, quality, path }) => {
 		poster: { sm: "w92", md: "w185", lg: "w500", xl: "w780" },
 		backdrop: { sm: "w300", md: "w780", lg: "w1280" },
 		still: { sm: "w92", md: "w185", lg: "w300" },
-		profile: { sm: "w45", md: "w185", lg: "w632" },
+		profile: { sm: "w45", md: "w185", lg: "h632" },
 		logo: { sm: "w92", md: "w185", lg: "w300", xl: "w500" },
 	};
 

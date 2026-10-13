@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: [
@@ -14,13 +16,19 @@ module.exports = {
 	],
 	theme: {
 		fontSize: {
+			...defaultTheme.fontSize,
 			sm: ["0.8125rem", { lineHeight: "1.2rem" }],
 			base: ["0.9375rem", { lineHeight: "1.5rem" }],
 			lg: ["1.0625rem", { lineHeight: "1.6rem" }],
 			"3xl": ["3rem", { lineHeight: "3.5rem" }],
 		},
 		extend: {
+			fontFamily: {
+				display: ["var(--font-bebas)", "'Bebas Neue'", "sans-serif"],
+				sans: ["var(--font-poppins)", ...defaultTheme.fontFamily.sans],
+			},
 			colors: {
+				accent: "rgb(var(--primary-rgb) / <alpha-value>)",
 				primary: {
 					DEFAULT: "rgb(var(--primary-rgb) / <alpha-value>)",
 				},

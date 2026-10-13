@@ -17,7 +17,11 @@ const UpcomingMoviesPage = async () => {
 
 	return (
 		<>
-			<PageTitle title="UPCOMING MOVIES" />
+			<PageTitle
+				title="Upcoming Movies"
+				eyebrow="Coming soon"
+				description="What's landing on the big screen next."
+			/>
 			<GridMovieContainer
 				upcoming={upcoming}
 				title="Upcoming Movies"
