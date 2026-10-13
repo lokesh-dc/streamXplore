@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
-import { isSaved, toggleSaved } from "@/lib/watchlist";
+import { isSaved, subscribeWatchlist, toggleSaved } from "@/lib/watchlist";
 
 interface WatchlistButtonProps {
 	id: number;
@@ -31,7 +31,9 @@ export default function WatchlistButton({
 
 	useEffect(() => {
 		setMounted(true);
-		setSaved(isSaved(id, mediaType));
+		const sync = () => setSaved(isSaved(id, mediaType));
+		sync();
+		return subscribeWatchlist(sync);
 	}, [id, mediaType]);
 
 	const handleClick = () => {

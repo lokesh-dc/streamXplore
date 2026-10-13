@@ -9,6 +9,7 @@ import {
 	FiCalendar,
 	FiTv,
 	FiHeart,
+	FiBookmark,
 	FiX,
 	FiInstagram,
 	FiTwitter,
@@ -45,6 +46,11 @@ const sideNavData = [
 		text: "Recommendations",
 		href: "/recommendations",
 		icon: <FiHeart />,
+	},
+	{
+		text: "My Watchlist",
+		href: "/watchlist",
+		icon: <FiBookmark />,
 	},
 ];
 

@@ -13,7 +13,8 @@ interface PageProps {
 	}>;
 }
 
-const APPEND_TO_RESPONSE = "videos,credits,images,recommendations,external_ids";
+const APPEND_TO_RESPONSE =
+	"videos,credits,images,recommendations,similar,watch/providers,external_ids";
 
 /**
  * Fetches and transforms TV series details for the server component.
@@ -93,6 +94,7 @@ const TVSeriesPage = async ({ params }: PageProps) => {
 		credits,
 		videos,
 		recommendations,
+		similar,
 		name,
 		overview,
 		first_air_date,
@@ -176,6 +178,10 @@ const TVSeriesPage = async ({ params }: PageProps) => {
 					data={recommendations?.results}
 					title="People also Liked"
 					aiSeed={{ type: "tv", id: data.id, title: name }}
+				/>
+				<RecommendationContainer
+					data={similar?.results}
+					title="More like this"
 				/>
 			</div>
 		</div>
