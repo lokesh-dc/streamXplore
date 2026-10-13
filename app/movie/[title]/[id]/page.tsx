@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import getMovieDetails from "@/dataFetchings/getMovieDetails";
 import DetailV2 from "@/components/ui/detail/DetailV2";
+import DetailAiBanner from "@/components/ui/detail/DetailAiBanner";
 import RecommendationContainer from "@/components/containers/RecommendationContainer";
 import { getImageBaseLink } from "@/constants";
 
@@ -14,7 +15,8 @@ interface PageProps {
 	}>;
 }
 
-const APPEND_TO_RESPONSE = "videos,credits,images,recommendations";
+const APPEND_TO_RESPONSE =
+	"videos,credits,images,recommendations,similar,watch/providers";
 
 /**
  * Fetches and transforms movie details for the server component.
@@ -95,6 +97,7 @@ const MoviePage = async ({ params }: PageProps) => {
 		credits,
 		videos,
 		recommendations,
+		similar,
 		title,
 		overview,
 		release_date,
@@ -175,7 +178,18 @@ const MoviePage = async ({ params }: PageProps) => {
 					title="People also Liked"
 					aiSeed={{ type: "movie", id: data.id, title }}
 				/>
+				<RecommendationContainer
+					data={similar?.results}
+					title="More like this"
+				/>
 			</div>
+
+			<DetailAiBanner
+				id={data.id}
+				mediaType="movie"
+				title={title}
+				posterPath={poster_path}
+			/>
 		</div>
 	);
 };

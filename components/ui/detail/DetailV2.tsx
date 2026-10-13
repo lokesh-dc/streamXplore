@@ -14,6 +14,7 @@ import YoutubeVideoModal from "@/modals/YoutubeVideoModal";
 import SeasonsContainer from "@/components/containers/SeasonsContianer";
 import CastSection from "@/components/ui/detail/CastSection";
 import CrewSection from "@/components/ui/detail/CrewSection";
+import WhereToWatch from "@/components/ui/detail/WhereToWatch";
 import ShareIntentComponent from "@/components/functional-components/ShareIntentComponent";
 import WatchlistButton from "@/components/functional-components/WatchlistButton";
 import { Button } from "@/components/buttons";
@@ -374,6 +375,8 @@ const DetailV2: React.FC<DetailV2Props> = ({
 							</p>
 						</section>
 					) : null}
+
+					<WhereToWatch providers={data["watch/providers"]?.results} />
 
 					{isTv && seasons?.length ? (
 						<section className="flex flex-col gap-4">

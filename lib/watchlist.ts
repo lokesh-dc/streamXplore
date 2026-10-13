@@ -1,6 +1,7 @@
 /** Client-side watchlist persisted to localStorage (no backend involved). */
 
 const WATCHLIST_KEY = "hookedonmovies:watchlist";
+export const WATCHLIST_EVENT = "hookedonmovies:watchlist";
 
 export interface WatchlistEntry {
 	id: number;
@@ -20,12 +21,17 @@ const read = (): WatchlistEntry[] => {
 	}
 };
 
+const emit = () => {
+	if (typeof window !== "undefined") window.dispatchEvent(new Event(WATCHLIST_EVENT));
+};
+
 const write = (list: WatchlistEntry[]) => {
 	try {
 		localStorage.setItem(WATCHLIST_KEY, JSON.stringify(list));
 	} catch {
 		/* storage unavailable — ignore */
 	}
+	emit();
 };
 
 export const getWatchlist = read;
@@ -46,4 +52,24 @@ export const toggleSaved = (
 		: [...list, { ...entry, addedAt: Date.now() }];
 	write(next);
 	return !exists;
+};
+
+export const removeFromWatchlist = (
+	id: number,
+	mediaType: "movie" | "tv"
+): void => {
+	write(read().filter((e) => !(e.id === id && e.mediaType === mediaType)));
+};
+
+export const clearWatchlist = (): void => write([]);
+
+/** Subscribe to watchlist changes (same-tab event + cross-tab storage event). */
+export const subscribeWatchlist = (callback: () => void): (() => void) => {
+	if (typeof window === "undefined") return () => {};
+	window.addEventListener(WATCHLIST_EVENT, callback);
+	window.addEventListener("storage", callback);
+	return () => {
+		window.removeEventListener(WATCHLIST_EVENT, callback);
+		window.removeEventListener("storage", callback);
+	};
 };

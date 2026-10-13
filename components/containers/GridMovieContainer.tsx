@@ -132,10 +132,10 @@ const GridMovieContainer: React.FC<props> = ({
 								rating={released ? item.vote_average : null}
 							/>
 							<div className="mt-3 flex flex-col gap-1">
-								<h3 className="line-clamp-2 text-sm font-medium leading-snug text-text-primary">
+								<h3 className="line-clamp-2 min-h-[2.5rem] text-sm font-medium leading-snug text-text-primary">
 									{item.title || item.name}
 								</h3>
-								<div className="flex items-center gap-2 text-xs text-text-secondary">
+								<div className="flex min-h-[1.375rem] items-center gap-2 text-xs text-text-secondary">
 									{year ? <span className="tabular">{year}</span> : null}
 									{!released ? (
 										<span className="rounded-full border border-primary/40 bg-primary/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#ff8a5c]">

@@ -98,7 +98,7 @@ const RecommendationContainer: React.FC<RecommendationContainerProps> = ({
 								className="!w-fit pb-2">
 								<Link
 									href={`/${mediaType}/${decorateLink(movieTitle)}/${item.id}`}
-									className="group inline-block align-top">
+									className="group flex w-[232px] flex-col align-top max-[600px]:w-[156px]">
 									<div className={`${styles.scroll_card} relative`}>
 										<div className={styles.cardImage}>
 											<Image
@@ -142,10 +142,10 @@ const RecommendationContainer: React.FC<RecommendationContainerProps> = ({
 									</div>
 
 									<div className="mt-3 flex flex-col gap-0.5 px-0.5">
-										<h3 className="truncate text-sm font-medium text-text-primary transition-colors group-hover:text-primary">
+										<h3 className="line-clamp-2 min-h-[2.5rem] text-sm font-medium leading-snug text-text-primary transition-colors group-hover:text-primary">
 											{movieTitle}
 										</h3>
-										<p className="text-xs text-text-secondary">
+										<p className="line-clamp-1 text-xs text-text-secondary">
 											{year || "TBA"} · {mediaLabel}
 										</p>
 									</div>

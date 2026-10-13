@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import getTvSeriesDetails from "@/dataFetchings/getTVSeriesDetails";
 import DetailV2 from "@/components/ui/detail/DetailV2";
+import DetailAiBanner from "@/components/ui/detail/DetailAiBanner";
 import RecommendationContainer from "@/components/containers/RecommendationContainer";
 import { getImageBaseLink } from "@/constants";
 
@@ -13,7 +14,8 @@ interface PageProps {
 	}>;
 }
 
-const APPEND_TO_RESPONSE = "videos,credits,images,recommendations,external_ids";
+const APPEND_TO_RESPONSE =
+	"videos,credits,images,recommendations,similar,watch/providers,external_ids";
 
 /**
  * Fetches and transforms TV series details for the server component.
@@ -93,6 +95,7 @@ const TVSeriesPage = async ({ params }: PageProps) => {
 		credits,
 		videos,
 		recommendations,
+		similar,
 		name,
 		overview,
 		first_air_date,
@@ -177,7 +180,18 @@ const TVSeriesPage = async ({ params }: PageProps) => {
 					title="People also Liked"
 					aiSeed={{ type: "tv", id: data.id, title: name }}
 				/>
+				<RecommendationContainer
+					data={similar?.results}
+					title="More like this"
+				/>
 			</div>
+
+			<DetailAiBanner
+				id={data.id}
+				mediaType="tv"
+				title={name}
+				posterPath={poster_path}
+			/>
 		</div>
 	);
 };
