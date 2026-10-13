@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import getTvSeriesDetails from "@/dataFetchings/getTVSeriesDetails";
 import DetailV2 from "@/components/ui/detail/DetailV2";
+import DetailAiBanner from "@/components/ui/detail/DetailAiBanner";
 import RecommendationContainer from "@/components/containers/RecommendationContainer";
 import { getImageBaseLink } from "@/constants";
 
@@ -184,6 +185,13 @@ const TVSeriesPage = async ({ params }: PageProps) => {
 					title="More like this"
 				/>
 			</div>
+
+			<DetailAiBanner
+				id={data.id}
+				mediaType="tv"
+				title={name}
+				posterPath={poster_path}
+			/>
 		</div>
 	);
 };

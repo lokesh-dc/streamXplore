@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import getMovieDetails from "@/dataFetchings/getMovieDetails";
 import DetailV2 from "@/components/ui/detail/DetailV2";
+import DetailAiBanner from "@/components/ui/detail/DetailAiBanner";
 import RecommendationContainer from "@/components/containers/RecommendationContainer";
 import { getImageBaseLink } from "@/constants";
 
@@ -182,6 +183,13 @@ const MoviePage = async ({ params }: PageProps) => {
 					title="More like this"
 				/>
 			</div>
+
+			<DetailAiBanner
+				id={data.id}
+				mediaType="movie"
+				title={title}
+				posterPath={poster_path}
+			/>
 		</div>
 	);
 };
