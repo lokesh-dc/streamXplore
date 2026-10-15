@@ -79,6 +79,9 @@ const SeasonsModal: React.FC<props> = ({
 
 	const hasMultipleSeasons = totalSeasons > 1;
 
+	const episodeCount = seasonData?.episodes?.length ?? 0;
+	const voteAverage = seasonData?.vote_average ?? 0;
+
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
@@ -112,19 +115,19 @@ const SeasonsModal: React.FC<props> = ({
 											: activeSeason}
 									</span>
 								</div>
-								{seasonData?.episodes?.length > 0 && (
+								{episodeCount > 0 && (
 									<div className="px-2.5 py-1 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-[10px] md:text-xs font-bold uppercase tracking-wider text-gray-300">
-										{seasonData.episodes.length}{" "}
-										{seasonData.episodes.length === 1
+										{episodeCount}{" "}
+										{episodeCount === 1
 											? "Episode"
 											: "Episodes"}
 									</div>
 								)}
-								{seasonData?.vote_average > 0 && (
+								{voteAverage > 0 && (
 									<div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 backdrop-blur-md">
 										<AiFillStar className="text-amber-400 text-xs" />
 										<span className="text-amber-400 font-bold text-xs md:text-sm">
-											{seasonData.vote_average.toFixed(1)}
+											{voteAverage.toFixed(1)}
 										</span>
 									</div>
 								)}
