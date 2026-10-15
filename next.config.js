@@ -4,6 +4,7 @@ const nextConfig = {
 	reactStrictMode: false,
 	images: {
 		remotePatterns: [{ hostname: "image.tmdb.org" }],
+		unoptimized: true,
 	},
 	staticPageGenerationTimeout: 1000,
 	transpilePackages: ["swiper"],

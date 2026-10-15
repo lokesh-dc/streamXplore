@@ -24,6 +24,7 @@ const getMethod = async ({ path, params = {}, props = {} }) => {
 
 	try {
 		const response = await fetch(url.toString(), {
+			next: { revalidate: 3600 },
 			...options,
 			...props,
 		});
