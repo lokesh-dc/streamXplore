@@ -7,6 +7,19 @@ const nextConfig = {
 	},
 	staticPageGenerationTimeout: 1000,
 	transpilePackages: ["swiper"],
+	async headers() {
+		return [
+			{
+				source: "/:path*",
+				headers: [
+					{
+						key: "X-Robots-Tag",
+						value: "noindex, nofollow, noarchive, nosnippet, noimageindex, nocache",
+					},
+				],
+			},
+		];
+	},
 };
 
 module.exports = nextConfig;
