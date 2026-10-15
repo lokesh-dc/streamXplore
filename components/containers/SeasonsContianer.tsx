@@ -89,7 +89,7 @@ const SeasonsContainer: React.FC<SeasonsContainerProps> = ({ data, seriesId }) =
 			{activeSeason !== null && (
 				<SeasonsModal
 					activeSeason={activeSeason}
-					totalSeasons={data.length}
+					totalSeasons={filteredSeasons.length}
 					setActiveSeason={setActiveSeason}
 					seriesId={seriesId}
 				/>
