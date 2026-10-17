@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiChevronRight } from "react-icons/fi";
@@ -14,6 +14,15 @@ import styles from "@/styles/MovieContainer.module.css";
 import { getImageBaseLink } from "@/constants";
 import { personDetails } from "@/constants/typescript";
 import { decorateLink, isReleased } from "@/utils";
+import FollowButton from "@/components/functional-components/FollowButton";
+import CompactWatchlistButton from "@/components/functional-components/CompactWatchlistButton";
+import CompactWatchedButton from "@/components/functional-components/CompactWatchedButton";
+import {
+	getWatchedForPerson,
+	isFollowing,
+	subscribeFollowing,
+	titleKey,
+} from "@/lib/following";
 
 type CreditItem = {
 	mediaType: "movie" | "tv";
@@ -244,7 +253,7 @@ const InfoRow = ({
 	</div>
 );
 
-const CreditCard = ({ credit }: { credit: CreditItem }) => {
+const CreditCard = ({ credit, personId, showWatched }: { credit: CreditItem; personId: number; showWatched: boolean }) => {
 	const href = `/${credit.mediaType}/${decorateLink(credit.title)}/${credit.id}`;
 	const rating = ratingOf(credit);
 	const poster = credit.posterPath
@@ -271,7 +280,21 @@ const CreditCard = ({ credit }: { credit: CreditItem }) => {
 	}
 
 	return (
-		<li className="group">
+		<li className="group relative">
+			{showWatched ? (
+				<CompactWatchedButton
+					personId={personId}
+					id={credit.id}
+					mediaType={credit.mediaType}
+					title={credit.title}
+				/>
+			) : null}
+			<CompactWatchlistButton
+				id={credit.id}
+				mediaType={credit.mediaType}
+				title={credit.title}
+				posterPath={credit.posterPath}
+			/>
 			<Link href={href} className="block">
 				<div className={styles.card}>
 					<div className={styles.cardImage}>
@@ -336,40 +359,105 @@ const CreditSection = ({
 	title,
 	count,
 	credits,
+	personId,
+	filter = "all",
+	showWatched = false,
 }: {
 	eyebrow: string;
 	title: string;
 	count: number;
 	credits: CreditItem[];
-}) => (
-	<section>
-		<header className="mb-4 flex flex-wrap items-end justify-between gap-3">
-			<div className="flex flex-col gap-1.5">
-				<span className="eyebrow">{eyebrow}</span>
-				<SectionTitle>{title}</SectionTitle>
-			</div>
-			<span className="tabular text-xs font-bold text-text-secondary">
-				{count} {count === 1 ? "credit" : "credits"}
-			</span>
-		</header>
-		{count ? (
-			<ol className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-				{credits.map((credit, i) => (
-					<CreditCard key={`${credit.mediaType}-${credit.id}-${i}`} credit={credit} />
-				))}
-			</ol>
-		) : (
-			<p className="text-sm text-text-secondary">No credits to show.</p>
-		)}
-	</section>
-);
+	personId: number;
+	filter?: "all" | "remaining" | "watched";
+	showWatched?: boolean;
+}) => {
+	const INITIAL_COUNT = 15;
+	const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
+	const visible = credits.slice(0, visibleCount);
+	const hasMore = credits.length > visibleCount;
+	const showAll = () => setVisibleCount(credits.length);
+
+	return (
+		<section>
+			<header className="mb-4 flex flex-wrap items-end justify-between gap-3">
+				<div className="flex flex-col gap-1.5">
+					<span className="eyebrow">{eyebrow}</span>
+					<SectionTitle>{title}</SectionTitle>
+				</div>
+				<span className="tabular text-xs font-bold text-text-secondary">
+					{credits.length !== count
+						? filter === "watched"
+							? `${credits.length} watched`
+							: `${credits.length} remaining`
+						: `${count} ${count === 1 ? "credit" : "credits"}`}
+				</span>
+			</header>
+			{credits.length ? (
+				<>
+					<ol className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+						{visible.map((credit, i) => (
+							<CreditCard key={`${credit.mediaType}-${credit.id}-${i}`} credit={credit} personId={personId} showWatched={showWatched} />
+						))}
+					</ol>
+					{hasMore ? (
+						<div className="mt-8 flex justify-center">
+							<button
+								type="button"
+								onClick={showAll}
+								className="rounded-full border border-white/15 px-6 py-3 text-xs font-bold uppercase tracking-[0.18em] text-text-primary transition-colors hover:bg-white/10">
+								Show all
+							</button>
+						</div>
+					) : null}
+				</>
+			) : count > 0 ? (
+				<p className="text-sm text-text-secondary">
+					{filter === "watched"
+						? "Nothing marked watched yet — tap the check on any poster."
+						: "All watched 🎬 — switch to “Watched” to see everything."}
+				</p>
+			) : (
+				<p className="text-sm text-text-secondary">No credits to show.</p>
+			)}
+		</section>
+	);
+};
 
 const PersonDetail: React.FC<{ data: personDetails }> = ({ data }) => {
 	const [bioExpanded, setBioExpanded] = useState(false);
+	const [creditFilter, setCreditFilter] = useState<
+		"all" | "remaining" | "watched"
+	>("all");
+	const [watchedTick, setWatchedTick] = useState(0);
+
+	useEffect(
+		() => subscribeFollowing(() => setWatchedTick((t) => t + 1)),
+		[],
+	);
 
 	const { films, series } = useMemo(() => normalizeCredits(data), [data]);
 	const knownFor = useMemo(() => buildKnownFor(data, films, series), [data, films, series]);
 	const totalCredits = films.length + series.length;
+
+	const isFollowingPerson = useMemo(() => isFollowing(data.id), [data.id, watchedTick]);
+
+	const watchedSet = useMemo(
+		() => new Set(getWatchedForPerson(data.id)),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[data.id, watchedTick],
+	);
+	const isUnwatched = (c: CreditItem) =>
+		!watchedSet.has(titleKey(c.mediaType, c.id));
+	const matchFilter = (c: CreditItem) =>
+		creditFilter === "all"
+			? true
+			: creditFilter === "remaining"
+				? isUnwatched(c)
+				: !isUnwatched(c);
+	const visibleFilms = films.filter(matchFilter);
+	const visibleSeries = series.filter(matchFilter);
+	const remainingCount = [...films, ...series].filter(isUnwatched).length;
+	const watchedCount = totalCredits - remainingCount;
 
 	const name = data.name || "Unknown";
 	const initials = getInitials(name);
@@ -496,6 +584,20 @@ const PersonDetail: React.FC<{ data: personDetails }> = ({ data }) => {
 								<span>Also {Array.from(crewJobs).slice(0, 3).join(", ")}</span>
 							</>
 						) : null}
+					</div>
+
+					<div className="mt-1 flex flex-wrap items-center gap-3">
+						<FollowButton
+							id={data.id}
+							name={name}
+							profilePath={data.profile_path ?? null}
+							department={data.known_for_department ?? null}
+						/>
+						<Link
+							href="/following"
+							className="inline-flex h-12 items-center justify-center rounded-md border border-white/20 px-5 text-base font-medium text-white transition-colors hover:bg-white/10">
+							View tracking
+						</Link>
 					</div>
 				</div>
 			</div>
@@ -664,18 +766,56 @@ const PersonDetail: React.FC<{ data: personDetails }> = ({ data }) => {
 						</section>
 					) : null}
 
+					{totalCredits ? (
+						<div className="flex flex-wrap items-center justify-between gap-3">
+							<p className="text-xs font-bold uppercase tracking-[0.18em] text-text-secondary">
+								<span className="tabular text-base text-text-primary">
+									{watchedCount}/{totalCredits}
+								</span>{" "}
+								watched · {remainingCount} remaining
+							</p>
+							<div className="flex flex-wrap gap-2">
+								{(
+									[
+										{ id: "all", label: `All · ${totalCredits}` },
+										{ id: "remaining", label: `Remaining · ${remainingCount}` },
+										{ id: "watched", label: `Watched · ${watchedCount}` },
+									] as const
+								).map((tab) => (
+									<button
+										key={tab.id}
+										type="button"
+										onClick={() => setCreditFilter(tab.id)}
+										aria-pressed={creditFilter === tab.id}
+										className={`rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
+											creditFilter === tab.id
+												? "border-primary/50 bg-primary/15 text-white"
+												: "border-white/10 bg-white/5 text-text-secondary hover:border-white/20 hover:text-text-primary"
+										}`}>
+										{tab.label}
+									</button>
+								))}
+							</div>
+						</div>
+					) : null}
 					<div className="flex flex-col gap-16">
 						<CreditSection
 							eyebrow="Filmography"
 							title="Films"
 							count={films.length}
-							credits={films}
+							credits={visibleFilms}
+							personId={data.id}
+							filter={creditFilter}
+							showWatched={isFollowingPerson}
 						/>
 						<CreditSection
 							eyebrow="Filmography"
 							title="Series"
 							count={series.length}
-							credits={series}
+							credits={visibleSeries}
+							personId={data.id}
+							filter={creditFilter}
+							showWatched={isFollowingPerson}
 						/>
 					</div>
 				</div>

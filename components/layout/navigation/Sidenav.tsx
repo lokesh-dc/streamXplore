@@ -10,6 +10,7 @@ import {
 	FiTv,
 	FiHeart,
 	FiBookmark,
+	FiUsers,
 	FiX,
 	FiInstagram,
 	FiTwitter,
@@ -51,6 +52,11 @@ const sideNavData = [
 		text: "My Watchlist",
 		href: "/watchlist",
 		icon: <FiBookmark />,
+	},
+	{
+		text: "Tracking",
+		href: "/following",
+		icon: <FiUsers />,
 	},
 ];
 
