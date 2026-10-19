@@ -23,6 +23,9 @@ import {
 	subscribeFollowing,
 	titleKey,
 } from "@/lib/following";
+import { useUser } from "@/lib/hooks/useUser";
+import { isFollowingPerson } from "@/app/actions/following";
+import { getWatchedCredits, toggleWatchedCredit } from "@/app/actions/watched";
 
 type CreditItem = {
 	mediaType: "movie" | "tv";
@@ -253,7 +256,19 @@ const InfoRow = ({
 	</div>
 );
 
-const CreditCard = ({ credit, personId, showWatched }: { credit: CreditItem; personId: number; showWatched: boolean }) => {
+const CreditCard = ({
+	credit,
+	showWatched,
+	watchedKeys,
+	onToggleWatched,
+	toggleBusy,
+}: {
+	credit: CreditItem;
+	showWatched: boolean;
+	watchedKeys: Set<string>;
+	onToggleWatched: (credit: CreditItem) => void | Promise<void>;
+	toggleBusy: boolean;
+}) => {
 	const href = `/${credit.mediaType}/${decorateLink(credit.title)}/${credit.id}`;
 	const rating = ratingOf(credit);
 	const poster = credit.posterPath
@@ -283,9 +298,9 @@ const CreditCard = ({ credit, personId, showWatched }: { credit: CreditItem; per
 		<li className="group relative">
 			{showWatched ? (
 				<CompactWatchedButton
-					personId={personId}
-					id={credit.id}
-					mediaType={credit.mediaType}
+					watched={watchedKeys.has(titleKey(credit.mediaType, credit.id))}
+					onToggle={() => onToggleWatched(credit)}
+					busy={toggleBusy}
 					title={credit.title}
 				/>
 			) : null}
@@ -359,17 +374,21 @@ const CreditSection = ({
 	title,
 	count,
 	credits,
-	personId,
 	filter = "all",
 	showWatched = false,
+	watchedKeys,
+	onToggleWatched,
+	toggleBusy = false,
 }: {
 	eyebrow: string;
 	title: string;
 	count: number;
 	credits: CreditItem[];
-	personId: number;
 	filter?: "all" | "remaining" | "watched";
 	showWatched?: boolean;
+	watchedKeys: Set<string>;
+	onToggleWatched: (credit: CreditItem) => void | Promise<void>;
+	toggleBusy?: boolean;
 }) => {
 	const INITIAL_COUNT = 15;
 	const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
@@ -396,7 +415,14 @@ const CreditSection = ({
 				<>
 					<ol className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
 						{visible.map((credit, i) => (
-							<CreditCard key={`${credit.mediaType}-${credit.id}-${i}`} credit={credit} personId={personId} showWatched={showWatched} />
+							<CreditCard
+								key={`${credit.mediaType}-${credit.id}-${i}`}
+								credit={credit}
+								showWatched={showWatched}
+								watchedKeys={watchedKeys}
+								onToggleWatched={onToggleWatched}
+								toggleBusy={toggleBusy}
+							/>
 						))}
 					</ol>
 					{hasMore ? (
@@ -429,23 +455,101 @@ const PersonDetail: React.FC<{ data: personDetails }> = ({ data }) => {
 		"all" | "remaining" | "watched"
 	>("all");
 	const [watchedTick, setWatchedTick] = useState(0);
+	const [dbFollowing, setDbFollowing] = useState(false);
+	const [dbWatchedKeys, setDbWatchedKeys] = useState<string[] | null>(null);
+	const [toggleBusy, setToggleBusy] = useState(false);
+	const { user, loading: authLoading } = useUser();
 
-	useEffect(
-		() => subscribeFollowing(() => setWatchedTick((t) => t + 1)),
-		[],
-	);
+	// Cross-tab updates only apply to the localStorage mode.
+	useEffect(() => {
+		if (user) return;
+		return subscribeFollowing(() => setWatchedTick((t) => t + 1));
+	}, [user]);
+
+	// Load followed + watched state: DB when signed in, localStorage otherwise.
+	useEffect(() => {
+		if (authLoading) return;
+		let cancelled = false;
+
+		const load = async () => {
+			if (user) {
+				try {
+					const [following, watched] = await Promise.all([
+						isFollowingPerson(data.id),
+						getWatchedCredits(data.id),
+					]);
+					if (cancelled) return;
+					setDbFollowing(following);
+					setDbWatchedKeys(watched);
+					setWatchedTick((t) => t + 1);
+				} catch {
+					/* ignore */
+				}
+			} else {
+				setDbFollowing(false);
+				setDbWatchedKeys(null);
+			}
+		};
+		load();
+		return () => {
+			cancelled = true;
+		};
+	}, [data.id, user, authLoading]);
+
+	// Re-read follow status when the header's FollowButton toggles.
+	// (Watched state is owned above and updated in place — no refetch here.)
+	useEffect(() => {
+		if (!user) return;
+		const unsub = subscribeFollowing(async () => {
+			try {
+				setDbFollowing(await isFollowingPerson(data.id));
+				setWatchedTick((t) => t + 1);
+			} catch {
+				/* ignore */
+			}
+		});
+		return unsub;
+	}, [user, data.id]);
 
 	const { films, series } = useMemo(() => normalizeCredits(data), [data]);
 	const knownFor = useMemo(() => buildKnownFor(data, films, series), [data, films, series]);
 	const totalCredits = films.length + series.length;
 
-	const isFollowingPerson = useMemo(() => isFollowing(data.id), [data.id, watchedTick]);
+	const isFollowingPersonState = useMemo(
+		() => (user ? dbFollowing : isFollowing(data.id)),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[data.id, watchedTick, user, dbFollowing],
+	);
 
 	const watchedSet = useMemo(
-		() => new Set(getWatchedForPerson(data.id)),
+		() =>
+			new Set(user ? dbWatchedKeys ?? [] : getWatchedForPerson(data.id)),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[data.id, watchedTick],
+		[data.id, watchedTick, user, dbWatchedKeys],
 	);
+
+	// Single write path for every card's check button. The parent owns the
+	// data, so a page of cards costs one request per click — not one per card.
+	const handleToggleWatched = async (credit: CreditItem) => {
+		if (toggleBusy) return;
+		if (!user) return;
+		setToggleBusy(true);
+		try {
+			await toggleWatchedCredit(
+				data.id,
+				credit.mediaType,
+				credit.id,
+				credit.title,
+			);
+			const watched = await getWatchedCredits(data.id);
+			setDbWatchedKeys(watched);
+		} catch (err) {
+			console.error(err);
+		} finally {
+			setToggleBusy(false);
+		}
+	};
+
 	const isUnwatched = (c: CreditItem) =>
 		!watchedSet.has(titleKey(c.mediaType, c.id));
 	const matchFilter = (c: CreditItem) =>
@@ -804,18 +908,22 @@ const PersonDetail: React.FC<{ data: personDetails }> = ({ data }) => {
 							title="Films"
 							count={films.length}
 							credits={visibleFilms}
-							personId={data.id}
 							filter={creditFilter}
-							showWatched={isFollowingPerson}
+							showWatched={isFollowingPersonState}
+							watchedKeys={watchedSet}
+							onToggleWatched={handleToggleWatched}
+							toggleBusy={toggleBusy}
 						/>
 						<CreditSection
 							eyebrow="Filmography"
 							title="Series"
 							count={series.length}
 							credits={visibleSeries}
-							personId={data.id}
 							filter={creditFilter}
-							showWatched={isFollowingPerson}
+							showWatched={isFollowingPersonState}
+							watchedKeys={watchedSet}
+							onToggleWatched={handleToggleWatched}
+							toggleBusy={toggleBusy}
 						/>
 					</div>
 				</div>

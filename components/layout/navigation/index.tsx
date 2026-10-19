@@ -2,9 +2,10 @@
 import Link from "next/link";
 
 import { BiMenuAltRight } from "react-icons/bi";
-import { BiUser, BiSearch } from "react-icons/bi";
+import { BiSearch } from "react-icons/bi";
 
 import SideNav from "./Sidenav";
+import AuthButton from "@/components/auth/AuthButton";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import SearchModal from "@/modals/SearchModal";
@@ -136,7 +137,7 @@ const NavigationBar = () => {
 							<BiSearch size={30} />
 						</button>
 						<div className="w-[1px] h-6 bg-white/10 mx-2 hidden md:block"></div>
-						<BiUser size={24} className="text-gray-400 hover:text-primary cursor-pointer transition-colors" />
+						<AuthButton />
 						<button
 							onClick={() => toggleSidebar(!sidebarStatus)}>
 							<BiMenuAltRight size={30} className="text-gray-400 hover:text-white transition-colors" />

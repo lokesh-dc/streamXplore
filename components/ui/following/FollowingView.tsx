@@ -13,6 +13,12 @@ import {
 	subscribeFollowing,
 	type FollowedPerson,
 } from "@/lib/following";
+import { useUser } from "@/lib/hooks/useUser";
+import {
+	getFollowedPeople,
+	removeFollowedPerson,
+} from "@/app/actions/following";
+import { getWatchedCredits } from "@/app/actions/watched";
 import { decorateLink } from "@/utils";
 import { getImageBaseLink } from "@/constants";
 
@@ -68,10 +74,12 @@ function ProgressBar({ pct }: { pct: number }) {
 function PersonCard({
 	person,
 	watchedTick,
+	watchedCount: watchedCountProp,
 	onUnfollow,
 }: {
 	person: FollowedPerson;
 	watchedTick: number;
+	watchedCount?: number;
 	onUnfollow: (id: number) => void;
 }) {
 	const [total, setTotal] = useState<number | null>(null);
@@ -97,10 +105,14 @@ function PersonCard({
 		};
 	}, [person.id, nonce]);
 
+	// When the parent supplies the count (DB mode), prefer it.
 	const watchedCount = useMemo(
-		() => getWatchedForPerson(person.id).length,
+		() =>
+			watchedCountProp !== undefined
+				? watchedCountProp
+				: getWatchedForPerson(person.id).length,
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[person.id, watchedTick],
+		[person.id, watchedTick, watchedCountProp],
 	);
 
 	const pct = total ? (watchedCount / total) * 100 : 0;
@@ -208,18 +220,81 @@ const FollowingView = () => {
 	const [query, setQuery] = useState("");
 	// Increment on any watched toggle so all trackers re-read progress.
 	const [watchedTick, setWatchedTick] = useState(0);
+	// DB mode: per-person watched counts keyed by person id.
+	const [dbWatched, setDbWatched] = useState<Record<number, number>>({});
+	const { user, loading } = useUser();
 
 	useEffect(() => {
 		setMounted(true);
-		const sync = () => {
-			setPeople(
-				[...getFollowed()].sort((a, b) => b.addedAt - a.addedAt),
-			);
-			setWatchedTick((t) => t + 1);
+	}, []);
+
+	// Load state: DB when signed in, localStorage otherwise.
+	useEffect(() => {
+		if (loading) return;
+		let cancelled = false;
+
+		const sync = async () => {
+			if (user) {
+				try {
+					const rows = await getFollowedPeople();
+					if (cancelled) return;
+					const list: FollowedPerson[] = (rows || []).map((r: any) => ({
+						id: r.person_id,
+						name: r.name,
+						profilePath: r.profile_path,
+						department: r.known_for_department,
+						addedAt: new Date(r.added_at).getTime() || 0,
+					}));
+					setPeople(list);
+
+					const counts: Record<number, number> = {};
+					await Promise.all(
+						list.map(async (p) => {
+							const w = await getWatchedCredits(p.id);
+							counts[p.id] = w.length;
+						}),
+					);
+					if (!cancelled) {
+						setDbWatched(counts);
+						setWatchedTick((t) => t + 1);
+					}
+				} catch {
+					/* ignore */
+				}
+			} else if (!cancelled) {
+				setPeople([...getFollowed()].sort((a, b) => b.addedAt - a.addedAt));
+				setWatchedTick((t) => t + 1);
+			}
 		};
 		sync();
+		return () => {
+			cancelled = true;
+		};
+	}, [user, loading]);
+
+	// Cross-tab updates only apply to the localStorage mode.
+	useEffect(() => {
+		if (user || loading) return;
+		const sync = () => {
+			setPeople([...getFollowed()].sort((a, b) => b.addedAt - a.addedAt));
+			setWatchedTick((t) => t + 1);
+		};
 		return subscribeFollowing(sync);
-	}, []);
+	}, [user, loading]);
+
+	const handleUnfollow = async (id: number) => {
+		if (user) {
+			await removeFollowedPerson(id);
+			setPeople((prev) => prev.filter((p) => p.id !== id));
+			setDbWatched((prev) => {
+				const next = { ...prev };
+				delete next[id];
+				return next;
+			});
+		} else {
+			removeFollowed(id);
+		}
+	};
 
 	const visible = useMemo(() => {
 		let list = people;
@@ -244,7 +319,7 @@ const FollowingView = () => {
 		[people],
 	);
 
-	if (!mounted) {
+	if (!mounted || (user && loading)) {
 		return (
 			<div className="flex flex-col gap-4">
 				{Array.from({ length: 3 }).map((_, i) => (
@@ -340,7 +415,8 @@ const FollowingView = () => {
 							key={p.id}
 							person={p}
 							watchedTick={watchedTick}
-							onUnfollow={(id) => removeFollowed(id)}
+							watchedCount={user ? dbWatched[p.id] : undefined}
+							onUnfollow={handleUnfollow}
 						/>
 					))}
 				</div>

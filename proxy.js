@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
+import { updateSession } from "@/lib/supabase/middleware";
 
 // Aggressive bot/crawler block — stops search indexers, AI scrapers,
 // SEO tools, and generic http clients to protect Vercel free-tier usage.
 // (Next 16 `proxy` convention; replaces deprecated `middleware` file.)
-export default function proxy(request) {
+export default async function proxy(request) {
 	const ua = request.headers.get("user-agent") || "";
 
 	const BOT_PATTERN =
@@ -20,7 +21,8 @@ export default function proxy(request) {
 		});
 	}
 
-	return NextResponse.next();
+	// Refresh the Supabase auth session cookie on every request.
+	return await updateSession(request);
 }
 
 export const config = {

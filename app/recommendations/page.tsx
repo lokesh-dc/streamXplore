@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
 	FiArrowRight,
 	FiArrowUp,
@@ -43,7 +43,9 @@ import { getImageBaseLink } from "@/constants";
 import { decorateLink } from "@/utils";
 import { MOODS, moodName } from "@/lib/ai/moods";
 import type { AiPick, SeedTitle } from "@/lib/ai/types";
-import { isSaved, toggleSaved } from "@/lib/watchlist";
+import { isSaved } from "@/lib/watchlist";
+import { useUser } from "@/lib/hooks/useUser";
+import { isInWatchlist, toggleWatchlist } from "@/app/actions/watchlist";
 import ReasonCard from "@/components/ai/ReasonCard";
 
 /* ── Static data ─────────────────────────────────────────────────────────── */
@@ -204,6 +206,9 @@ function RecommendationsWizard() {
 	const [curateStage, setCurateStage] = useState(0);
 	const [curateError, setCurateError] = useState(false);
 	const [saved, setSaved] = useState(false);
+	const [saving, setSaving] = useState(false);
+	const { user } = useUser();
+	const router = useRouter();
 
 	const currentPick = aiPicks[currentIndex];
 
@@ -229,10 +234,31 @@ function RecommendationsWizard() {
 
 	/* Re-sync saved state when the visible pick changes */
 	useEffect(() => {
-		setSaved(
-			!!currentPick && isSaved(currentPick.id, currentPick.mediaType)
-		);
-	}, [currentIndex, aiPicks, currentPick]);
+		let cancelled = false;
+		const run = async () => {
+			if (!currentPick) {
+				setSaved(false);
+				return;
+			}
+			if (user) {
+				try {
+					const res = await isInWatchlist(
+						currentPick.mediaType,
+						currentPick.id,
+					);
+					if (!cancelled) setSaved(res);
+				} catch {
+					/* ignore */
+				}
+			} else if (!cancelled) {
+				setSaved(isSaved(currentPick.id, currentPick.mediaType));
+			}
+		};
+		run();
+		return () => {
+			cancelled = true;
+		};
+	}, [currentIndex, aiPicks, currentPick, user]);
 
 	/* Keyboard navigation on the deck */
 	useEffect(() => {
@@ -359,15 +385,26 @@ function RecommendationsWizard() {
 		setCurrentIndex((i) => (i - 1 + aiPicks.length) % aiPicks.length);
 	};
 
-	const handleSave = () => {
-		if (!currentPick) return;
-		const nowSaved = toggleSaved({
-			id: currentPick.id,
-			mediaType: currentPick.mediaType,
-			title: currentPick.title,
-			posterPath: currentPick.posterPath,
-		});
-		setSaved(nowSaved);
+	const handleSave = async () => {
+		if (!currentPick || saving) return;
+		if (!user) {
+			router.push("/login");
+			return;
+		}
+		setSaving(true);
+		try {
+			await toggleWatchlist({
+				mediaType: currentPick.mediaType,
+				tmdbId: currentPick.id,
+				title: currentPick.title,
+				posterPath: currentPick.posterPath,
+			});
+			setSaved(await isInWatchlist(currentPick.mediaType, currentPick.id));
+		} catch (err) {
+			console.error(err);
+		} finally {
+			setSaving(false);
+		}
 	};
 
 	const moodSummary = useMemo(
@@ -956,7 +993,9 @@ function RecommendationsWizard() {
 											</button>
 											<button
 												onClick={handleSave}
-												className={`flex h-12 w-12 items-center justify-center rounded-full border transition-all ${
+												disabled={saving}
+												title={user ? undefined : "Sign in to save to your watchlist"}
+												className={`flex h-12 w-12 items-center justify-center rounded-full border transition-all disabled:opacity-60 ${
 													saved
 														? "border-primary bg-primary text-white"
 														: "border-white/20 bg-white/10 text-white backdrop-blur-xl hover:bg-white/20"
