@@ -5,6 +5,7 @@ import getTvSeriesDetails from "@/dataFetchings/getTVSeriesDetails";
 import DetailV2 from "@/components/ui/detail/DetailV2";
 import DetailAiBanner from "@/components/ui/detail/DetailAiBanner";
 import RecommendationContainer from "@/components/containers/RecommendationContainer";
+import TitleNotFound from "@/components/ui/TitleNotFound";
 import { getImageBaseLink } from "@/constants";
 
 interface PageProps {
@@ -88,7 +89,7 @@ const TVSeriesPage = async ({ params }: PageProps) => {
 	const data = await getPageData(id);
 
 	if (!data) {
-		return <div className="p-10 text-center">Series not found</div>;
+		return <TitleNotFound kind="tv" />;
 	}
 
 	const {
