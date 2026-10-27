@@ -6,18 +6,27 @@ interface DiscoverMoviesProps {
 	genre?: string;
 	sort_by?: string;
 	year_gte?: string | null;
+	watchProvider?: number | string;
+	watchRegion?: string;
+	monetization?: string;
 }
 
 export default async function discoverMovies({
 	page = 1,
 	genre,
 	sort_by = "popularity.desc",
-	year_gte = null
+	year_gte = null,
+	watchProvider,
+	watchRegion,
+	monetization
 }: DiscoverMoviesProps) {
 	const params: any = {
 		page,
 		with_genres: genre,
 		sort_by,
+		with_watch_providers: watchProvider,
+		watch_region: watchProvider ? watchRegion : undefined,
+		with_watch_monetization_types: watchProvider ? monetization : undefined,
 		...newestDateLte(sort_by),
 	};
 

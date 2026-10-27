@@ -1,7 +1,14 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { FiExternalLink } from "react-icons/fi";
 
 import { getImageBaseLink } from "@/constants";
+import {
+	DEFAULT_WATCH_REGION,
+	REGION_COOKIE,
+} from "@/constants/streaming";
 
 interface WatchProvider {
 	provider_id: number;
@@ -23,8 +30,15 @@ interface WhereToWatchProps {
 	providers?: Record<string, ProviderRegion>;
 }
 
-const REGION = "IN";
-const REGION_LABEL = "India";
+const REGION_LABEL = (code: string) => {
+	try {
+		return (
+			new Intl.DisplayNames(["en"], { type: "region" }).of(code) || code
+		);
+	} catch {
+		return code;
+	}
+};
 
 const dedupe = (lists: Array<WatchProvider[] | undefined>) => {
 	const seen = new Map<number, WatchProvider>();
@@ -98,7 +112,21 @@ const Group = ({
 };
 
 const WhereToWatch = ({ providers }: WhereToWatchProps) => {
-	const active = providers?.[REGION];
+	const [region, setRegion] = useState(DEFAULT_WATCH_REGION);
+
+	// The streaming page stores the selected country so title pages show the
+	// same availability instead of always defaulting to India.
+	useEffect(() => {
+		const match = document.cookie.match(
+			new RegExp(`(?:^|;\\s*)${REGION_COOKIE}=([A-Za-z]{2})`),
+		);
+		const code = match?.[1]?.toUpperCase();
+		if (code) setRegion(code);
+	}, []);
+
+	const active = providers?.[region];
+	const regionLabel = REGION_LABEL(region);
+
 	if (!active) return null;
 
 	const stream = dedupe([active.flatrate]);
@@ -120,13 +148,13 @@ const WhereToWatch = ({ providers }: WhereToWatchProps) => {
 					</h2>
 				</div>
 				<span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-text-secondary">
-					{REGION_LABEL}
+					{regionLabel}
 				</span>
 			</header>
 
 			{isEmpty ? (
 				<p className="text-sm text-text-secondary">
-					Not available to stream in {REGION_LABEL} right now.{" "}
+					Not available to stream in {regionLabel} right now.{" "}
 					<a
 						href={link}
 						target="_blank"

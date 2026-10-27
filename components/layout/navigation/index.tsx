@@ -15,6 +15,7 @@ import { searchedDataEntry } from "@/constants/typescript";
 const navLinks = [
 	{ href: "/movies", label: "Movies" },
 	{ href: "/tv-series", label: "TV Series" },
+	{ href: "/streaming", label: "Streaming" },
 ];
 
 const NavigationBar = () => {

@@ -14,7 +14,17 @@ interface props {
 	apiPath: string;
 	total: number | null;
 	showType: string;
-	filters?: { genre?: string; sort?: string; yearGte?: string | null };
+	/** Render without the page-level shell when the parent supplies its own. */
+	embedded?: boolean;
+	filters?: {
+		genre?: string;
+		sort?: string;
+		yearGte?: string | null;
+		watchProvider?: string;
+		watchRegion?: string;
+		monetization?: string;
+		basePath?: string;
+	};
 }
 
 const GRID =
@@ -63,6 +73,7 @@ const GridMovieContainer: React.FC<props> = ({
 	apiPath,
 	total,
 	showType,
+	embedded = false,
 	filters,
 }): ReactElement => {
 	const [data, setData] = useState(upcoming || []);
@@ -81,6 +92,13 @@ const GridMovieContainer: React.FC<props> = ({
 			params[isMovie ? "primary_release_date.gte" : "first_air_date.gte"] =
 				`${filters.yearGte}-01-01`;
 		}
+		if (filters?.watchProvider) {
+			params.with_watch_providers = filters.watchProvider;
+			params.watch_region = filters.watchRegion;
+			if (filters.monetization) {
+				params.with_watch_monetization_types = filters.monetization;
+			}
+		}
 		const { data, totalPages } = await getMethod({
 			path: apiPath,
 			params,
@@ -96,18 +114,21 @@ const GridMovieContainer: React.FC<props> = ({
 
 	const visibleData = isNewest ? data.filter(isReleased) : data;
 	const hasFilters = Boolean(filters?.genre || filters?.sort || filters?.yearGte);
-	const basePath = showType === "tv" ? "/tv-series" : "/movies";
+	const basePath =
+		filters?.basePath || (showType === "tv" ? "/tv-series" : "/movies");
+	const Wrapper = embedded ? "div" : "section";
+	const wrapperClassName = embedded ? "" : "shell pb-24 pt-10";
 
 	if (!visibleData.length) {
 		return (
-			<section className="shell pb-24 pt-10">
+			<Wrapper className={wrapperClassName}>
 				<EmptyState hasFilters={hasFilters} basePath={basePath} />
-			</section>
+			</Wrapper>
 		);
 	}
 
 	return (
-		<section className="shell pb-24 pt-10">
+		<Wrapper className={wrapperClassName}>
 			<InfiniteScroll
 				dataLength={visibleData.length}
 				next={getMoreUpcomingMovies}
@@ -148,7 +169,7 @@ const GridMovieContainer: React.FC<props> = ({
 					);
 				})}
 			</InfiniteScroll>
-		</section>
+		</Wrapper>
 	);
 };
 
