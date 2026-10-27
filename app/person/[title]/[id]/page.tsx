@@ -2,6 +2,7 @@ import { Metadata } from "next";
 
 import getPersonDetails from "@/dataFetchings/getPersonDetails";
 import PersonDetail from "@/components/ui/person/PersonDetail";
+import TitleNotFound from "@/components/ui/TitleNotFound";
 import { getImageBaseLink } from "@/constants";
 
 interface PageProps {
@@ -83,7 +84,7 @@ const PersonPage = async ({ params }: PageProps) => {
 	const data = await getPageData(id);
 
 	if (!data) {
-		return <div className="p-10 text-center">Person not found</div>;
+		return <TitleNotFound kind="person" />;
 	}
 
 	const name = data.name || "Unknown";

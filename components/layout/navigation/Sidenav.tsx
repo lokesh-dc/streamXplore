@@ -8,8 +8,10 @@ import {
 	FiTrendingUp,
 	FiCalendar,
 	FiTv,
+	FiPlayCircle,
 	FiHeart,
 	FiBookmark,
+	FiUsers,
 	FiX,
 	FiInstagram,
 	FiTwitter,
@@ -43,6 +45,11 @@ const sideNavData = [
 		icon: <FiTv />,
 	},
 	{
+		text: "Streaming Services",
+		href: "/streaming",
+		icon: <FiPlayCircle />,
+	},
+	{
 		text: "Recommendations",
 		href: "/recommendations",
 		icon: <FiHeart />,
@@ -51,6 +58,11 @@ const sideNavData = [
 		text: "My Watchlist",
 		href: "/watchlist",
 		icon: <FiBookmark />,
+	},
+	{
+		text: "Tracking",
+		href: "/following",
+		icon: <FiUsers />,
 	},
 ];
 
@@ -70,11 +82,11 @@ const SideNav: React.FC<props> = ({ status, toggleStatus }): ReactElement => {
 
 					{/* Sidebar */}
 					<motion.div
-						initial={{ x: "-100%" }}
+						initial={{ x: "100%" }}
 						animate={{ x: 0 }}
-						exit={{ x: "-100%" }}
+						exit={{ x: "100%" }}
 						transition={{ type: "spring", damping: 25, stiffness: 200 }}
-						className="fixed left-0 top-0 z-[1035] h-screen w-80 bg-[#0B0B0B] border-r border-white/10 shadow-2xl flex flex-col"
+						className="fixed right-0 top-0 z-[1035] h-screen w-80 bg-[#0B0B0B] border-l border-white/10 shadow-[-24px_0_60px_rgba(0,0,0,0.5)] flex flex-col"
 					>
 						<div className="p-8 flex justify-between items-center">
 							<h2 className="text-2xl font-bold tracking-tighter uppercase bebas_nueve">
@@ -93,7 +105,7 @@ const SideNav: React.FC<props> = ({ status, toggleStatus }): ReactElement => {
 								{sideNavData.map((item, index) => (
 									<motion.li
 										key={index}
-										initial={{ opacity: 0, x: -20 }}
+										initial={{ opacity: 0, x: 20 }}
 										animate={{ opacity: 1, x: 0 }}
 										transition={{ delay: index * 0.1 }}
 									>

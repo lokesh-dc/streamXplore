@@ -6,6 +6,7 @@ import getMovieDetails from "@/dataFetchings/getMovieDetails";
 import DetailV2 from "@/components/ui/detail/DetailV2";
 import DetailAiBanner from "@/components/ui/detail/DetailAiBanner";
 import RecommendationContainer from "@/components/containers/RecommendationContainer";
+import TitleNotFound from "@/components/ui/TitleNotFound";
 import { getImageBaseLink } from "@/constants";
 
 interface PageProps {
@@ -90,7 +91,7 @@ const MoviePage = async ({ params }: PageProps) => {
 	const data = await getPageData(id);
 
 	if (!data) {
-		return <div className="p-10 text-center">Movie not found</div>;
+		return <TitleNotFound kind="movie" />;
 	}
 
 	const {

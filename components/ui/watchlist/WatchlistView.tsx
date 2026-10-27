@@ -7,12 +7,18 @@ import { FiTrash2, FiX } from "react-icons/fi";
 import { BsBookmark } from "react-icons/bs";
 
 import {
-	clearWatchlist,
+	clearWatchlist as clearWatchlistLS,
 	getWatchlist,
-	removeFromWatchlist,
+	removeFromWatchlist as removeFromWatchlistLS,
 	subscribeWatchlist,
 	type WatchlistEntry,
 } from "@/lib/watchlist";
+import { useUser } from "@/lib/hooks/useUser";
+import {
+	getWatchlist as getWatchlistDB,
+	removeFromWatchlist as removeFromWatchlistDB,
+	clearWatchlist as clearWatchlistDB,
+} from "@/app/actions/watchlist";
 import MovieCard from "@/components/cards/MovieCard";
 
 type Filter = "all" | "movie" | "tv";
@@ -42,14 +48,51 @@ const WatchlistView = () => {
 	const [entries, setEntries] = useState<WatchlistEntry[]>([]);
 	const [mounted, setMounted] = useState(false);
 	const [filter, setFilter] = useState<Filter>("all");
+	const { user, loading } = useUser();
 
+	// Load state: DB when signed in, localStorage otherwise.
 	useEffect(() => {
 		setMounted(true);
+	}, []);
+
+	useEffect(() => {
+		if (loading) return;
+		let cancelled = false;
+
+		const sync = async () => {
+			if (user) {
+				try {
+					const rows = await getWatchlistDB();
+					if (cancelled) return;
+					setEntries(
+						(rows || []).map((r: any) => ({
+							id: r.tmdb_id,
+							mediaType: r.media_type,
+							title: r.title,
+							posterPath: r.poster_path,
+							addedAt: new Date(r.added_at).getTime() || 0,
+						})),
+					);
+				} catch {
+					/* ignore */
+				}
+			} else if (!cancelled) {
+				setEntries(
+					[...getWatchlist()].sort((a, b) => b.addedAt - a.addedAt),
+				);
+			}
+		};
+		sync();
+		return () => { cancelled = true; };
+	}, [user, loading]);
+
+	// Cross-tab updates only apply to the localStorage mode.
+	useEffect(() => {
+		if (user || loading) return;
 		const sync = () =>
 			setEntries([...getWatchlist()].sort((a, b) => b.addedAt - a.addedAt));
-		sync();
 		return subscribeWatchlist(sync);
-	}, []);
+	}, [user, loading]);
 
 	const counts = useMemo(
 		() => ({
@@ -63,10 +106,29 @@ const WatchlistView = () => {
 	const visible =
 		filter === "all" ? entries : entries.filter((e) => e.mediaType === filter);
 
-	const handleRemove = (entry: WatchlistEntry) =>
-		removeFromWatchlist(entry.id, entry.mediaType);
+	const handleRemove = async (entry: WatchlistEntry) => {
+		if (user) {
+			await removeFromWatchlistDB(entry.mediaType, entry.id);
+			setEntries((prev) =>
+				prev.filter(
+					(e) => !(e.id === entry.id && e.mediaType === entry.mediaType),
+				),
+			);
+		} else {
+			removeFromWatchlistLS(entry.id, entry.mediaType);
+		}
+	};
 
-	if (!mounted) return <Skeleton />;
+	const handleClear = async () => {
+		if (user) {
+			await clearWatchlistDB();
+			setEntries([]);
+		} else {
+			clearWatchlistLS();
+		}
+	};
+
+	if (!mounted || (user && loading)) return <Skeleton />;
 
 	if (!entries.length) {
 		return (
@@ -123,7 +185,7 @@ const WatchlistView = () => {
 
 				<button
 					type="button"
-					onClick={() => clearWatchlist()}
+					onClick={() => handleClear()}
 					className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-text-secondary transition-colors hover:border-red-500/40 hover:text-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
 					<FiTrash2 className="text-sm" />
 					Clear all

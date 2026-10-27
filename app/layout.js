@@ -84,6 +84,9 @@ export const viewport = {
 	initialScale: 1,
 };
 
+import { AuthProvider } from "@/components/auth/AuthProvider";
+import { WatchlistProvider } from "@/components/auth/WatchlistProvider";
+
 export default function RootLayout({ children }) {
 	return (
 		<html
@@ -92,8 +95,12 @@ export default function RootLayout({ children }) {
 			className={`${poppins.variable} ${bebas.variable} font-sans`}
 		>
 			<body className={poppins.className}>
-				<NavigationBar />
-				<ChatShell>{children}</ChatShell>
+				<AuthProvider>
+					<WatchlistProvider>
+						<NavigationBar />
+						<ChatShell>{children}</ChatShell>
+					</WatchlistProvider>
+				</AuthProvider>
 			</body>
 		</html>
 	);

@@ -114,6 +114,11 @@ export default async function HomePage() {
 									className="inline-flex items-center gap-2 rounded-md border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
 									Browse series
 								</Link>
+								<Link
+									href="/streaming"
+									className="inline-flex items-center gap-2 rounded-md border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+									Browse by service
+								</Link>
 							</div>
 						</div>
 					</div>
