@@ -1,15 +1,10 @@
 "use client";
 
-import React, { useCallback, useRef } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, FreeMode } from "swiper";
-import type { Swiper as SwiperClass } from "swiper/types";
-import "swiper/css";
-import "swiper/css/free-mode";
 
-import styles from "@/styles/MovieContainer.module.css";
+import HorizontalSlider from "@/components/ui/HorizontalSlider";
 import { getImageBaseLink } from "@/constants";
 import { decorateLink } from "@/utils";
 
@@ -40,11 +35,17 @@ const PeopleCard = ({ person }: { person: PersonCard }) => {
 	const href = `/person/${decorateLink(person.name)}/${person.id}`;
 
 	return (
-		<Link href={href} className="group flex w-28 flex-col sm:w-32">
+		<Link
+			href={href}
+			draggable={false}
+			className="group flex w-28 select-none flex-col sm:w-32">
 			<div className="relative aspect-[2/3] overflow-hidden rounded-lg border border-white/10 bg-white/5 shadow-[0_18px_34px_-24px_rgba(0,0,0,0.9)] transition-all duration-300 ease-smooth group-hover:border-primary/40 group-hover:shadow-[0_26px_44px_-24px_rgba(0,0,0,0.95)]">
 				{person.imagePath ? (
 					<Image
 						unoptimized
+						loading="lazy"
+						decoding="async"
+						draggable={false}
 						src={getImageBaseLink({
 							type: "profile",
 							quality: "md",
@@ -78,26 +79,6 @@ const PeopleCard = ({ person }: { person: PersonCard }) => {
 };
 
 const PeopleRail = ({ eyebrow, title, countLabel, people }: PeopleRailProps) => {
-	const maskRef = useRef<HTMLDivElement>(null);
-
-	// Fade each edge only when there is content hidden beyond it, so the
-	// overlay disappears once the user has reached the start or the end.
-	const syncEdges = useCallback((sw: SwiperClass) => {
-		const el = maskRef.current;
-		if (!el) return;
-		const atStart = sw.isBeginning;
-		const atEnd = sw.isEnd;
-		const left = atStart
-			? "#000 0"
-			: "transparent 0, #000 var(--shell-pad)";
-		const right = atEnd
-			? "#000 100%"
-			: "#000 calc(100% - var(--shell-pad)), transparent 100%";
-		const mask = `linear-gradient(90deg, ${left}, ${right})`;
-		el.style.webkitMaskImage = mask;
-		el.style.maskImage = mask;
-	}, []);
-
 	if (!people?.length) return null;
 
 	return (
@@ -114,35 +95,14 @@ const PeopleRail = ({ eyebrow, title, countLabel, people }: PeopleRailProps) => 
 				</span>
 			</header>
 
-			<div ref={maskRef} className="row-mask">
-				<Swiper
-					slidesPerView="auto"
-					spaceBetween={14}
-					freeMode={true}
-					mousewheel={{
-						forceToAxis: true,
-						releaseOnEdges: true,
-					}}
-					modules={[Mousewheel, FreeMode]}
-					onSwiper={syncEdges}
-					onProgress={syncEdges}
-					onSetTranslate={syncEdges}
-					onResize={syncEdges}
-					onReachBeginning={syncEdges}
-					onReachEnd={syncEdges}
-					onFromEdge={syncEdges}
-					onToEdge={syncEdges}
-					onTouchEnd={syncEdges}
-					className={`w-full ${styles.swiperContainer} overscroll-x-contain touch-pan-y`}>
-					{people.map((person, idx) => (
-						<SwiperSlide
-							key={person.id ?? `${person.name}-${idx}`}
-							className="!w-fit pb-3">
-							<PeopleCard person={person} />
-						</SwiperSlide>
-					))}
-				</Swiper>
-			</div>
+			<HorizontalSlider gap={14} itemClassName="pb-3" ariaLabel={title}>
+				{people.map((person, idx) => (
+					<PeopleCard
+						key={person.id ?? `${person.name}-${idx}`}
+						person={person}
+					/>
+				))}
+			</HorizontalSlider>
 		</section>
 	);
 };

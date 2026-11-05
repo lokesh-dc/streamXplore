@@ -3,11 +3,7 @@
 import React, { ReactElement } from "react";
 import MovieImageCard from "@/components/cards/MovieImageCard";
 import { movieImages } from "@/constants/typescript";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, FreeMode } from "swiper";
-
-import "swiper/css";
-import "swiper/css/free-mode";
+import HorizontalSlider from "@/components/ui/HorizontalSlider";
 
 interface props {
 	data: movieImages[];
@@ -26,32 +22,18 @@ const MovieImages: React.FC<props> = ({
 				<span className="w-1.5 h-6 bg-primary rounded-full"></span>
 				Images
 			</h2>
-			<div className="relative group">
-				<Swiper
-					slidesPerView="auto"
-					spaceBetween={16}
-					freeMode={true}
-					mousewheel={{
-						forceToAxis: true,
-						releaseOnEdges: true,
-					}}
-					modules={[Mousewheel, FreeMode]}
-					className="w-full !overflow-visible overscroll-x-contain touch-pan-y"
-				>
-					{data.map(({ file_path }, index) => (
-						<SwiperSlide key={index} className="!w-fit pb-4">
-							<MovieImageCard
-								position={index}
-								imgSrc={file_path}
-								key={index}
-								title={title}
-								// @ts-ignore
-								stateChange={stateChange}
-							/>
-						</SwiperSlide>
-					))}
-				</Swiper>
-			</div>
+			<HorizontalSlider gap={16} itemClassName="pb-4" ariaLabel="Images">
+				{data.map(({ file_path }, index) => (
+					<MovieImageCard
+						position={index}
+						imgSrc={file_path}
+						key={file_path ?? index}
+						title={title}
+						// @ts-ignore
+						stateChange={stateChange}
+					/>
+				))}
+			</HorizontalSlider>
 		</div>
 	);
 };

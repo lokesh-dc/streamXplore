@@ -2,15 +2,11 @@
 
 import { movieDetails } from "@/constants/typescript";
 import React, { ReactElement } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, FreeMode } from "swiper";
-
-import "swiper/css";
-import "swiper/css/free-mode";
 
 import styles from "@/styles/MovieContainer.module.css";
 import MovieCard from "../cards/MovieCard";
 import SectionHeader from "../ui/SectionHeader";
+import HorizontalSlider from "../ui/HorizontalSlider";
 
 interface props {
 	data: Array<movieDetails> | null | undefined;
@@ -47,36 +43,24 @@ const MovieContainer: React.FC<props> = ({
 				/>
 			) : null}
 
-			<div className={styles.rowMaskWrap}>
-				<Swiper
-					slidesPerView="auto"
-					spaceBetween={18}
-					freeMode={true}
-					mousewheel={{
-						forceToAxis: true,
-						releaseOnEdges: true,
-					}}
-					modules={[Mousewheel, FreeMode]}
-					className={`w-full ${styles.swiperContainer} overscroll-x-contain touch-pan-y`}>
-					{data?.map((item, i) => (
-						<SwiperSlide key={`${item.id ?? i}-${i}`} className="!w-fit">
-							<MovieCard
-								imgSrc={item.poster_path}
-								title={`${item?.title || item?.name}`}
-								movieId={item.id}
-								type={"scroll_card"}
-								showType={showType}
-								overlay
-								mediaType={showType}
-								rating={item?.vote_average}
-								year={
-									(item?.release_date || item?.first_air_date)?.split("-")[0] ?? null
-								}
-							/>
-						</SwiperSlide>
-					))}
-				</Swiper>
-			</div>
+			<HorizontalSlider gap={18} ariaLabel={title || "Media row"}>
+				{data?.map((item, i) => (
+					<MovieCard
+						key={`${item.id ?? i}-${i}`}
+						imgSrc={item.poster_path}
+						title={`${item?.title || item?.name}`}
+						movieId={item.id}
+						type={"scroll_card"}
+						showType={showType}
+						overlay
+						mediaType={showType}
+						rating={item?.vote_average}
+						year={
+							(item?.release_date || item?.first_air_date)?.split("-")[0] ?? null
+						}
+					/>
+				))}
+			</HorizontalSlider>
 		</section>
 	);
 };

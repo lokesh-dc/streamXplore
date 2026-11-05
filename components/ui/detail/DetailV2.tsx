@@ -19,11 +19,7 @@ import ShareIntentComponent from "@/components/functional-components/ShareIntent
 import WatchlistButton from "@/components/functional-components/WatchlistButton";
 import { Button } from "@/components/buttons";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, FreeMode } from "swiper";
-import "swiper/css";
-import "swiper/css/free-mode";
-import styles from "@/styles/MovieContainer.module.css";
+import HorizontalSlider from "@/components/ui/HorizontalSlider";
 
 interface DetailV2Props {
 	data: any;
@@ -425,52 +421,44 @@ const DetailV2: React.FC<DetailV2Props> = ({
 							</button>
 
 							{clipVideos.length ? (
-								<div className="relative">
-									<Swiper
-										slidesPerView="auto"
-										spaceBetween={14}
-										freeMode={true}
-										mousewheel={{
-											forceToAxis: true,
-											releaseOnEdges: true,
-										}}
-										modules={[Mousewheel, FreeMode]}
-										className={`w-full ${styles.swiperContainer} overscroll-x-contain touch-pan-y`}>
-										{clipVideos.map((video: any) => (
-											<SwiperSlide
-												key={video.id}
-												className="!w-fit pb-2">
-												<button
-													type="button"
-													onClick={() => openVideo(video)}
-													aria-label={`Play ${video.name}`}
-													className="group block w-[220px] text-left">
-													<span className="relative block aspect-video overflow-hidden rounded-lg border border-white/10 bg-black">
-														<Image
-															unoptimized
-															src={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
-															alt={video.name}
-															fill
-															sizes="220px"
-															className="object-cover brightness-[0.85] transition-all duration-500 ease-smooth group-hover:scale-105 group-hover:brightness-100"
-														/>
-														<span className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity duration-300 ease-smooth group-hover:opacity-100">
-															<span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/20 backdrop-blur-md">
-																<FaPlay className="ml-0.5 text-xs text-white" />
-															</span>
-														</span>
-														<span className="absolute left-2 top-2 rounded-full border border-white/15 bg-black/70 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white backdrop-blur">
-															{video.type}
-														</span>
+								<HorizontalSlider
+									gap={14}
+									itemClassName="pb-2"
+									ariaLabel="Videos and trailers">
+									{clipVideos.map((video: any) => (
+										<button
+											key={video.id}
+											type="button"
+											onClick={() => openVideo(video)}
+											aria-label={`Play ${video.name}`}
+											className="group block w-[220px] select-none text-left">
+											<span className="relative block aspect-video overflow-hidden rounded-lg border border-white/10 bg-black">
+												<Image
+													unoptimized
+													loading="lazy"
+													decoding="async"
+													draggable={false}
+													src={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
+													alt={video.name}
+													fill
+													sizes="220px"
+													className="object-cover brightness-[0.85] transition-all duration-500 ease-smooth group-hover:scale-105 group-hover:brightness-100"
+												/>
+												<span className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity duration-300 ease-smooth group-hover:opacity-100">
+													<span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/20 backdrop-blur-md">
+														<FaPlay className="ml-0.5 text-xs text-white" />
 													</span>
-													<span className="mt-2 block line-clamp-2 text-xs font-medium leading-snug text-text-primary transition-colors group-hover:text-primary">
-														{video.name}
-													</span>
-												</button>
-											</SwiperSlide>
-										))}
-									</Swiper>
-								</div>
+												</span>
+												<span className="absolute left-2 top-2 rounded-full border border-white/15 bg-black/70 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white backdrop-blur">
+													{video.type}
+												</span>
+											</span>
+											<span className="mt-2 block line-clamp-2 text-xs font-medium leading-snug text-text-primary transition-colors group-hover:text-primary">
+												{video.name}
+											</span>
+										</button>
+									))}
+								</HorizontalSlider>
 							) : null}
 						</section>
 					) : null}

@@ -15,6 +15,114 @@
     margin: -26px 0;
 }
 
+.sliderTrack {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 18px 2px;
+    margin: -18px -2px;
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
+}
+
+.sliderTrack::-webkit-scrollbar {
+    display: none;
+}
+
+.sliderDragging {
+    cursor: grabbing;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.sliderDragging a,
+.sliderDragging button,
+.sliderDragging img {
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.sliderItem {
+    flex: 0 0 auto;
+    width: fit-content;
+}
+
+.maskLeft {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--shell-pad, 24px), #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 var(--shell-pad, 24px), #000 100%);
+}
+
+.maskRight {
+    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - var(--shell-pad, 24px)), transparent 100%);
+    mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - var(--shell-pad, 24px)), transparent 100%);
+}
+
+.maskBoth {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--shell-pad, 24px), #000 calc(100% - var(--shell-pad, 24px)), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 var(--shell-pad, 24px), #000 calc(100% - var(--shell-pad, 24px)), transparent 100%);
+}
+
+.sliderNavBtn {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transform: translateY(-50%);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    background: rgba(15, 13, 12, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.22s var(--ease), background 0.22s var(--ease),
+        border-color 0.22s var(--ease), transform 0.22s var(--ease);
+}
+
+.rowMaskWrap:hover .sliderNavBtn,
+.sliderNavBtn:focus-visible {
+    opacity: 1;
+}
+
+.sliderNavBtn:hover {
+    background: rgba(var(--primary-rgb), 0.9);
+    border-color: rgba(var(--primary-rgb), 1);
+    color: #fff;
+}
+
+.sliderNavBtn:active {
+    transform: translateY(-50%) scale(0.94);
+}
+
+.sliderNavLeft {
+    left: 0.5rem;
+}
+
+.sliderNavRight {
+    right: 0.5rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .sliderNavBtn {
+        display: inline-flex;
+    }
+}
+
 .card,
 .scroll_card {
     position: relative;
@@ -26,7 +134,7 @@
     background: var(--ink-800);
     border: 1px solid rgba(255, 255, 255, 0.07);
     box-shadow: 0 22px 44px -28px rgba(0, 0, 0, 0.9);
-    transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 
 .scroll_card {
@@ -37,10 +145,13 @@
     width: 100% !important;
 }
 
-.card:hover,
-.scroll_card:hover {
-    border-color: rgba(255, 255, 255, 0.18);
-    box-shadow: 0 30px 55px -26px rgba(0, 0, 0, 0.95);
+@media (hover: hover) and (pointer: fine) {
+    .card:hover,
+    .scroll_card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(255, 255, 255, 0.18);
+        box-shadow: 0 30px 55px -26px rgba(0, 0, 0, 0.95);
+    }
 }
 
 .cardImage {

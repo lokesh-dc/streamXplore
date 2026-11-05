@@ -2,8 +2,6 @@
 import { getImageBaseLink } from "@/constants";
 import Image from "next/image";
 import React, { ReactElement } from "react";
-import { motion } from "framer-motion";
-import { scaleHover } from "@/lib/animations";
 import { AiTwotoneStar } from "react-icons/ai";
 
 import styles from "@/styles/MovieContainer.module.css";
@@ -49,20 +47,20 @@ const MovieCard: React.FC<props> = ({
 
 	return (
 		<Link
-			href={`${showType}/${decorateLink(title)}/${movieId}`}
+			href={`/${showType.replace(/^\//, "")}/${decorateLink(title)}/${movieId}`}
 			onClick={handleClick}
-			className="block">
-			<motion.div
-				variants={scaleHover}
-				initial="initial"
-				whileHover="hover"
-				whileTap="tap"
-				className={`${type == "scroll_card" ? styles?.scroll_card : styles.card} overflow-hidden will-change-transform`}>
+			draggable={false}
+			className="block select-none">
+			<div
+				className={`${type == "scroll_card" ? styles?.scroll_card : styles.card} overflow-hidden`}>
 				<div className={styles.cardImage}>
 					<Image
 						unoptimized
 						width={500}
 						height={750}
+						loading="lazy"
+						decoding="async"
+						draggable={false}
 						src={getImageBaseLink({
 							type: "poster",
 							quality: "lg",
@@ -89,7 +87,7 @@ const MovieCard: React.FC<props> = ({
 						<h3 className={styles.cardTitle}>{title}</h3>
 					</div>
 				) : null}
-			</motion.div>
+			</div>
 		</Link>
 	);
 };

@@ -19,11 +19,14 @@ const MovieCardImage: React.FC<props> = ({
 	return (
 		// @ts-ignore
 		<div
-			className="movie_image_card"
+			className="movie_image_card cursor-pointer select-none overflow-hidden rounded-lg"
 			onClick={() => stateChange(position, imgSrc)}
 		>
 			<Image
 				unoptimized
+				loading="lazy"
+				decoding="async"
+				draggable={false}
 				src={getImageBaseLink({
 					path: imgSrc,
 					type: "backdrop",

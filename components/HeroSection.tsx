@@ -33,25 +33,26 @@ const formatCount = (value?: number | null) => {
 };
 
 const heroMotion: Variants = {
-	initial: { opacity: 0, y: 26 },
+	initial: { opacity: 0, y: 18 },
 	animate: {
 		opacity: 1,
 		y: 0,
 		transition: {
-			duration: motionTokens.durations.slow,
+			duration: 0.38,
 			ease: motionTokens.easings.smooth,
 		},
 	},
 	exit: {
 		opacity: 0,
-		y: -14,
-		transition: { duration: motionTokens.durations.normal },
+		y: -10,
+		transition: { duration: 0.18 },
 	},
 };
 
 const HeroSection = ({ data }: props) => {
 	const router = useRouter();
 	const swiperRef = useRef<SwiperClass | null>(null);
+	const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 	const [active, setActive] = useState(0);
 
 	if (!data || !data.length) return null;
@@ -70,15 +71,42 @@ const HeroSection = ({ data }: props) => {
 
 	const goTo = (index: number) => swiperRef.current?.slideToLoop(index);
 
+	const handleTouchStart = (e: React.TouchEvent<HTMLElement>) => {
+		const t = e.touches[0];
+		if (!t) return;
+		touchStartRef.current = { x: t.clientX, y: t.clientY };
+	};
+
+	const handleTouchEnd = (e: React.TouchEvent<HTMLElement>) => {
+		const start = touchStartRef.current;
+		touchStartRef.current = null;
+		const t = e.changedTouches[0];
+		if (!start || !t) return;
+
+		const dx = t.clientX - start.x;
+		const dy = t.clientY - start.y;
+		if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.25) {
+			if (dx < 0) {
+				swiperRef.current?.slideNext();
+			} else {
+				swiperRef.current?.slidePrev();
+			}
+		}
+	};
+
 	return (
-		<section className={styles.hero} aria-roledescription="carousel">
+		<section
+			className={styles.hero}
+			aria-roledescription="carousel"
+			onTouchStart={handleTouchStart}
+			onTouchEnd={handleTouchEnd}>
 			<Swiper
 				modules={[Autoplay, EffectFade, Navigation]}
 				effect="fade"
 				fadeEffect={{ crossFade: true }}
-				speed={900}
+				speed={650}
 				loop
-				allowTouchMove={false}
+				allowTouchMove={true}
 				autoplay={{
 					delay: 10000,
 					disableOnInteraction: false,

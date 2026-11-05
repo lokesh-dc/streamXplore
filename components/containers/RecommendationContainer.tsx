@@ -3,16 +3,12 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, FreeMode } from "swiper";
-
-import "swiper/css";
-import "swiper/css/free-mode";
 
 import { AiTwotoneStar } from "react-icons/ai";
 import { GiSparkles } from "react-icons/gi";
 
 import styles from "@/styles/MovieContainer.module.css";
+import HorizontalSlider from "@/components/ui/HorizontalSlider";
 import { movieDetails } from "@/constants/typescript";
 import { getImageBaseLink } from "@/constants";
 import { decorateLink, isReleased } from "@/utils";
@@ -68,93 +64,83 @@ const RecommendationContainer: React.FC<RecommendationContainerProps> = ({
 
 			<div className="hairline mb-3" />
 
-			<div className={styles.rowMaskWrap}>
-				<Swiper
-					slidesPerView="auto"
-					spaceBetween={18}
-					freeMode={true}
-					mousewheel={{
-						forceToAxis: true,
-						releaseOnEdges: true,
-					}}
-					modules={[Mousewheel, FreeMode]}
-					className={`w-full ${styles.swiperContainer} overscroll-x-contain touch-pan-y`}>
-					{recommendations.map((item, index) => {
-						const movieTitle = item.title || item.name || "Untitled";
-						const year = (
-							item.release_date || item.first_air_date
-						)?.split("-")[0];
-						const mediaType =
-							item.media_type || (item.title ? "movie" : "tv");
-						const mediaLabel = mediaType === "tv" ? "Series" : "Film";
-						const released = isReleased(item);
-						const rating = item.vote_average;
-						const hasRating =
-							released && typeof rating === "number" && rating > 0;
+			<HorizontalSlider gap={18} itemClassName="pb-2" ariaLabel={title}>
+				{recommendations.map((item, index) => {
+					const movieTitle = item.title || item.name || "Untitled";
+					const year = (
+						item.release_date || item.first_air_date
+					)?.split("-")[0];
+					const mediaType =
+						item.media_type || (item.title ? "movie" : "tv");
+					const mediaLabel = mediaType === "tv" ? "Series" : "Film";
+					const released = isReleased(item);
+					const rating = item.vote_average;
+					const hasRating =
+						released && typeof rating === "number" && rating > 0;
 
-						return (
-							<SwiperSlide
-								key={`${item.id ?? index}-${index}`}
-								className="!w-fit pb-2">
-								<Link
-									href={`/${mediaType}/${decorateLink(movieTitle)}/${item.id}`}
-									className="group flex w-[232px] flex-col align-top max-[600px]:w-[156px]">
-									<div className={`${styles.scroll_card} relative`}>
-										<div className={styles.cardImage}>
-											<Image
-												unoptimized
-												width={500}
-												height={750}
-												src={getImageBaseLink({
-													path: item.poster_path,
-													type: "poster",
-													quality: "lg",
-												})}
-												alt={`${movieTitle} poster`}
-												className={styles.cardImg}
-											/>
-										</div>
+					return (
+						<Link
+							key={`${item.id ?? index}-${index}`}
+							href={`/${mediaType}/${decorateLink(movieTitle)}/${item.id}`}
+							draggable={false}
+							className="group flex w-[232px] select-none flex-col align-top max-[600px]:w-[156px]">
+							<div className={`${styles.scroll_card} relative`}>
+								<div className={styles.cardImage}>
+									<Image
+										unoptimized
+										width={500}
+										height={750}
+										loading="lazy"
+										decoding="async"
+										draggable={false}
+										src={getImageBaseLink({
+											path: item.poster_path,
+											type: "poster",
+											quality: "lg",
+										})}
+										alt={`${movieTitle} poster`}
+										className={styles.cardImg}
+									/>
+								</div>
 
-										{/* Editorial index */}
-										<span
-											aria-hidden
-											className="pointer-events-none absolute left-3 top-1.5 z-[2] font-display text-4xl leading-none tabular text-white/30 transition-colors duration-300 ease-smooth group-hover:text-primary">
-											{String(index + 1).padStart(2, "0")}
-										</span>
+								{/* Editorial index */}
+								<span
+									aria-hidden
+									className="pointer-events-none absolute left-3 top-1.5 z-[2] font-display text-4xl leading-none tabular text-white/30 transition-colors duration-300 ease-smooth group-hover:text-primary">
+									{String(index + 1).padStart(2, "0")}
+								</span>
 
-										{hasRating ? (
-											<span className={styles.ratingChip}>
-												<AiTwotoneStar />
-												{rating.toFixed(1)}
-											</span>
-										) : !released ? (
-											<span className="absolute right-2.5 top-2.5 z-[2] rounded-full border border-primary/40 bg-primary/15 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-[#ff8a5c] backdrop-blur">
-												Coming soon
-											</span>
-										) : null}
+								{hasRating ? (
+									<span className={styles.ratingChip}>
+										<AiTwotoneStar />
+										{rating.toFixed(1)}
+									</span>
+								) : !released ? (
+									<span className="absolute right-2.5 top-2.5 z-[2] rounded-full border border-primary/40 bg-primary/15 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-[#ff8a5c] backdrop-blur">
+										Coming soon
+									</span>
+								) : null}
 
-										<div className={styles.cardMeta}>
-											<span className={styles.cardMetaTop}>
-												<span>{mediaLabel}</span>
-												{year ? <span>{year}</span> : null}
-											</span>
-										</div>
-									</div>
+								<div className={styles.cardMeta}>
+									<span className={styles.cardMetaTop}>
+										<span>{mediaLabel}</span>
+										{year ? <span>{year}</span> : null}
+									</span>
+								</div>
+							</div>
 
-									<div className="mt-3 flex flex-col gap-0.5 px-0.5">
-										<h3 className="line-clamp-2 min-h-[2.5rem] text-sm font-medium leading-snug text-text-primary transition-colors group-hover:text-primary">
-											{movieTitle}
-										</h3>
-										<p className="line-clamp-1 text-xs text-text-secondary">
-											{year || "TBA"} · {mediaLabel}
-										</p>
-									</div>
-								</Link>
-							</SwiperSlide>
-						);
-					})}
-				</Swiper>
-			</div>
+							<div className="mt-3 flex flex-col gap-0.5 px-0.5">
+								<h3 className="line-clamp-2 min-h-[2.5rem] text-sm font-medium leading-snug text-text-primary transition-colors group-hover:text-primary">
+									{movieTitle}
+								</h3>
+								<p className="line-clamp-1 text-xs text-text-secondary">
+									{year || "TBA"} · {mediaLabel}
+								</p>
+							</div>
+						</Link>
+					);
+				})}
+			</HorizontalSlider>
 		</section>
 	);
 };

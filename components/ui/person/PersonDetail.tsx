@@ -5,12 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiChevronRight } from "react-icons/fi";
 import { AiFillStar, AiTwotoneStar } from "react-icons/ai";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, FreeMode } from "swiper";
-import "swiper/css";
-import "swiper/css/free-mode";
-
 import styles from "@/styles/MovieContainer.module.css";
+import HorizontalSlider from "@/components/ui/HorizontalSlider";
 import { getImageBaseLink } from "@/constants";
 import { personDetails } from "@/constants/typescript";
 import { decorateLink, isReleased } from "@/utils";
@@ -815,58 +811,50 @@ const PersonDetail: React.FC<{ data: personDetails }> = ({ data }) => {
 								<span className="eyebrow">Highlights</span>
 								<SectionTitle>Known for</SectionTitle>
 							</header>
-							<div className="">
-								<Swiper
-									slidesPerView="auto"
-									spaceBetween={16}
-									freeMode={true}
-									mousewheel={{
-										forceToAxis: true,
-										releaseOnEdges: true,
-									}}
-									modules={[Mousewheel, FreeMode]}
-									className={`w-full ${styles.swiperContainer} overscroll-x-contain touch-pan-y`}>
-									{knownFor.map((item) => (
-										<SwiperSlide key={item.id} className="!w-fit pb-2">
-											<Link
-												href={`/${item.mediaType}/${decorateLink(item.title)}/${item.id}`}
-												className="group inline-block align-top">
-												<div className={`${styles.scroll_card} relative`}>
-													<div className={styles.cardImage}>
-														<Image
-															unoptimized
-															width={500}
-															height={750}
-															src={getImageBaseLink({
-																path: item.posterPath,
-																type: "poster",
-																quality: "lg",
-															})}
-															alt={`${item.title} poster`}
-															className={styles.cardImg}
-														/>
-													</div>
-													{ratingOf(item) ? (
-														<span className={styles.ratingChip}>
-															<AiTwotoneStar />
-															{item.rating.toFixed(1)}
-														</span>
-													) : null}
-												</div>
-												<div className="mt-3 flex flex-col gap-0.5 px-0.5">
-													<h4 className="truncate text-sm font-medium text-text-primary transition-colors group-hover:text-primary">
-														{item.title}
-													</h4>
-													<p className="text-xs text-text-secondary">
-														{item.year || "TBA"} ·{" "}
-														{item.mediaType === "tv" ? "Series" : "Film"}
-													</p>
-												</div>
-											</Link>
-										</SwiperSlide>
-									))}
-								</Swiper>
-							</div>
+							<HorizontalSlider gap={16} itemClassName="pb-2" ariaLabel="Known for">
+								{knownFor.map((item) => (
+									<Link
+										key={item.id}
+										href={`/${item.mediaType}/${decorateLink(item.title)}/${item.id}`}
+										draggable={false}
+										className="group inline-block select-none align-top">
+										<div className={`${styles.scroll_card} relative`}>
+											<div className={styles.cardImage}>
+												<Image
+													unoptimized
+													width={500}
+													height={750}
+													loading="lazy"
+													decoding="async"
+													draggable={false}
+													src={getImageBaseLink({
+														path: item.posterPath,
+														type: "poster",
+														quality: "lg",
+													})}
+													alt={`${item.title} poster`}
+													className={styles.cardImg}
+												/>
+											</div>
+											{ratingOf(item) ? (
+												<span className={styles.ratingChip}>
+													<AiTwotoneStar />
+													{item.rating.toFixed(1)}
+												</span>
+											) : null}
+										</div>
+										<div className="mt-3 flex flex-col gap-0.5 px-0.5">
+											<h4 className="truncate text-sm font-medium text-text-primary transition-colors group-hover:text-primary">
+												{item.title}
+											</h4>
+											<p className="text-xs text-text-secondary">
+												{item.year || "TBA"} ·{" "}
+												{item.mediaType === "tv" ? "Series" : "Film"}
+											</p>
+										</div>
+									</Link>
+								))}
+							</HorizontalSlider>
 						</section>
 					) : null}
 
