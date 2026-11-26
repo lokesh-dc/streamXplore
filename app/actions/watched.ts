@@ -2,6 +2,9 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import getMovieDetails from "@/dataFetchings/getMovieDetails";
+import getTvSeriesDetails from "@/dataFetchings/getTVSeriesDetails";
+import { decodeSharedIds, type WatchedEntry } from "@/lib/watched";
 
 export interface WatchedTitleInput {
   mediaType: "movie" | "tv";
@@ -86,6 +89,75 @@ export async function getWatchedTitles() {
     return data || [];
   } catch {
     return [];
+  }
+}
+
+export async function getPublicWatchedTitles(userId: string) {
+  const supabase = await createClient();
+  try {
+    const { data } = await supabase
+      .from("watched_items")
+      .select("*")
+      .eq("user_id", userId)
+      .order("added_at", { ascending: false });
+
+    return data || [];
+  } catch (err) {
+    console.error("Error fetching public watched titles:", err);
+    return [];
+  }
+}
+
+/** Resolves compact shared ID list (e.g. "m550,t1399") into full TMDB titles for public shared view. */
+export async function resolveSharedTitles(listParam: string): Promise<WatchedEntry[]> {
+  const parsedIds = decodeSharedIds(listParam);
+  if (!parsedIds.length) return [];
+
+  const fetched = await Promise.all(
+    parsedIds.slice(0, 100).map(async ({ id, mediaType }) => {
+      try {
+        if (mediaType === "movie") {
+          const movie = await getMovieDetails(id);
+          if (!movie || movie.success === false) return null;
+          return {
+            id,
+            mediaType: "movie" as const,
+            title: movie.title || movie.original_title || "Untitled",
+            posterPath: movie.poster_path || null,
+            addedAt: Date.now(),
+          };
+        } else {
+          const tv = await getTvSeriesDetails(id);
+          if (!tv || tv.success === false) return null;
+          return {
+            id,
+            mediaType: "tv" as const,
+            title: tv.name || tv.original_name || "Untitled",
+            posterPath: tv.poster_path || null,
+            addedAt: Date.now(),
+          };
+        }
+      } catch {
+        return null;
+      }
+    }),
+  );
+
+  return fetched.filter((item): item is WatchedEntry => item !== null);
+}
+
+export async function clearWatchedTitles() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return;
+
+  try {
+    await supabase.from("watched_items").delete().eq("user_id", user.id);
+    revalidatePath("/watched");
+  } catch (err) {
+    console.error("Clear watched error:", err);
   }
 }
 

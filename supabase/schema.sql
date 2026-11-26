@@ -85,8 +85,17 @@ create policy "Users can CRUD own watchlist" on watchlist_items
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
 -- Watched items policies
-create policy "Users can CRUD own watched items" on watched_items
-  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "Watched items are viewable by everyone" on watched_items
+  for select using (true);
+
+create policy "Users can insert own watched items" on watched_items
+  for insert with check (auth.uid() = user_id);
+
+create policy "Users can update own watched items" on watched_items
+  for update using (auth.uid() = user_id);
+
+create policy "Users can delete own watched items" on watched_items
+  for delete using (auth.uid() = user_id);
 
 -- Watched credits policies
 create policy "Users can CRUD own watched credits" on person_watched_credits

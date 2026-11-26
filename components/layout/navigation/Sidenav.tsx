@@ -11,6 +11,7 @@ import {
 	FiPlayCircle,
 	FiHeart,
 	FiBookmark,
+	FiCheckCircle,
 	FiUsers,
 	FiX,
 	FiInstagram,
@@ -58,6 +59,11 @@ const sideNavData = [
 		text: "My Watchlist",
 		href: "/watchlist",
 		icon: <FiBookmark />,
+	},
+	{
+		text: "Watched",
+		href: "/watched",
+		icon: <FiCheckCircle />,
 	},
 	{
 		text: "Tracking",
