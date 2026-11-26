@@ -2,6 +2,8 @@ import { Metadata } from "next";
 
 import PageTitle from "@/components/ui/PageTitle";
 import WatchlistView from "@/components/ui/watchlist/WatchlistView";
+import { getWatchlist } from "@/app/actions/watchlist";
+import type { WatchlistEntry } from "@/lib/watchlist";
 
 export const metadata: Metadata = {
 	title: "My Watchlist",
@@ -11,17 +13,33 @@ export const metadata: Metadata = {
 	},
 };
 
-const WatchlistPage = () => (
-	<>
-		<PageTitle
-			title="My Watchlist"
-			eyebrow="Your library"
-			description="Everything you've saved, in one place. Add titles from any film or series page."
-		/>
-		<section className="shell pb-24 pt-4">
-			<WatchlistView />
-		</section>
-	</>
-);
+const WatchlistPage = async () => {
+	let initialEntries: WatchlistEntry[] = [];
+	try {
+		const rows = await getWatchlist();
+		initialEntries = (rows || []).map((r: any) => ({
+			id: r.tmdb_id,
+			mediaType: r.media_type,
+			title: r.title,
+			posterPath: r.poster_path,
+			addedAt: new Date(r.added_at).getTime() || 0,
+		}));
+	} catch {
+		/* guest or unauthenticated */
+	}
+
+	return (
+		<>
+			<PageTitle
+				title="My Watchlist"
+				eyebrow="Your library"
+				description="Everything you've saved, in one place. Add titles from any film or series page."
+			/>
+			<section className="shell pb-24 pt-4">
+				<WatchlistView initialEntries={initialEntries} />
+			</section>
+		</>
+	);
+};
 
 export default WatchlistPage;

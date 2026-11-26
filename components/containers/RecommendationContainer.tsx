@@ -25,7 +25,7 @@ const RecommendationContainer: React.FC<RecommendationContainerProps> = ({
 	aiSeed,
 }) => {
 	const recommendations = Array.isArray(data)
-		? data.filter((item) => item.poster_path).slice(0, 12)
+		? data.filter((item) => item.poster_path).slice(0, 16)
 		: [];
 
 	if (!recommendations.length) return null;

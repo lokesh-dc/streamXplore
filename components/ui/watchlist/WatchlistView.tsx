@@ -44,15 +44,24 @@ const Skeleton = () => (
 	</div>
 );
 
-const WatchlistView = () => {
-	const [entries, setEntries] = useState<WatchlistEntry[]>([]);
+interface WatchlistViewProps {
+	initialEntries?: WatchlistEntry[];
+}
+
+const WatchlistView: React.FC<WatchlistViewProps> = ({ initialEntries = [] }) => {
+	const [entries, setEntries] = useState<WatchlistEntry[]>(initialEntries);
 	const [mounted, setMounted] = useState(false);
+	const [isInitialLoading, setIsInitialLoading] = useState(initialEntries.length === 0);
 	const [filter, setFilter] = useState<Filter>("all");
 	const { user, loading } = useUser();
 
-	// Load state: DB when signed in, localStorage otherwise.
 	useEffect(() => {
 		setMounted(true);
+		if (typeof window !== "undefined" && !user && !initialEntries.length) {
+			const local = [...getWatchlist()].sort((a, b) => b.addedAt - a.addedAt);
+			setEntries(local);
+			setIsInitialLoading(false);
+		}
 	}, []);
 
 	useEffect(() => {
@@ -75,11 +84,14 @@ const WatchlistView = () => {
 					);
 				} catch {
 					/* ignore */
+				} finally {
+					if (!cancelled) setIsInitialLoading(false);
 				}
 			} else if (!cancelled) {
 				setEntries(
 					[...getWatchlist()].sort((a, b) => b.addedAt - a.addedAt),
 				);
+				setIsInitialLoading(false);
 			}
 		};
 		sync();
@@ -128,7 +140,9 @@ const WatchlistView = () => {
 		}
 	};
 
-	if (!mounted || (user && loading)) return <Skeleton />;
+	if (!mounted || (loading && !entries.length) || (isInitialLoading && !entries.length)) {
+		return <Skeleton />;
+	}
 
 	if (!entries.length) {
 		return (

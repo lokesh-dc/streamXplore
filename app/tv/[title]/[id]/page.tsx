@@ -177,13 +177,16 @@ const TVSeriesPage = async ({ params }: PageProps) => {
 			/>
 			<div className="shell">
 				<RecommendationContainer
-					data={recommendations?.results}
+					data={
+						recommendations?.results?.length
+							? recommendations.results
+							: similar?.results?.filter(
+									(item: any) =>
+										item.poster_path && (item.vote_count ?? 0) >= 30,
+								)
+					}
 					title="People also Liked"
 					aiSeed={{ type: "tv", id: data.id, title: name }}
-				/>
-				<RecommendationContainer
-					data={similar?.results}
-					title="More like this"
 				/>
 			</div>
 

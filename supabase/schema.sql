@@ -34,6 +34,19 @@ create table if not exists watchlist_items (
   unique(user_id, media_type, tmdb_id)
 );
 
+-- Watched items
+create table if not exists watched_items (
+  id bigserial primary key,
+  user_id uuid references auth.users(id) on delete cascade not null,
+  media_type text check (media_type in ('movie','tv')) not null,
+  tmdb_id int not null,
+  title text not null,
+  poster_path text,
+  backdrop_path text,
+  added_at timestamp with time zone default now(),
+  unique(user_id, media_type, tmdb_id)
+);
+
 -- Watched credits per person
 create table if not exists person_watched_credits (
   id bigserial primary key,
@@ -50,6 +63,7 @@ create table if not exists person_watched_credits (
 alter table profiles enable row level security;
 alter table followed_people enable row level security;
 alter table watchlist_items enable row level security;
+alter table watched_items enable row level security;
 alter table person_watched_credits enable row level security;
 
 -- Profiles policies
@@ -68,6 +82,10 @@ create policy "Users can CRUD own follows" on followed_people
 
 -- Watchlist policies
 create policy "Users can CRUD own watchlist" on watchlist_items
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- Watched items policies
+create policy "Users can CRUD own watched items" on watched_items
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
 -- Watched credits policies

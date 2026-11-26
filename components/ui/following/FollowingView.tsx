@@ -213,9 +213,14 @@ function PersonCard({
 	);
 }
 
-const FollowingView = () => {
-	const [people, setPeople] = useState<FollowedPerson[]>([]);
+interface FollowingViewProps {
+	initialPeople?: FollowedPerson[];
+}
+
+const FollowingView: React.FC<FollowingViewProps> = ({ initialPeople = [] }) => {
+	const [people, setPeople] = useState<FollowedPerson[]>(initialPeople);
 	const [mounted, setMounted] = useState(false);
+	const [isInitialLoading, setIsInitialLoading] = useState(initialPeople.length === 0);
 	const [dept, setDept] = useState<DeptFilter>(ALL_DEPTS);
 	const [query, setQuery] = useState("");
 	// Increment on any watched toggle so all trackers re-read progress.
@@ -226,6 +231,11 @@ const FollowingView = () => {
 
 	useEffect(() => {
 		setMounted(true);
+		if (typeof window !== "undefined" && !user && !initialPeople.length) {
+			const local = [...getFollowed()].sort((a, b) => b.addedAt - a.addedAt);
+			setPeople(local);
+			setIsInitialLoading(false);
+		}
 	}, []);
 
 	// Load state: DB when signed in, localStorage otherwise.
@@ -260,10 +270,13 @@ const FollowingView = () => {
 					}
 				} catch {
 					/* ignore */
+				} finally {
+					if (!cancelled) setIsInitialLoading(false);
 				}
 			} else if (!cancelled) {
 				setPeople([...getFollowed()].sort((a, b) => b.addedAt - a.addedAt));
 				setWatchedTick((t) => t + 1);
+				setIsInitialLoading(false);
 			}
 		};
 		sync();
@@ -319,7 +332,7 @@ const FollowingView = () => {
 		[people],
 	);
 
-	if (!mounted || (user && loading)) {
+	if (!mounted || (loading && !people.length) || (isInitialLoading && !people.length)) {
 		return (
 			<div className="flex flex-col gap-4">
 				{Array.from({ length: 3 }).map((_, i) => (

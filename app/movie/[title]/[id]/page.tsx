@@ -175,13 +175,16 @@ const MoviePage = async ({ params }: PageProps) => {
 			/>
 			<div className="shell">
 				<RecommendationContainer
-					data={recommendations?.results}
+					data={
+						recommendations?.results?.length
+							? recommendations.results
+							: similar?.results?.filter(
+									(item: any) =>
+										item.poster_path && (item.vote_count ?? 0) >= 30,
+								)
+					}
 					title="People also Liked"
 					aiSeed={{ type: "movie", id: data.id, title }}
-				/>
-				<RecommendationContainer
-					data={similar?.results}
-					title="More like this"
 				/>
 			</div>
 

@@ -17,6 +17,7 @@ import CrewSection from "@/components/ui/detail/CrewSection";
 import WhereToWatch from "@/components/ui/detail/WhereToWatch";
 import ShareIntentComponent from "@/components/functional-components/ShareIntentComponent";
 import WatchlistButton from "@/components/functional-components/WatchlistButton";
+import WatchedButton from "@/components/functional-components/WatchedButton";
 import { Button } from "@/components/buttons";
 
 import HorizontalSlider from "@/components/ui/HorizontalSlider";
@@ -287,6 +288,12 @@ const DetailV2: React.FC<DetailV2Props> = ({
 							{featuredVideo ? "Play trailer" : "No trailer"}
 						</Button>
 						<WatchlistButton
+							id={data.id}
+							mediaType={isTv ? "tv" : "movie"}
+							title={displayTitle}
+							posterPath={poster_path}
+						/>
+						<WatchedButton
 							id={data.id}
 							mediaType={isTv ? "tv" : "movie"}
 							title={displayTitle}
